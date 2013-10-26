@@ -3,4 +3,3 @@ src/_bower_components
 .grunt
 *.bak
 dist/
-out/
