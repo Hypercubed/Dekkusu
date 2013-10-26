@@ -1,5 +1,5 @@
 {
-  "name": "assemble-bootstrap",
+  "name": "Dekkusu",
   "version": "0.0.0",
   "dependencies": {
   },
@@ -34,7 +34,7 @@
   "engines": {
     "node": ">=0.8.0"
   },
-  "description": "ERROR: No README.md file found!",
+  "description": "Hierarchical study decks (flash cards)",
   "main": "Gruntfile.js",
   "directories": {
     "test": "test"

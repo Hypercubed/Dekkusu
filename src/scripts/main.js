@@ -9,6 +9,13 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
 
   var el = angular.element(".cardEditor")[0];
 
+  //angular.element(".cardEditor").on('blur', function() {
+  //  $scope.$apply(function() {
+  //    console.log('blur');
+  //    $scope.edit(false);
+  //  });
+  //});
+
   $scope.isEditing = false;
   $scope.clozed = true;
 
