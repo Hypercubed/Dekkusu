@@ -18,31 +18,18 @@ title: <%= site.title %>
 <div class="container" ng-app="mainApp">
   <div class="page-content col-md-8 col-md-offset-2" ng-controller="CardCtrl">
 
-    <div id="review" ng-hide="isEditing">
+    <div id="review" ng-hide="isEditing" >
       <div class="row">
         <div class="btn-toolbar pull-right" style="margin-bottom: 5px;">
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" ng-click="add()" ><i class="glyphicon glyphicon-plus-sign"></i></button>
-            <button type="button" class="btn btn-primary" ng-click="deleteCard()" ><i class="glyphicon glyphicon-remove"></i></button>
-            <button type="button" class="btn btn-primary" ng-click="reset()" >R</button>
-            <button type="button" class="btn btn-primary" ng-click="edit()" ><i class="glyphicon glyphicon-pencil"></i></button>
+            <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card"><i class="glyphicon glyphicon-plus-sign"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="deleteCard()"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
+            <button type="button" class="btn btn-primary" ng-click="reset()" tooltip="Reset cards">R</button>
+            <button type="button" class="btn btn-primary" ng-click="edit()" tooltip="Edit"><i class="glyphicon glyphicon-pencil"></i> </button>
           </div>
         </div>
       </div>
-      <div class="card editable" ng-bind-html-unsafe="formattedCard()" ng-class="{clozed: clozed}" ng-dblclick="edit(card)">
-      </div>
-      <div class="row well">
-        <div class="col-md-3 text-left">
-          Card \{{index+1}} / \{{due}} due
-          <br />Due \{{card.due | date:'yyyy-MM-dd'}}
-        </div>
-        <div class="col-md-6 text-center">
-          <div class="btn-group">
-            <button type="button" class="btn btn-default" ng-click="up()" ng-hide="clozed"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
-            <button type="button" class="btn btn-default" ng-click="flip()"><i class="glyphicon glyphicon-repeat"></i> </button>
-            <button type="button" class="btn btn-default" ng-click="down()" ng-hide="clozed"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
-          </div>
-        </div>
+      <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html="card.text | formatCard">
       </div>
     </div>
 
@@ -50,32 +37,42 @@ title: <%= site.title %>
       <div class="row">
         <div class="btn-toolbar pull-right" style="margin-bottom: 5px;">
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" ng-click="b1()" >{ }</button>
-            <button type="button" class="btn btn-primary" ng-click="b2()" >[..]</button>
+            <button type="button" class="btn btn-primary" ng-click="b1()" tooltip="Hide this seletion">{ }</button>
+            <button type="button" class="btn btn-primary" ng-click="b2()" tooltip="Cloze this selection">[..]</button>
           </div>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" ng-click="add()" ><i class="glyphicon glyphicon-plus-sign"></i></button>
-            <button type="button" class="btn btn-primary" ng-click="deleteCard()" ><i class="glyphicon glyphicon-remove"></i></button>
-            <button type="button" class="btn btn-primary" ng-click="reset()" >R</button>
-            <button type="button" class="btn btn-primary" ng-click="edit()" ><i class="glyphicon glyphicon-save"></i></button>
+            <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card"><i class="glyphicon glyphicon-plus-sign"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="deleteCard()"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
+            <button type="button" class="btn btn-primary" ng-click="reset()" tooltip="Reset cards">R</button>
+            <button type="button" class="btn btn-primary" ng-click="edit()" tooltip="Edit"><i class="glyphicon glyphicon-pencil"></i> </button>
           </div>
         </div>
       </div>
       <textarea class="form-control cardEditor animate-show" rows="5" placeholder="Card contents" ng-model="card.text"></textarea>
-      <div class="row well">
-        <div class="col-md-4 text-left">
-          Card \{{index+1}} / \{{cards.length}} total
-          <br />Due \{{card.due | date:'yyyy-MM-dd'}}
-        </div>
-        <div class="col-md-8 text-right">
-          <div class="btn-group">
-            <a class="btn btn-default" ng-click="prev()">&laquo;</a>
-            <!-- li ng-repeat="card in cards" ng-class="{active: $index == index}"><a ng-click="goto($index)">\{{$index+1}}</a></li -->
-            <a class="btn btn-default" ng-click="next()">&raquo;</a>
-          </div>
-        </div>
+    </div>
+
+   <div class="row well">
+    <div class="col-md-4 text-left">
+      Card \{{index+1}} / \{{cards.length}} total
+      <br />Due \{{card.due | date:'yyyy-MM-dd'}}
+      <br />\{{( cards | dueNow ).length}} due
+    </div>
+    <div class="col-md-4 text-center" tabindex="0" ui-keyup="{'left right space':'keypressCallback($event)'}">
+      <div class="btn-group" >
+        <button type="button" class="btn btn-default" ng-click="up()" ng-hide="clozed" tooltip="Correct"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
+        <button type="button" class="btn btn-default" ng-click="flip()" tooltip="Flip"><i class="glyphicon glyphicon-repeat"></i> </button>
+        <button type="button" class="btn btn-default" ng-click="down()" ng-hide="clozed" tooltip="Incorrect"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
       </div>
     </div>
+    <div class="col-md-4 text-right">
+      <div class="btn-group">
+        <a class="btn btn-default" ng-click="prev()"  tooltip="Next">&laquo;</a>
+        <!-- li ng-repeat="card in cards" ng-class="{active: $index == index}"><a ng-click="goto($index)">\{{$index+1}}</a></li -->
+        <a class="btn btn-default" ng-click="next()" tooltip="Previous">&raquo;</a>
+      </div>
+    </div>
+  </div>
+
 
   </div>
 </div>

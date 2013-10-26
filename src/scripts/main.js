@@ -3,9 +3,9 @@
 var DEBUG = false;
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('mainApp', ['ui.bootstrap']);
+var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event']);
 
-app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, cardStorage, $http) {
+app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', '$sce', function($scope, cardStorage, $http, $filter, $sce) {
 
   var el = angular.element(".cardEditor")[0];
 
@@ -19,30 +19,28 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
   $scope.isEditing = false;
   $scope.clozed = true;
 
-  getCard();
+  $scope.blurCallback = function() {
+    console.log('blur');
+  }
 
-  $scope.$watch('card.text', function(newVal, oldVal) {
-    console.log('card.text changed',newVal, oldVal);
+  $scope.keypressCallback = function(evt) {
+    if (evt.keyCode == 32 || evt.keyCode == 13) {          // space
+      $scope.flip();
+    } else if (evt.keyCode == 37 && !$scope.clozed) {   // left
+      $scope.up();
+    } else if (evt.keyCode == 39 && !$scope.clozed) {   // right
+      $scope.down();
+    }
+  }
 
-    if (newVal == oldVal) return;
-
-    save();
-  });
-
-  $scope.$watch('card.due', function(newVal, oldVal) {
-    console.log('card.due changed',newVal, oldVal);
-    if (newVal == oldVal) return;
-
-    save();
-    $scope.due = getDueCount();
-  });
-
-  function getCard() {
+  function getCards() {
     $scope.cards = cardStorage.getCards();
-    sortByDueDate();
-    $scope.index = 0;
-    $scope.card = $scope.cards[$scope.index];
-    $scope.due = getDueCount();
+
+    //if ($scope.onlydue) {
+      //$scope.cards = $filter('dueNow')($scope.cards);
+    //}
+
+    nextDue();
   }
 
   function save() {
@@ -71,13 +69,20 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
 
   }
 
-  $scope.formattedCard = function getFormattedCard() {
-    return $scope.card.text
-      .replace(/{{(.*?)::(.*?)}}/g, '&#91;{$1}<span class="uncloze">$2</span>&#93;')
-      .replace(/{{(.*?)}}/g, '&#91;{$1}<span class="uncloze">...</span>&#93;')
-      .replace(/{(.*?)}/g, '<span class="cloze">$1</span>')
-      .replace(/\n/g, '<br />')
-      ;
+  function addBracket(left, right) {
+    var ws = window.getSelection();
+
+    var start = el.selectionStart;
+    var end = el.selectionEnd;
+
+    var val = $scope.card.text;
+    $scope.card.text = val.slice(0,start) + left + val.slice(start,end) + right + val.slice(end);
+
+    setTimeout(function() {
+      el.selectionStart = start+left.length;
+      el.selectionEnd = end+left.length;
+    }, 100);
+
   }
 
   $scope.flip = function() {
@@ -100,7 +105,6 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
 
     $scope.card.interval = interval;
     $scope.card.due.setDate(due);
-    $scope.due = getDueCount();
 
     nextDue();
   }
@@ -108,30 +112,12 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
   $scope.down = function() {
     $scope.card.due = new Date();
     $scope.card.interval = 0;
-    $scope.due = getDueCount();
     nextDue();
   }
 
-  function sortByDueDate() {
-    console.log('sort');
-
-    $scope.cards = $scope.cards.sort(function(a,b) {
-      a = new Date(a.due);
-      b = new Date(b.due);
-      return a<b ? -1 : a>b ? 1 : 0;
-    });
-  };
-
-  function getDueCount() {
-    var now = new Date();
-    return $scope.cards.filter(function(d) {
-      return d.due < now;
-    }).length;
-  }
-
   $scope.prev = function() {
-    var index = ($scope.index > 0) ? $scope.index-1 : $scope.cards.length;
-    $scope.goto(index);
+    var index = ($scope.index > 0) ? $scope.index : $scope.cards.length;
+    $scope.goto(index-1);
   }
 
   $scope.next = function() {
@@ -140,10 +126,11 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
   }
 
   function nextDue() {
+    // Check this... first due or next due
     $scope.clozed = true;
-    sortByDueDate();
 
-    $scope.goto(0);
+    var index = $filter('firstDueIndex')($scope.cards)
+    $scope.goto(index);
   }
 
   $scope.goto = function(index) {
@@ -168,13 +155,17 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
   }
 
   $scope.b1 = function() {
-    var text = getSelectedText();
-    $scope.card.text = $scope.card.text.replace(text, '{'+text+'}');
+    //var text = getSelectedText();
+   // $scope.card.text = $scope.card.text.replace(text, '{'+text+'}');
+
+    addBracket('{','}');
   }
 
   $scope.b2 = function() {
-    var text = getSelectedText();
-    $scope.card.text = $scope.card.text.replace(text, '{{'+text+'}}');
+    //var text = getSelectedText();
+    //$scope.card.text = $scope.card.text.replace(text, '{{'+text+'}}');
+
+    addBracket('{{','}}');
   }
 
   $scope.add = function() {
@@ -195,18 +186,101 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', function($scope, c
   $scope.reset = function() {
     $http.get('data/first30.txt')
       .success(function (data, status, headers, config) {
-        var cards = data.split('\n').map(function(c) {
+        $scope.cards = data.split('\n').map(function(c) {
+          c = c.replace(/\\n/g, '\n');
           return { text: c, due: new Date(), interval: 0 }
-        })
+        });
 
-        $scope.cards = cards;
-        $scope.index = 0;
-        $scope.card = $scope.cards[$scope.index];
-        $scope.due = getDueCount();
+        save();
+        getCards();
 
       });
   }
 
+  $scope.dueNow = function dueNow(c) {
+    var now = new Date();
+    return c.due < now;
+  }
+
+  getCards();
+
+  $scope.$watch('card.text', function(newVal, oldVal) {
+    console.log('card.text changed',newVal, oldVal);
+
+    if (newVal == oldVal) return;
+
+    save();
+  });
+
+  $scope.$watch('card.due', function(newVal, oldVal) {
+    console.log('card.due changed',newVal, oldVal);
+    if (newVal == oldVal) return;
+
+    save();
+  });
+
+}]);
+
+app.filter('formatCard', ['$sce', function ($sce) {
+
+  var furigana = function(converter) {
+    return [
+        { type: 'lang', regex: '\\{\\[(.*?)\\]\\}', replace: '[{$1}]' }
+      //, { type: 'lang', regex: ' (.*?)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
+      , { type: 'lang', regex: '\\s(.[^\\s]?)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
+      //{ type: 'lang', regex: '\\[(.*?)\\]\\((.*?)\\)', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
+      //{ type: 'lang', regex: '(.)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
+    ];
+  }
+
+  var cloze = function(converter) {
+    return [
+      { type: 'lang', regex: '{{(.*?)::(.*?)}}', replace: '&#91;{$1}<span class="uncloze">$2</span>&#93;' },
+      { type: 'lang', regex: '{{(.*?)}}', replace: '&#91;{$1}<span class="uncloze">...</span>&#93;' },
+      { type: 'lang', regex: '{(.*?)}', replace: '<span class="cloze">$1</span>' }
+    ];
+  }
+
+  var showdown = new Showdown.converter({ extensions: [ furigana, cloze ] });
+
+  return function getFormattedCard(input) {
+    //var md = cloze(input);
+    return $sce.trustAsHtml(showdown.makeHtml(input || ''));
+  }
+
+}]);
+
+app.filter('firstDueIndex', function() {
+
+  return function(input) {
+    var out = undefined;
+
+    if (input) {
+      for (var i in input)
+        if (out == undefined || input[i].due < input[out].due)
+          out = i;
+    }
+    return +out;
+  }
+
+});
+
+app.filter('dueNow', function() {
+
+  return function dueNow(input) {
+    var now = new Date();
+    return input.filter(function(d) {
+      return d.due < now;
+    });
+  }
+
+});
+
+app.filter('markdown', ['$sce', function ($sce) {
+    var converter = new Showdown.converter();
+    return function (value) {
+        return $sce.trustAsHtml(converter.makeHtml(value || ''));
+    };
 }]);
 
 app.factory('cardStorage', ['$http', function ($http) {

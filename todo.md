@@ -22,3 +22,4 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Google translate helper?
 - [ ] Improve interval algritthim
 - [ ] Algorithim should consider hierarchy
+- [ ] Directives
