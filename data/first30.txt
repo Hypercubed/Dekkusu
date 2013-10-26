@@ -1,0 +1,30 @@
+先生{[せんせい]}はジョンを しかった。{The teacher scolded John.}
+ジョンは 先生{[せんせい]}に しかられた。{John was scolded by the teacher.}
+ビルはマーサをぶった。{Bill hit Martha.}
+マーサはビルにぶたれた。{Martha was hit by Bill.}
+私{[わたし]}はメアリーがトムに 会{[あ]}った 事実{[じじつ]}を 知{[し]}っている。{I know the fact that Mary met Tom.}
+私{[わたし]}はジョンに 行{[い]}って 欲{[ほ]}しい。{I want John to go there.}
+この 辞書{[じしょ]}は 使{[つか]}いやすい。{This dictionary is easy to use.}
+私{[わたし]}はすしが 食{[た]}べたい。{I want to eat sushi.}
+ベスは 大学{[だいがく]}を 出{[で]}たらしい。{Beth seems to have graduated from college.}
+花子{[はなこ]}は 淋{[さび]}しいようだ。{Hanako looks lonely.}
+このお 菓子{[かし]}はおいしそうだ。{This cake looks delicious.}
+ビルは 今{[いま]} 手紙{[てがみ]}を 書{[か]}いている。{Bill is writing a letter now.}
+窓{[まど]}が 開{[あ]}けてある。{The window has been opened. (=The window is opened.)}
+僕{[ぼく]}は 宿題{[しゅくだい]}をしてしまった。{I have done my homework.}
+私{[わたし]}は 友達{[ともだち]}にお 金{[かね]}を 貸{[か]}してあげた。{I loaned money to my friend.}
+このコンピューターは 高{[たか]}すぎる。{This computer is too expensive.}
+ジョージはスポーツカーを 欲{[ほ]}しがっている。{George wants a sports car. (Lit. George is showing signs of wanting a sports car.)}
+あっ！ 雨{[あめ]}が 降{[ふ]}って来た！{Gee! It's started to rain!}
+僕{[ぼく]}は 泳{[およ]}いだがスミスさんは 泳{[およ]}がなかった。{I swam but Mr. Smith didn't.}
+吉田{[よしだ]}さんは 東京{[とうきょう]}に 行{[い]}って 鈴木{[すずき]}さんに 会{[あ]}った。{Mr. Yoshida went to Tokyo and met Mr. Suzuki.}
+ジョンは 来{[き]}たが、ビルは 来{[こ]}なかった。{John came here, but Bill didn't.}
+走{[はし]}っていますが、ちっともやせません。{I'm running, but I haven't lost any weight at all.}
+山口{[やまぐち]} 先生{[せんせい]}は 学生{[がくせい]}をよくほめる。{Prof. Yamaguchi often praises his students.}
+かおりは 一郎{[いちろう]}をだました。{Kaori deceived Ichiro.}
+僕{[ぼく]}は 本{[ほん]}を 書{[か]}いた。{I wrote a book.}
+一郎{[いちろう]}はみどりにスカーフをやった。{Ichiro gave a scarf to Midori.}
+私{[わたし]}はドアを 開{[あ]}けておいた。{I kept the door open.}
+花子{[はなこ]}は 一郎{[いちろう]}の 大学{[だいがく]} 入学{[にゅうがく]}を 喜{[よろこ]}んだ。{Hanako was glad that Ichiro entered college.}
+トムはその 時{[とき]} 公園{[こうえん]}を 歩{[ある]}いていた。{At that time Tom was walking in the park.}
+東京{[とうきょう]}からは 田中{[たなか]}さんが 来{[き]}た。{Lit. From Tokyo Mr. Tanaka came}
