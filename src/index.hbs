@@ -3,6 +3,8 @@ layout: default.hbs
 title: <%= site.title %>
 ---
 
+
+
 <div class="jumbotron">
   <!-- div class="container">
 
@@ -15,7 +17,10 @@ title: <%= site.title %>
   </div -->
 </div>
 
-<div class="container" ng-app="mainApp">
+<div class="container">
+
+  <!-- div ng-include="'partials/study.html'"></div -->
+
   <div class="page-content col-md-8 col-md-offset-2" ng-controller="CardCtrl">
 
     <div class="row">
@@ -33,7 +38,7 @@ title: <%= site.title %>
       </div>
     </div>
 
-    <div id="review" ng-hide="isEditing" >
+    <div id="review" ng-hide="isEditing" tabindex="0" ui-keyup="{'left right space enter up down':'keypressCallback($event)'}">
       <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html="card.text | formatCard"></div>
     </div>
 
@@ -42,21 +47,21 @@ title: <%= site.title %>
     </div>
 
    <div class="row well">
-    <div class="col-md-4 text-left">
+    <div class="col-md-4 text-center">
       <div ng-cloak>
         Card \{{index+1}} / \{{cards.length}} total
         <br />Due \{{card.due | date:'yyyy-MM-dd'}}
         <br />\{{( cards | dueNow ).length}} due
       </div>
     </div>
-    <div class="col-md-4 text-center" tabindex="0" ui-keyup="{'left right space':'keypressCallback($event)'}">
+    <div class="col-md-4 text-center" tabindex="0" ui-keyup="{'left right space enter':'keypressCallback($event)'}">
       <div class="btn-group" >
         <button type="button" class="btn btn-default" ng-click="up()" ng-hide="clozed" tooltip="Correct"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
         <button type="button" class="btn btn-default" ng-click="flip()" tooltip="Flip"><i class="glyphicon glyphicon-repeat"></i> </button>
         <button type="button" class="btn btn-default" ng-click="down()" ng-hide="clozed" tooltip="Incorrect"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
       </div>
     </div>
-    <div class="col-md-4 text-right">
+    <div class="col-md-4 text-center">
       <div class="btn-group">
         <a class="btn btn-default" ng-click="prev()"  tooltip="Next">&laquo;</a>
         <!-- li ng-repeat="card in cards" ng-class="{active: $index == index}"><a ng-click="goto($index)">\{{$index+1}}</a></li -->

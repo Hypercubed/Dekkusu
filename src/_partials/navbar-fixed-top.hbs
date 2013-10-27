@@ -3,17 +3,17 @@ component: navbar
 ---
 <!-- Navbar component
 ================================================== -->
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapse=true">
   <div class="container">
     <div class="navbar-header">
-      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="collapse=!collapse">
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
       <a class="navbar-brand {{#is page.dest 'out/index.html'}}active{{/is}}" href="{{assets}}">{{site.title}}</a>
     </div>
-    <div class="navbar-collapse collapse">
+    <div class="navbar-collapse collapse" ng-class="{collapse:collapse}">
       <ul class="nav navbar-nav">
         {{#each tags}}{{#is tag 'page'}}
             {{#each pages}}
@@ -23,7 +23,7 @@ component: navbar
             {{/each}}
         {{/is}}{{/each}}
       </ul>
-    </div><!--/.navbar-collapse -->
+    </div>
   </div>
 </div>
 

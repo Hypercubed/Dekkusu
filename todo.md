@@ -23,3 +23,6 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Improve interval algritthim
 - [ ] Algorithim should consider hierarchy
 - [ ] Directives
+- [ ] Filter... (All, Due, Due soon)
+- [ ] Progress bar
+- [ ] Timer?

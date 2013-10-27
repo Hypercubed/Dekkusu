@@ -5,7 +5,7 @@ var DEBUG = false;
 // Declare app level module which depends on filters, and services
 var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event']);
 
-app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', '$sce', function($scope, cardStorage, $http, $filter, $sce) {
+app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', function($scope, cardStorage, $http, $filter) {
 
   var el = angular.element(".cardEditor")[0];
 
@@ -23,12 +23,21 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', '$sce',
     console.log('blur');
   }
 
-  $scope.keypressCallback = function(evt) {
-    if (evt.keyCode == 32 || evt.keyCode == 13) {          // space
+  $scope.keypressCallback = function($event) {
+    console.log($event.keyCode);
+
+    if ($event.keyCode == 32) {          // space
       $scope.flip();
-    } else if (evt.keyCode == 37 && !$scope.clozed) {   // left
+      $event.preventDefault();
+    } else if ($event.keyCode == 13) {   // enter
+      $scope.edit();
+    } else if ($event.keyCode == 37) {   // left
+      $scope.prev();
+    } else if ($event.keyCode == 39) {   // right
+      $scope.next();
+    } else if ($event.keyCode == 38 && !$scope.clozed) {   // up
       $scope.up();
-    } else if (evt.keyCode == 39 && !$scope.clozed) {   // right
+    } else if ($event.keyCode == 40 && !$scope.clozed) {   // down
       $scope.down();
     }
   }
