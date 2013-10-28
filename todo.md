@@ -39,3 +39,4 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Use $location to get filter
 - [ ] Use ids instead of index
 - [ ] Use moment.js
+- [ ] Copy markup when creating a new card

@@ -74,6 +74,10 @@ footer {
     outline: none;
 }
 
+#cardControl .row {
+  margin-top: 5px;
+}
+
 
 
 

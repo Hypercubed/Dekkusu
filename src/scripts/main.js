@@ -1,6 +1,7 @@
 'use strict';
 
 var DEBUG = false;
+var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 
 // Declare app level module which depends on filters, and services
 var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize']);
@@ -24,12 +25,12 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
     $scope.clozed = true;
 
-    if ($location.path() == '/all') {
-      $scope.filter = 0;
-    } if ($location.path() == '/soon') {
-      $scope.filter = 1;
-    } else {
-      $scope.filter = 0;
+    if ($location.path() == '/due') {
+      $scope.filter = 'due';
+    } else if ($location.path() == '/all') {
+      $scope.filter = 'all';
+    } else if ($location.path() == '/pending') {
+      $scope.filter = 'pending';
     }
 
     getCards();
@@ -44,11 +45,16 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
   function applyFilter(filter) {
     $scope.filter = filter = filter || $scope.filter;
 
-    var now = (new Date()).getDate();
+    var now = Date.now();
 
     $scope.filteredCards = $scope.cards.filter(function(d) {
-      if (filter < 0) return true;
-      return (d.due.getDate() - now <= filter);
+      if (filter == 'all')
+        return true;
+      if (filter == 'due')
+        return (d.due - d.last) <= 0;
+      if (filter == 'pending')
+        return (d.due - d.last) > 0;
+      return true;
     }).sort(function(a,b) {
       return a.due<b.due?-1:a.due>b.due?1:0;
     });
@@ -64,16 +70,16 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     cardStorage.saveCards($scope.cards);
   };
 
-  function nextDue() {
-    $scope.clozed = true;
+  //function nextDue() {
+  //  $scope.clozed = true;
 
-    for (var i = $scope.index; i < $scope.filteredCards.length; i++) {
-      console.log($scope.filteredCards[i].due);
-    }
+ //   for (var i = $scope.index; i < $scope.filteredCards.length; i++) {
+  //    console.log($scope.filteredCards[i].due);
+  //  }
 
-    var index = $filter('firstDueIndex')($scope.filteredCards);
-    $scope.goto(0);
-  }
+  //  var index = $filter('firstDueIndex')($scope.filteredCards);
+  //  $scope.goto(0);
+  //}
 
   $scope.goto = function(index) {
     if (typeof index == 'object')
@@ -159,18 +165,19 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     //    n = 1   when n = 0  (view one day later)
     //    n = 2*n otherwise   (view 2*n days later)
 
-    var interval = ($scope.card.interval > 0) ? $scope.card.interval*2 : 1;
-    var due = (new Date()).getDate()+interval;
+    $scope.card.last = Date.now();
 
-    $scope.card.interval = interval;
-    $scope.card.due.setDate(due);
+    if (($scope.card.due - $scope.card.last) <= 0)                                        // if card is due
+      $scope.card.interval = ($scope.card.interval > 0) ? $scope.card.interval*2 : 1;     // Increase interval
+
+    $scope.card.due = $scope.card.last+$scope.card.interval*DAYS;
 
     $scope.clozed = true;
     applyFilter();
   }
 
   $scope.down = function() {
-    $scope.card.due = new Date();
+    $scope.card.due = $scope.card.last = Date.now();
     $scope.card.interval = 0;
 
     $scope.clozed = true;
@@ -207,7 +214,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
 
     var card = {};
     card.text = text || '';
-    card.due = card.due || (new Date());
+    card.due = card.due || Date.now();
     card.interval = card.interval || 0;
 
     $scope.cards.push(card);
@@ -232,7 +239,8 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
         })
         .map(function(c) {
           c = c.replace(/\\n/g, '\n');
-          return { text: c, due: new Date(), interval: 0 }
+          var now = Date.now();
+          return { text: c, due: now, last: now, interval: 0 }
         });
 
         save();
@@ -248,10 +256,10 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     getCards();
   }
 
-  $scope.dueNow = function dueNow(c) {
-    var now = new Date();
-    return c.due < now;
-  }
+  //$scope.dueNow = function dueNow(c) {
+  //  var now = new Date();
+  //  return c.due < now;
+  //}
 
   init();
 
@@ -325,7 +333,7 @@ app.filter('firstDueIndex', function() {
 app.filter('dueNow', function() {
 
   return function dueNow(input) {
-    var now = new Date();
+    var now = Date.now();
     return input.filter(function(d) {
       return d.due < now;
     });
@@ -334,8 +342,10 @@ app.filter('dueNow', function() {
 });
 
 app.filter('dateDays', function() {
-  var now = new Date();
+  var now = Date.now();
   return function dueNow(input) {
+    if (!input) return '-';
+
     var delta = input - now;  // milli
     if (delta < 0) return 'now';
     delta = delta/1000/60;  // min
@@ -365,10 +375,10 @@ app.factory('cardStorage', ['$http', function ($http) {
 
     if (json) {
       var cards = JSON.parse(json);
-      cards.forEach(function(c) {
-        var milli = Date.parse(c.due);
-        c.due = new Date(milli);
-      });
+     // cards.forEach(function(c) {
+      //  var milli = Date.parse(c.due);
+      //  c.due = new Date(milli);
+      //});
       return cards;
     } else {
       return [];
