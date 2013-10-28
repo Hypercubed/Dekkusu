@@ -5,24 +5,88 @@ var DEBUG = false;
 // Declare app level module which depends on filters, and services
 var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event']);
 
-app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', function($scope, cardStorage, $http, $filter) {
+app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', function($scope, cardStorage, $http, $filter, $location) {
+
+  console.log($location.path());
 
   var el = angular.element(".cardEditor")[0];
 
-  angular.element(".cardEditor").on('blur', function(e) {
-    if (!e.relatedTarget) {
-      $scope.$apply(function() {
-        console.log('blur');
-        $scope.edit(false);
-      });
-    }
-  });
+  //angular.element(".cardEditor").on('blur', function(e) {
+ //   if (!e.relatedTarget) {
+  //    $scope.$apply(function() {
+  //      console.log('blur');
+  //      $scope.edit(false);
+  //    });
+  //  }
+  //});
 
-  $scope.isEditing = false;
-  $scope.clozed = true;
+  function init() {
+    $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
+    $scope.clozed = true;
+
+    if ($location.path() == '/due') {
+      $scope.filter = 0;
+    } if ($location.path() == '/soon') {
+      $scope.filter = 1;
+    } else {
+      $scope.filter = -1;
+    }
+
+    getCards();
+  }
+
+  function getCards() {
+    $scope.cards = cardStorage.getCards();
+    $scope.index = 0;
+    applyFilter($scope.filter);
+  }
+
+  function applyFilter(filter) {
+    $scope.filter = filter = filter || $scope.filter;
+
+    var now = (new Date()).getDate();
+
+    $scope.filteredCards = $scope.cards.filter(function(d) {
+      if (filter < 0) return true;
+      return (d.due.getDate() - now <= filter);
+    }).sort(function(a,b) {
+      return a.due<b.due?-1:a.due>b.due?1:0;
+    });
+
+    $scope.goto($scope.index);
+  }
 
   $scope.blurCallback = function() {
     console.log('blur');
+  }
+
+  function save() {
+    cardStorage.saveCards($scope.cards);
+  };
+
+  function nextDue() {
+    $scope.clozed = true;
+
+    for (var i = $scope.index; i < $scope.filteredCards.length; i++) {
+      console.log($scope.filteredCards[i].due);
+    }
+
+    var index = $filter('firstDueIndex')($scope.filteredCards);
+    $scope.goto(0);
+  }
+
+  $scope.goto = function(index) {
+    if (typeof index == 'object')
+      index = $scope.filteredCards.indexOf(index);
+
+    if (index > $scope.filteredCards.length)
+      index = $scope.filteredCards.length;
+
+    if (index < 0)
+      $scope.index = 0;
+
+    $scope.index = index;
+    $scope.card = $scope.filteredCards[$scope.index];
   }
 
   $scope.keypressCallback = function($event) {
@@ -44,21 +108,6 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
     }
   }
 
-  function getCards() {
-    $scope.cards = cardStorage.getCards();
-
-    //if ($scope.onlydue) {
-      //$scope.cards = $filter('dueNow')($scope.cards);
-    //}
-
-    nextDue();
-  }
-
-  function save() {
-    console.log('saving to local storage');
-    cardStorage.saveCards($scope.cards);
-  };
-
   function getSelectedText() {
     var ws = window.getSelection();
 
@@ -77,7 +126,6 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
     }
 
     return null;
-
   }
 
   function addBracket(left, right) {
@@ -93,7 +141,6 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
       el.selectionStart = start+left.length;
       el.selectionEnd = end+left.length;
     }, 100);
-
   }
 
   $scope.flip = function() {
@@ -104,6 +151,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
   $scope.edit = function(flag) {
     if (arguments.length < 1) flag = !$scope.isEditing;
     $scope.isEditing = flag;
+    //console.log('edit',flag);
   }
 
   $scope.up = function() {
@@ -111,58 +159,32 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
     //    n = 1   when n = 0  (view one day later)
     //    n = 2*n otherwise   (view 2*n days later)
 
-    var interval = ($scope.interval > 0) ? $scope.interval*2 : 1;
+    var interval = ($scope.card.interval > 0) ? $scope.card.interval*2 : 1;
     var due = (new Date()).getDate()+interval;
 
     $scope.card.interval = interval;
     $scope.card.due.setDate(due);
 
-    nextDue();
+    $scope.clozed = true;
+    applyFilter();
   }
 
   $scope.down = function() {
     $scope.card.due = new Date();
     $scope.card.interval = 0;
-    nextDue();
+
+    $scope.clozed = true;
+    applyFilter();
   }
 
   $scope.prev = function() {
-    var index = ($scope.index > 0) ? $scope.index : $scope.cards.length;
+    var index = ($scope.index > 0) ? $scope.index : $scope.filteredCards.length;
     $scope.goto(index-1);
   }
 
   $scope.next = function() {
-    var index = ($scope.index < $scope.cards.length-1) ? $scope.index+1 : 0;
+    var index = ($scope.index < $scope.filteredCards.length-1) ? $scope.index+1 : 0;
     $scope.goto(index);
-  }
-
-  function nextDue() {
-    // Check this... first due or next due
-    $scope.clozed = true;
-
-    var index = $filter('firstDueIndex')($scope.cards)
-    $scope.goto(index);
-  }
-
-  $scope.goto = function(index) {
-
-    if (index > $scope.cards.length)
-      index = $scope.cards.length;
-
-    if (index < 0)
-      $scope.index = 0;
-
-    $scope.index = index;
-    $scope.card = $scope.cards[$scope.index];
-  }
-
-  function addCard(card) {
-    card = card || {};
-    card.text = card.text || '';
-    card.due = card.due || (new Date());
-    card.interval = card.interval || 0;
-
-    return $scope.cards.push(card)-1
   }
 
   $scope.b1 = function() {
@@ -183,14 +205,21 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
 
     var text = getSelectedText();
 
-    var id = addCard({ text: text });
-    $scope.goto(id);
-    $scope.isEditing = true;
+    var card = {};
+    card.text = text || '';
+    card.due = card.due || (new Date());
+    card.interval = card.interval || 0;
 
+    $scope.cards.push(card);
+    $scope.filteredCards = $scope.cards;   // TODO: filter
+
+    $scope.goto(card);
+    $scope.isEditing = true;
   }
 
   $scope.deleteCard = function() {
-    $scope.cards.splice($scope.index,1);
+    var index = $scope.cards.indexOf($scope.card);
+    $scope.cards.splice(index,1);
     $scope.goto($scope.index);
   }
 
@@ -224,7 +253,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
     return c.due < now;
   }
 
-  getCards();
+  init();
 
   $scope.$watch('card.text', function(newVal, oldVal) {
     console.log('card.text changed',newVal, oldVal);
@@ -239,6 +268,14 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
     if (newVal == oldVal) return;
 
     save();
+  });
+
+  $scope.$watch('filter', function(newVal, oldVal) {
+    console.log('filter changed',newVal, oldVal);
+    if (newVal == oldVal) return;
+
+    applyFilter(newVal);
+
   });
 
 }]);
@@ -291,6 +328,20 @@ app.filter('dueNow', function() {
     return input.filter(function(d) {
       return d.due < now;
     });
+  }
+
+});
+
+app.filter('dateDays', function() {
+  var now = new Date();
+  return function dueNow(input) {
+    var delta = input - now;  // milli
+    if (delta < 0) return 'now';
+    delta = delta/1000/60;  // min
+    if (delta < 1) return 'soon';
+    delta = delta/60/24;       // day
+    if (delta < 1) return '<1 day';
+    return Math.floor(delta) + ' days';
   }
 
 });

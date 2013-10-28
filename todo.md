@@ -31,3 +31,11 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Move forwad/back buttons?
 - [ ] Move flip buttons (keep fixed position)
 - [x] Fix overflow
+- [ ] Display add msg when cards missing
+- [ ] Syntax help
+- [ ] Statistics popup
+- [ ] Full markdoiwn editor?
+- [ ] Undo
+- [ ] Use $location to get filter
+- [ ] Use ids instead of index
+- [ ] Use moment.js
