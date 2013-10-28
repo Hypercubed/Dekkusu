@@ -50,7 +50,7 @@ title: <%= site.title %>
     </div>
 
     <div id="review" ng-hide="isEditing || !filteredCards.length" tabindex="0" ui-keyup="{'left right space enter up down':'keypressCallback($event)'}">
-      <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html-unsafe="card.text | formatCard"></div>
+      <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html="card.text | formatCard"></div>
     </div>
 
     <div id="edit" ng-show="isEditing && filteredCards.length > 0" ng-cloak>

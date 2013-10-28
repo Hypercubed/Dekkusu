@@ -26,7 +26,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Filter... (All, Due, Due soon)
 - [ ] Progress bar
 - [ ] Timer?
-- [ ] Ruby/furigana fallback
+- [x] Ruby/furigana fallback
 - [x] Fix kanji font
 - [ ] Move forwad/back buttons?
 - [ ] Move flip buttons (keep fixed position)
@@ -34,7 +34,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Display add msg when cards missing
 - [ ] Syntax help
 - [ ] Statistics popup
-- [ ] Full markdoiwn editor?
+- [ ] Full markdown editor?
 - [ ] Undo
 - [ ] Use $location to get filter
 - [ ] Use ids instead of index

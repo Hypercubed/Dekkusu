@@ -3,7 +3,7 @@
 var DEBUG = false;
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event']);
+var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize']);
 
 app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', function($scope, cardStorage, $http, $filter, $location) {
 
@@ -280,12 +280,12 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
 
 }]);
 
-app.filter('formatCard', [function () {
+app.filter('formatCard', ['$sanitize', function ($sanitize) {
 
   var furigana = function(converter) {
     return [
       { type: 'lang', regex: '(\\S*)\\{\\[(.*?)\\]\\}', replace: '$1[{$2}]' },
-      { type: 'lang', regex: '(\\S*)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
+      { type: 'lang', regex: '(\\S*)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rp>&#91;</rp><rt>$2</rt><rp>&#93;</rp></ruby>' }
     ];
   }
 
@@ -302,7 +302,7 @@ app.filter('formatCard', [function () {
   return function getFormattedCard(input) {
     //var md = cloze(input);
     //return $sce.trustAsHtml(showdown.makeHtml(input || ''));
-    return showdown.makeHtml(input || '');  // Check sanitization
+    return $sanitize(showdown.makeHtml(input || ''));  // Check sanitization
   }
 
 }]);
