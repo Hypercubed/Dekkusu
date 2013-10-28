@@ -26,3 +26,8 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Filter... (All, Due, Due soon)
 - [ ] Progress bar
 - [ ] Timer?
+- [ ] Ruby/furigana fallback
+- [x] Fix kanji font
+- [ ] Move forwad/back buttons?
+- [ ] Move flip buttons (keep fixed position)
+- [x] Fix overflow

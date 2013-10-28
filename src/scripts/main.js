@@ -9,12 +9,14 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
 
   var el = angular.element(".cardEditor")[0];
 
-  //angular.element(".cardEditor").on('blur', function() {
-  //  $scope.$apply(function() {
-  //    console.log('blur');
-  //    $scope.edit(false);
-  //  });
-  //});
+  angular.element(".cardEditor").on('blur', function(e) {
+    if (!e.relatedTarget) {
+      $scope.$apply(function() {
+        console.log('blur');
+        $scope.edit(false);
+      });
+    }
+  });
 
   $scope.isEditing = false;
   $scope.clozed = true;
@@ -195,7 +197,11 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
   $scope.reset = function() {
     $http.get('data/first30.txt')
       .success(function (data, status, headers, config) {
-        $scope.cards = data.split('\n').map(function(c) {
+        $scope.cards = data.split('\n')
+        .filter(function(t) {
+          return t != '';
+        })
+        .map(function(c) {
           c = c.replace(/\\n/g, '\n');
           return { text: c, due: new Date(), interval: 0 }
         });
@@ -204,6 +210,13 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter', functio
         getCards();
 
       });
+  }
+
+  $scope.clear = function() {
+    $scope.cards = [];
+
+    save();
+    getCards();
   }
 
   $scope.dueNow = function dueNow(c) {
@@ -234,11 +247,8 @@ app.filter('formatCard', ['$sce', function ($sce) {
 
   var furigana = function(converter) {
     return [
-        { type: 'lang', regex: '\\{\\[(.*?)\\]\\}', replace: '[{$1}]' }
-      //, { type: 'lang', regex: ' (.*?)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
-      , { type: 'lang', regex: '\\s(.[^\\s]?)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
-      //{ type: 'lang', regex: '\\[(.*?)\\]\\((.*?)\\)', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
-      //{ type: 'lang', regex: '(.)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
+      { type: 'lang', regex: '(\\S*)\\{\\[(.*?)\\]\\}', replace: '$1[{$2}]' },
+      { type: 'lang', regex: '(\\S*)\\[(.*?)\\]', replace: '<ruby><rb>$1</rb><rt>$2</rt></ruby>' }
     ];
   }
 
