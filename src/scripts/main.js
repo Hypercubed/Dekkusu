@@ -24,12 +24,12 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
     $scope.clozed = true;
 
-    if ($location.path() == '/due') {
+    if ($location.path() == '/all') {
       $scope.filter = 0;
     } if ($location.path() == '/soon') {
       $scope.filter = 1;
     } else {
-      $scope.filter = -1;
+      $scope.filter = 0;
     }
 
     getCards();
@@ -280,7 +280,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
 
 }]);
 
-app.filter('formatCard', ['$sce', function ($sce) {
+app.filter('formatCard', [function () {
 
   var furigana = function(converter) {
     return [
@@ -301,7 +301,8 @@ app.filter('formatCard', ['$sce', function ($sce) {
 
   return function getFormattedCard(input) {
     //var md = cloze(input);
-    return $sce.trustAsHtml(showdown.makeHtml(input || ''));
+    //return $sce.trustAsHtml(showdown.makeHtml(input || ''));
+    return showdown.makeHtml(input || '');  // Check sanitization
   }
 
 }]);
@@ -346,10 +347,11 @@ app.filter('dateDays', function() {
 
 });
 
-app.filter('markdown', ['$sce', function ($sce) {
+app.filter('markdown', [function () {
     var converter = new Showdown.converter();
     return function (value) {
-        return $sce.trustAsHtml(converter.makeHtml(value || ''));
+        //return $sce.trustAsHtml(converter.makeHtml(value || ''));
+        return converter.makeHtml(value || '');
     };
 }]);
 

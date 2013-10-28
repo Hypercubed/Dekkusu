@@ -50,7 +50,7 @@ title: <%= site.title %>
     </div>
 
     <div id="review" ng-hide="isEditing || !filteredCards.length" tabindex="0" ui-keyup="{'left right space enter up down':'keypressCallback($event)'}">
-      <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html="card.text | formatCard"></div>
+      <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html-unsafe="card.text | formatCard"></div>
     </div>
 
     <div id="edit" ng-show="isEditing && filteredCards.length > 0" ng-cloak>
@@ -64,6 +64,7 @@ title: <%= site.title %>
           <x-small>Card \{{index+1}} / \{{filteredCards.length}} total</x-small>
           <br />Due \{{card.due | dateDays }}
           <br />\{{( cards | dueNow ).length}} due
+          <br />
         </div>
       </div>
       <div class="col-md-4 text-center">
@@ -83,9 +84,9 @@ title: <%= site.title %>
     </div>
     <div class="row">
       <div class="col-md-4 col-md-offset-4 text-center">
-          <button type="button" class="btn btn-xs btn-default" ng-model="filter" btn-radio="0">Due</button>
-          <button type="button" class="btn btn-xs btn-default" ng-model="filter" btn-radio="1">1day</button>
-          <button type="button" class="btn btn-xs btn-default" ng-model="filter" btn-radio="-1">All</button>
+          <a class="btn btn-xs btn-default" href="#/" ng-model="filter" btn-radio="0">Due</a>
+          <a class="btn btn-xs btn-default" href="#/soon" ng-model="filter" btn-radio="1">1day</a>
+          <a class="btn btn-xs btn-default" href="#/all" ng-model="filter" btn-radio="-1">All</a>
       </div>
     </div>
   </div>
