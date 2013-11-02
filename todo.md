@@ -4,39 +4,52 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
 - [ ] Better editor
 - [ ] Global deck editor
-- [ ] Markdown?
-- [ ] Furugana
+- [x] Markdown?
+- [x] Furugana
 - [ ] Login
 - [ ] Firebase
 - [ ] Multiple decks
-- [ ] Native file format i.e. (@due 1-1-2020) (@tags japanese phrase) (@interval 0)?
-- [ ] Deck vs. journal
-- [ ] Use position for bracketing instead of replace
+- [ ] Native file format i.e. Markdown with tags? (@due 1-1-2020) (@tags japanese phrase) (@interval 0)?
+- [ ] Seperate deck from progress journal?
+- [x] Use position for bracketing instead of replace
 - [ ] Multiple seletions?
+- [ ] Improve view/edit switch.
 - [ ] After creating a new sub card, mark due, return to original
 - [ ] Add new sub-card without moving from original.
-- [ ] Store heierarchy?
+- [ ] Store hierarchy?
 - [ ] Native file Import/export
 - [ ] External file (cvs, anki, etc) import/export
 - [ ] External system import (Anki web, google docs, github)
 - [ ] Google translate helper?
-- [ ] Improve interval algritthim
-- [ ] Algorithim should consider hierarchy
+- [ ] Improve interval algorithm
+- [ ] Algorithm should consider hierarchy
 - [ ] Directives
-- [ ] Filter... (All, Due, Due soon)
+- [x] Filter... (All, Due, Due soon)
 - [ ] Progress bar
 - [ ] Timer?
 - [x] Ruby/furigana fallback
 - [x] Fix kanji font
-- [ ] Move forwad/back buttons?
+- [ ] Move forward/back buttons?
+- [ ] Swipe forward/back?
 - [ ] Move flip buttons (keep fixed position)
+- [ ] Increase button size (esp. on mobile)
 - [x] Fix overflow
-- [ ] Display add msg when cards missing
+- [x] Display add msg when cards missing
 - [ ] Syntax help
 - [ ] Statistics popup
 - [ ] Full markdown editor?
 - [ ] Undo
-- [ ] Use $location to get filter
+- [x] Use $location to get filter
 - [ ] Use ids instead of index
-- [ ] Use moment.js
+- [ ] Use moment.js?
 - [ ] Copy markup when creating a new card
+- [ ] Improve markdown {A::B}, {::B}, {{::B}}.
+- [ ] Tests for markdown, ruby text
+- [ ] Fix/improve filters: New, due, done, all
+- [ ] Add card position counter.
+- [ ] Move due text and card number.
+- [ ] Finish examples in readme.
+- [ ] Rethink filters
+- [ ] Create status service?
+- [ ] Down vote should move card to 'due'
+- [ ] Improve/Optimize clozed markdown plugin.

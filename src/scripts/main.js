@@ -6,7 +6,7 @@ var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 // Declare app level module which depends on filters, and services
 var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize']);
 
-app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', function($scope, cardStorage, $http, $filter, $location) {
+app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', 'statusFilterFilter', function($scope, cardStorage, $http, $filter, $location, statusFilter) {
 
   console.log($location.path());
 
@@ -26,11 +26,15 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     $scope.clozed = true;
 
     if ($location.path() == '/due') {
-      $scope.filter = 'due';
+      $scope.filter = STATUSDUE;
     } else if ($location.path() == '/all') {
-      $scope.filter = 'all';
-    } else if ($location.path() == '/pending') {
-      $scope.filter = 'pending';
+      $scope.filter = -1;
+    } else if ($location.path() == '/done') {
+      $scope.filter = STATUSDONE;
+    } else if ($location.path() == '/new') {
+      $scope.filter = STATUSNEW;
+    } else {
+      $scope.filter = STATUSDUE;
     }
 
     getCards();
@@ -43,21 +47,15 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
   }
 
   function applyFilter(filter) {
+
     $scope.filter = filter = filter || $scope.filter;
 
-    var now = Date.now();
+    //console.log(statusFilter);
 
-    $scope.filteredCards = $scope.cards.filter(function(d) {
-      if (filter == 'all')
-        return true;
-      if (filter == 'due')
-        return (d.due - d.last) <= 0;
-      if (filter == 'pending')
-        return (d.due - d.last) > 0;
-      return true;
-    }).sort(function(a,b) {
-      return a.due<b.due?-1:a.due>b.due?1:0;
-    });
+    $scope.filteredCards = statusFilter($scope.cards, $scope.filter)
+      .sort(function(a,b) {
+        return a.due<b.due?-1:a.due>b.due?1:0;
+      });
 
     $scope.goto($scope.index);
   }
@@ -134,7 +132,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     return null;
   }
 
-  function addBracket(left, right) {
+  $scope.wrap = function wrap(left, right) {
     var ws = window.getSelection();
 
     var start = el.selectionStart;
@@ -177,7 +175,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
   }
 
   $scope.down = function() {
-    $scope.card.due = $scope.card.last = Date.now();
+    $scope.card.due = $scope.card.last = Date.now()-5;
     $scope.card.interval = 0;
 
     $scope.clozed = true;
@@ -192,20 +190,6 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
   $scope.next = function() {
     var index = ($scope.index < $scope.filteredCards.length-1) ? $scope.index+1 : 0;
     $scope.goto(index);
-  }
-
-  $scope.b1 = function() {
-    //var text = getSelectedText();
-   // $scope.card.text = $scope.card.text.replace(text, '{'+text+'}');
-
-    addBracket('{','}');
-  }
-
-  $scope.b2 = function() {
-    //var text = getSelectedText();
-    //$scope.card.text = $scope.card.text.replace(text, '{{'+text+'}}');
-
-    addBracket('{{','}}');
   }
 
   $scope.add = function() {
@@ -240,7 +224,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
         .map(function(c) {
           c = c.replace(/\\n/g, '\n');
           var now = Date.now();
-          return { text: c, due: now, last: now, interval: 0 }
+          return { text: c, due: now, last: null, interval: 0 }
         });
 
         save();
@@ -300,12 +284,23 @@ app.filter('formatCard', ['$sanitize', function ($sanitize) {
   var cloze = function(converter) {
     return [
       { type: 'lang', regex: '{{(.*?)::(.*?)}}', replace: '&#91;{$1}<span class="uncloze">$2</span>&#93;' },
+      { type: 'lang', regex: '{(.*?)::(.*?)}', replace: '{$1}<span class="uncloze">$2</span>' },
       { type: 'lang', regex: '{{(.*?)}}', replace: '&#91;{$1}<span class="uncloze">...</span>&#93;' },
       { type: 'lang', regex: '{(.*?)}', replace: '<span class="cloze">$1</span>' }
     ];
   }
 
-  var showdown = new Showdown.converter({ extensions: [ furigana, cloze ] });
+  var extra = function(converter) {
+    return [
+      { type: 'lang', regex: '\n{1,}', replace: '\n\n' }//,
+      //{ type: 'lang', regex: '\\{', replace: '~E123E' },
+      //{ type: 'lang', regex: '\\}', replace: '~E125E' },
+      //{ type: 'lang', regex: '\\[', replace: '~E91E' },
+      //{ type: 'lang', regex: '\\]', replace: '~E93E' }
+    ];
+  }
+
+  var showdown = new Showdown.converter({ extensions: [ extra, furigana, cloze ] });
 
   return function getFormattedCard(input) {
     //var md = cloze(input);
@@ -364,6 +359,75 @@ app.filter('markdown', [function () {
         return converter.makeHtml(value || '');
     };
 }]);
+
+// TODO: Don't do this
+var STATUSALL = -1;
+var STATUSNEW = 0;
+var STATUSDUE = 1;
+var STATUSDONE = 2;
+
+app.filter('status', [function () {
+    var now = Date.now();
+    return function (card) {
+      if (!card) return -1;
+
+      if (card.last == null)
+        return STATUSNEW;
+      if (card.due < now)
+        return STATUSDUE;
+      return STATUSDONE;
+
+    };
+}]);
+
+app.filter('statusText', [function () {
+
+    return function (value) {
+
+      if (value == STATUSNEW)
+        return "New";
+      if (value == STATUSDUE)
+        return "Due";
+      return "Not due";
+
+    };
+}]);
+
+app.filter("statusFilter", ['$filter', function($filter){
+  var statusCode = $filter('status');
+
+  return function(input, code){
+
+    if (code == -1)
+      return input;
+
+    return input.filter(function(d) {
+      return statusCode(d) == code;
+    });
+  }
+
+}]);
+
+  // function applyFilter(filter) {
+  //   $scope.filter = filter = filter || $scope.filter;
+
+  //   var now = Date.now();
+
+  //   $scope.filteredCards = $scope.cards.filter(function(d) {
+  //     if (filter == 'all')
+  //       return true;
+  //     if (filter == 'due')
+  //       return (d.due - d.last) <= 0;
+  //     if (filter == 'pending')
+  //       return (d.due - d.last) > 0;
+  //     return true;
+  //   }).sort(function(a,b) {
+  //     return a.due<b.due?-1:a.due>b.due?1:0;
+  //   });
+
+  //   $scope.goto($scope.index);
+  // }
+
 
 app.factory('cardStorage', ['$http', function ($http) {
   var STORAGE_ID = 'cards-app-cards';
