@@ -25,7 +25,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Algorithm should consider hierarchy
 - [ ] Directives
 - [x] Filter... (All, Due, Due soon)
-- [ ] Progress bar
+- [x] Progress bar
 - [ ] Timer?
 - [x] Ruby/furigana fallback
 - [x] Fix kanji font
@@ -52,4 +52,10 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Rethink filters
 - [ ] Create status service?
 - [ ] Down vote should move card to 'due'
-- [ ] Improve/Optimize clozed markdown plugin.
+- [ ] Improve/Optimize clozed markdown plugin
+- [ ] Optimize stats
+- [ ] Add position indicator to status bar
+- [ ] Move reset/clear buttons to deck controller
+- [ ] Add browser view
+- [ ] Add decks view
+- [ ] Use router

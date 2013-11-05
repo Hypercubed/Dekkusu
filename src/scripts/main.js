@@ -457,3 +457,38 @@ app.factory('cardStorage', ['$http', function ($http) {
   return exports;
 
 }]);
+
+app.controller('NavCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', '$route', function($scope, cardStorage, $http, $filter, $location, $route) {
+
+  $scope.collapse=true
+
+  function save(cards) {
+    cardStorage.saveCards(cards);
+    window.location.href = "/";
+  }
+
+  $scope.reset = function() {
+    $http.get('data/first30.txt')
+      .success(function (data, status, headers, config) {
+        var cards = data.split('\n')
+          .filter(function(t) {
+            return t != '';
+          })
+          .map(function(c) {
+            c = c.replace(/\\n/g, '\n');
+            var now = Date.now();
+            return { text: c, due: now, last: null, interval: 0 }
+          });
+
+        save(cards);
+
+      });
+  }
+
+  $scope.clear = function() {
+    save([]);
+  }
+
+}]);
+
+

@@ -1,9 +1,7 @@
 ---
 component: navbar
 ---
-<!-- Navbar component
-================================================== -->
-<div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapse=true">
+<div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapse=true" ng-controller="NavCtrl">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse" ng-click="collapse=!collapse">
@@ -22,6 +20,15 @@ component: navbar
               </li>
             {{/each}}
         {{/is}}{{/each}}
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li class="dropdown">
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Dropdown <b class="caret"></b></a>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="clear()">Clear</a></li>
+            <li><a href="" ng-click="reset()">Reset</a></li>
+          </ul>
+        </li>
       </ul>
     </div>
   </div>

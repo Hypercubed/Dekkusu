@@ -38,8 +38,6 @@ title: <%= site.title %>
           <button type="button" class="btn btn-primary" ng-show="!isEditing" ng-click="edit()" tooltip="Edit"><i class="glyphicon glyphicon-pencil"></i> </button>
           <button type="button" class="btn btn-primary" ng-cloak ng-show="isEditing" ng-click="edit()" tooltip="Save"><i class="glyphicon glyphicon-save"></i> </button>
           <button type="button" class="btn btn-primary" ng-click="deleteCard()"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
-          <button type="button" class="btn btn-primary" ng-click="reset()" tooltip="Reset cards">R</button>
-          <button type="button" class="btn btn-primary" ng-click="clear()" tooltip="Clear all cards">C</button>
         </div>
       </div>
     </div>
@@ -70,6 +68,19 @@ title: <%= site.title %>
             <span class="sr-only">Card \{{index+1}} / \{{filteredCards.length}}</span>
           </div>
         </div>
+
+        <div class="progress">
+          <div class="progress-bar progress-bar-success" role="progressbar" style="width: \{{((cards | statusFilter:2).length)/(cards.length)*100}}%;" tooltip="\{{(cards | statusFilter:2).length}} done">
+            <span class="sr-only">\{{(cards | statusFilter:2).length}} done</span>
+          </div>
+          <div class="progress-bar progress-bar-danger" role="progressbar" style="width: \{{((cards | statusFilter:1).length)/(cards.length)*100}}%;" tooltip="\{{(cards | statusFilter:1).length}} due">
+            <span class="sr-only">\{{(cards | statusFilter:1).length}} due</span>
+          </div>
+          <div class="progress-bar progress-bar-info" role="progressbar" style="width: \{{((cards | statusFilter:0).length)/(cards.length)*100}}%;" tooltip="\{{(cards | statusFilter:0).length}} new">
+            <span class="sr-only">\{{(cards | statusFilter:0).length}} new</span>
+          </div>
+        </div>
+
       </div>
       <div class="col-md-3 text-center">
         <div ng-cloak>
@@ -94,11 +105,11 @@ title: <%= site.title %>
       </div>
     </div>
     <div class="row">
-      <div class="col-md-4 col-md-offset-4 text-center">
-        <a class="btn btn-xs btn-default" href="#/new" ng-model="filter" btn-radio="0">\{{(cards | statusFilter:0).length}} new</a>
-        <a class="btn btn-xs btn-default" href="#/due" ng-model="filter" btn-radio="1">\{{(cards | statusFilter:1).length}} due</a>
-        <a class="btn btn-xs btn-default" href="#/done" ng-model="filter" btn-radio="2">\{{(cards | statusFilter:2).length}} done</a>
-        <a class="btn btn-xs btn-default" href="#/all" ng-model="filter" btn-radio="-1">\{{cards.length}} total</a>
+      <div class="col-md-12 text-center">
+        <a class="btn btn-xs btn-default badge" href="#/new" ng-model="filter" btn-radio="0">\{{(cards | statusFilter:0).length}} new</a>
+        <a class="btn btn-xs btn-default badge" href="#/due" ng-model="filter" btn-radio="1">\{{(cards | statusFilter:1).length}} due</a>
+        <a class="btn btn-xs btn-default badge" href="#/done" ng-model="filter" btn-radio="2">\{{(cards | statusFilter:2).length}} done</a>
+        <a class="btn btn-xs btn-default badge" href="#/all" ng-model="filter" btn-radio="-1">\{{cards.length}} total</a>
       </div>
     </div>
   </div>
