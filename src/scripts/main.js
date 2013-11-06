@@ -21,6 +21,13 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
   //  }
   //});
 
+  $scope.location = $location;
+
+  $scope.$watch('location.path()', function (path) {
+    console.log('location.path()', path);
+    init();
+  }, true);
+
   function init() {
     $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
     $scope.clozed = true;
@@ -149,7 +156,7 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
 
   $scope.flip = function() {
     $scope.clozed = !$scope.clozed;
-    $scope.isEditing = false;
+    //$scope.isEditing = false;
   }
 
   $scope.edit = function(flag) {
@@ -464,7 +471,8 @@ app.controller('NavCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locatio
 
   function save(cards) {
     cardStorage.saveCards(cards);
-    window.location.href = "/";
+    $location.path('/');
+    $route.reload();
   }
 
   $scope.reset = function() {

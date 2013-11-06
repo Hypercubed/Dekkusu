@@ -1,3 +1,9 @@
+@media (min-width: 1200px) {
+  .container {
+  max-width: 970px;
+  }
+}
+
 body {
   background: #fafafa;
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
@@ -78,6 +84,22 @@ footer {
 
 #cardControl .row {
   margin-top: 5px;
+}
+
+.statsBox {
+  border-radius: 3px;
+  box-shadow: 0 1px 0 rgba(0,0,0,0.1);
+  border: 1px solid #ddd;
+  background-color: #fff;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  margin-bottom: 20px;
+  padding-
+}
+
+.statsBox .progress {
+  border-radius: 3px;
+  margin-bottom: 0px;
 }
 
 

@@ -3,7 +3,7 @@
 _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
 - [ ] Better editor
-- [ ] Global deck editor
+- [ ] Deck broswer
 - [x] Markdown?
 - [x] Furugana
 - [ ] Login
@@ -31,8 +31,8 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [x] Fix kanji font
 - [ ] Move forward/back buttons?
 - [ ] Swipe forward/back?
-- [ ] Move flip buttons (keep fixed position)
-- [ ] Increase button size (esp. on mobile)
+- [x] Move flip buttons (keep fixed position)
+- [x] Increase button size (esp. on mobile)
 - [x] Fix overflow
 - [x] Display add msg when cards missing
 - [ ] Syntax help
@@ -43,7 +43,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Use ids instead of index
 - [ ] Use moment.js?
 - [ ] Copy markup when creating a new card
-- [ ] Improve markdown {A::B}, {::B}, {{::B}}.
+- [x] Improve markdown {A::B}, {::B}, {{::B}}.
 - [ ] Tests for markdown, ruby text
 - [ ] Fix/improve filters: New, due, done, all
 - [ ] Add card position counter.
@@ -53,8 +53,8 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Create status service?
 - [ ] Down vote should move card to 'due'
 - [ ] Improve/Optimize clozed markdown plugin
-- [ ] Optimize stats
-- [ ] Add position indicator to status bar
+- [ ] Optimize stats ($scope.getStats)
+- [x] Add position indicator to status bar
 - [ ] Move reset/clear buttons to deck controller
 - [ ] Add browser view
 - [ ] Add decks view
