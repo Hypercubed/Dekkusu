@@ -3,17 +3,34 @@
 module.exports = function (grunt) {
 
   require('time-grunt')(grunt);
-  require('load-grunt-tasks')(grunt);
+  require('load-grunt-tasks')(grunt, {pattern: ['grunt-*', 'assemble']});
 
   grunt.initConfig({
+
     build: {
       src: 'src',
       out: 'out',
       dist: 'dist'
     },
+
+    shell: {
+      options: {
+        stdout: true
+      },
+      npm: {
+        command: 'npm install'
+      },
+      bower: {
+        command: 'node ./node_modules/bower/bin/bower install'
+      },
+    },
+
     watch: {
       src: {
-        files: ['<%= build.src %>/**/*.{html,htm,js,css}'],
+        files: [
+          '<%= build.src %>/**/*.{html,htm,js,css}',
+          'test/**/*.{html,htm,js,css}'
+        ],
         options: { livereload: true }
       },
       assemble: {
@@ -23,21 +40,23 @@ module.exports = function (grunt) {
           '<%= assemble.options.data %>',
           '<%= assemble.options.partials %>'
         ],
-        tasks: ['clean:out','assemble:pages'],
+        tasks: ['assemble'],
         options: { livereload: true }
       }
     },
+
     connect: {
-      server: {
+      devserver: {
         options: {
           port: 9000,
           hostname: 'localhost',
-          base: ['<%= build.src %>','<%= build.out %>'],
+          base: ['<%= build.src %>','<%= build.out %>','test'],
           livereload: true,
           open: true
         }
       }
     },
+
     assemble: {
       options: {
         flatten: false,
@@ -56,10 +75,12 @@ module.exports = function (grunt) {
         dest: '<%= build.out %>/'
       }
     },
+
     clean: {
       options: { force: false },
       out: ['<%= build.out %>/*']
     },
+
     copy: {
       src: {
         expand: true,
@@ -81,12 +102,14 @@ module.exports = function (grunt) {
         dest: '<%= build.out %>/fonts/'
       }
     },
+
     useminPrepare: {
       options: {
         dest: '<%= build.out %>'
       },
       html: '<%= build.out %>/index.html'
     },
+
     usemin: {
       options: {
         dirs: ['<%= build.out %>']
@@ -94,6 +117,7 @@ module.exports = function (grunt) {
       html: ['<%= build.out %>/**/*.html'],
       css: ['<%= build.out %>/styles/**/*.css']
     },
+
     htmlmin: {
       dist: {
         options: {
@@ -115,16 +139,17 @@ module.exports = function (grunt) {
         }]
       }
     },
-    imagemin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= build.src %>/images',
-          src: '**/*.{png,jpg,jpeg,gif,webp}',
-          dest: '<%= build.out %>/images'
-        }]
-      }
-    },
+
+    //imagemin: {
+    //  dist: {
+    //    files: [{
+    //      expand: true,
+    //      cwd: '<%= build.src %>/images',
+    //      src: '**/*.{png,jpg,jpeg,gif,webp}',
+    //      dest: '<%= build.out %>/images'
+    //    }]
+    //  }
+    //},
     //svgmin: {
     //  dist: {
     //    files: [{
@@ -135,6 +160,7 @@ module.exports = function (grunt) {
     //    }]
     //  }
     //},
+
     jshint: {
       options: {jshintrc: '.jshintrc'},
       files: [
@@ -142,6 +168,7 @@ module.exports = function (grunt) {
         'src/scripts/*.js'
       ]
     },
+
     rev: {
       files: {
         src: [
@@ -150,6 +177,7 @@ module.exports = function (grunt) {
         ]
       }
     },
+
     //less: {
     //  styles: {
     //    files: {
@@ -157,11 +185,13 @@ module.exports = function (grunt) {
     //    }
     //  }
     //},
+
     //'bower-install': {
     //  target: {
     //    html: 'out/index.html' // point to your HTML file.
     //  }
     //},
+
     'gh-pages': {
       options: {
         base: 'out',
@@ -169,34 +199,42 @@ module.exports = function (grunt) {
       },
       src: ['**/*']
     },
-    rsync: {
-      options: {
-        args: ["--verbose","--delete"],
-        recursive: true
-      },
-      dist: {
-          options: {
-            src: "<%= build.out %>/",
-            dest: "<%= build.dist %>"
-          }
+
+    mocha: {
+      all: {
+        options: {
+          run: true,
+          urls: ['http://<%= connect.devserver.options.hostname %>:<%= connect.devserver.options.port %>/test/index.html'],
+          globals: ['$']
+        }
       }
     }
+    //rsync: {
+   //   options: {
+    //    args: ["--verbose","--delete"],
+    //    recursive: true
+    //  },
+    //  dist: {
+    //      options: {
+    //        src: "<%= build.out %>/",
+    //        dest: "<%= build.dist %>"
+    //      }
+    //  }
+    //}
   });
 
-  grunt.loadNpmTasks('assemble');
-  grunt.loadNpmTasks('grunt-rsync');
+  //grunt.loadNpmTasks('assemble');
+  //grunt.loadNpmTasks('grunt-shell');
+  //grunt.loadNpmTasks('grunt-rsync');
   //grunt.loadNpmTasks('assemble-less');
 
-  grunt.registerTask('server', ['connect','watch']);
-  grunt.registerTask('run', ['clean','assemble','server']);
-  grunt.registerTask('run:build', ['build','server']);
-  //grunt.registerTask('build', ['clean','assemble','copy']);
+  grunt.registerTask('install', ['shell:npm','shell:bower']);
 
   grunt.registerTask('build', [
     'clean',
     'assemble',
     'copy',
-    'imagemin',
+    //'imagemin',
     'useminPrepare',
     'concat',
     'cssmin',
@@ -206,7 +244,18 @@ module.exports = function (grunt) {
     'htmlmin'
   ]);
 
-  grunt.registerTask('deploy:rsync', ['build','rsync']);
+  grunt.registerTask('test', [
+      'clean',
+      'assemble',
+      'connect:devserver',
+      'mocha'
+  ]);
+
+  grunt.registerTask('server', ['connect:devserver','watch']);
+  grunt.registerTask('run', ['clean','assemble','server']);
+  grunt.registerTask('run:build', ['build','server']);
+
+  //grunt.registerTask('deploy:rsync', ['build','rsync']);
   grunt.registerTask('deploy:gh-pages', ['build','gh-pages']);
 
   grunt.registerTask('deploy', ['deploy:gh-pages']);

@@ -222,22 +222,26 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
   }
 
   $scope.reset = function() {
+    console.log('reset');
+
     $http.get('data/first30.txt')
       .success(function (data, status, headers, config) {
+        console.log('data',data);
         $scope.cards = data.split('\n')
-        .filter(function(t) {
-          return t != '';
-        })
-        .map(function(c) {
-          c = c.replace(/\\n/g, '\n');
-          var now = Date.now();
-          return { text: c, due: now, last: null, interval: 0 }
-        });
+          .filter(function(t) {
+            return t != '';
+          })
+          .map(function(c) {
+            c = c.replace(/\\n/g, '\n');
+            var now = Date.now();
+            return { text: c, due: now, last: null, interval: 0 }
+          });
 
         save();
         getCards();
 
       });
+
   }
 
   $scope.clear = function() {
@@ -307,7 +311,12 @@ app.filter('formatCard', ['$sanitize', function ($sanitize) {
     ];
   }
 
-  var showdown = new Showdown.converter({ extensions: [ extra, furigana, cloze ] });
+  var showdown = new Showdown.converter({ extensions: [
+      extra,
+      furigana,
+      cloze
+    ]
+  });
 
   return function getFormattedCard(input) {
     //var md = cloze(input);
@@ -380,7 +389,7 @@ app.filter('status', [function () {
 
       if (card.last == null)
         return STATUSNEW;
-      if (card.due < now)
+      if (card.due <= now)
         return STATUSDUE;
       return STATUSDONE;
 
@@ -465,14 +474,14 @@ app.factory('cardStorage', ['$http', function ($http) {
 
 }]);
 
-app.controller('NavCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', '$route', function($scope, cardStorage, $http, $filter, $location, $route) {
+app.controller('NavCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', function($scope, cardStorage, $http, $filter, $location) {
 
   $scope.collapse=true
 
   function save(cards) {
     cardStorage.saveCards(cards);
     $location.path('/');
-    $route.reload();
+    //$route.reload();
   }
 
   $scope.reset = function() {

@@ -43,7 +43,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Use ids instead of index
 - [ ] Use moment.js?
 - [ ] Copy markup when creating a new card
-- [x] Improve markdown {A::B}, {::B}, {{::B}}.
+- [x] Improve markdown \{A::B}, \{::B}, \{{::B}}.
 - [ ] Tests for markdown, ruby text
 - [ ] Fix/improve filters: New, due, done, all
 - [ ] Add card position counter.
