@@ -204,7 +204,7 @@ module.exports = function (grunt) {
       all: {
         options: {
           run: true,
-          urls: ['http://<%= connect.devserver.options.hostname %>:<%= connect.devserver.options.port %>/test/index.html'],
+          urls: ['http://<%= connect.devserver.options.hostname %>:<%= connect.devserver.options.port %>/test.html'],
           globals: ['$']
         }
       }
