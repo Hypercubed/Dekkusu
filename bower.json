@@ -11,5 +11,8 @@
     "showdown": "~0.3.1",
     "angular-sanitize": "~1.0.8"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "angular": "1.2.0-rc.2"
+  }
 }

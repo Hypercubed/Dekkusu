@@ -6,6 +6,82 @@ var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 // Declare app level module which depends on filters, and services
 var app = angular.module('mainApp', ['ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize']);
 
+angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$location', '$http', function ($scope, cardStorage, $location, $http) {
+  var decks = $scope.decks = cardStorage.getDecks();
+  $scope.deck = decks[0];
+  $scope.isEditing = false;
+
+  $scope.addDeck = function() {
+    var name = 'Deck', i = 1;
+
+    while (decks.some(function(d) { return d.name == name; })) {
+      i++;
+      name = 'Deck '+i;
+      console.log(name);
+    }
+
+    var index = decks.push({ name: name });
+    $scope.deck = decks[index-1];
+  }
+
+  $scope.removeDeck = function() {
+    var index = decks.indexOf($scope.deck);
+
+    if (index > -1) {
+      decks.splice(index, 1);
+      $scope.deck = decks[(index < decks.length) ? index : decks.length-1];
+    };
+
+  }
+
+  $scope.editDeck = function(b) {
+    $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
+  }
+
+  $scope.gotoDeck = function(index) {
+
+    if (typeof index == 'object')
+      index = decks.indexOf($scope.deck);
+
+    if (index > -1)
+      $scope.deck = decks[index];
+
+  }
+
+  function saveCards(cards) {
+    cardStorage.saveCards(cards);
+    $location.path('/');
+    //$route.reload();
+  }
+
+  $scope.resetCards = function() {
+    $http.get('data/first30.txt')
+      .success(function (data, status, headers, config) {
+        var cards = data.split('\n')
+          .filter(function(t) {
+            return t != '';
+          })
+          .map(function(c) {
+            c = c.replace(/\\n/g, '\n');
+            var now = Date.now();
+            return { text: c, due: now, last: null, interval: 0 }
+          });
+
+        saveCards(cards);
+
+      });
+  }
+
+  $scope.clearCards = function() {
+    saveCards([]);
+  }
+
+  $scope.$watch('deck.name', function() {
+    cardStorage.saveDecks(decks);
+  });
+
+}]);
+
 app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', 'statusFilterFilter', function($scope, cardStorage, $http, $filter, $location, statusFilter) {
 
   console.log($location.path());
@@ -446,19 +522,30 @@ app.filter("statusFilter", ['$filter', function($filter){
 
 
 app.factory('cardStorage', ['$http', function ($http) {
-  var STORAGE_ID = 'cards-app-cards';
+  var STORAGE_ID = 'cards-app';
 
   var exports = {};
 
+  exports.getDecks = function() {
+    var json = localStorage.getItem(STORAGE_ID+'-decks');
+
+    if (json) {
+      return JSON.parse(json);
+    } else {
+      return [ { name: 'Default'} ];
+    }
+
+  }
+
+  exports.saveDecks = function(decks) {
+    localStorage.setItem(STORAGE_ID+'-decks', JSON.stringify(decks));
+  }
+
   exports.getCards = function() {
-    var json = localStorage.getItem(STORAGE_ID);
+    var json = localStorage.getItem(STORAGE_ID+'-cards');
 
     if (json) {
       var cards = JSON.parse(json);
-     // cards.forEach(function(c) {
-      //  var milli = Date.parse(c.due);
-      //  c.due = new Date(milli);
-      //});
       return cards;
     } else {
       return [];
@@ -467,44 +554,16 @@ app.factory('cardStorage', ['$http', function ($http) {
   }
 
   exports.saveCards = function (cards) {
-    localStorage.setItem(STORAGE_ID, JSON.stringify(cards));
+    localStorage.setItem(STORAGE_ID+'-cards', JSON.stringify(cards));
   }
 
   return exports;
 
 }]);
 
-app.controller('NavCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', function($scope, cardStorage, $http, $filter, $location) {
+app.controller('NavCtrl', ['$scope', function($scope) {
 
   $scope.collapse=true
-
-  function save(cards) {
-    cardStorage.saveCards(cards);
-    $location.path('/');
-    //$route.reload();
-  }
-
-  $scope.reset = function() {
-    $http.get('data/first30.txt')
-      .success(function (data, status, headers, config) {
-        var cards = data.split('\n')
-          .filter(function(t) {
-            return t != '';
-          })
-          .map(function(c) {
-            c = c.replace(/\\n/g, '\n');
-            var now = Date.now();
-            return { text: c, due: now, last: null, interval: 0 }
-          });
-
-        save(cards);
-
-      });
-  }
-
-  $scope.clear = function() {
-    save([]);
-  }
 
 }]);
 
