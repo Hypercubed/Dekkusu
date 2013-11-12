@@ -3,6 +3,12 @@ Dekkusu - デックス
 
 Hierarchical study decks (flash cards)
 
+# Goals
+
+1. Simple plain text card syntax.
+2. Spaced repetition based on deck Hierarchy.
+3. No backend.
+
 # Card syntax
 
 Unlike other flash card systems, here there is front and back or question and answer side, per se.  Instead cards are said to in a clozed state or open state.  The clozed state can be considered the front (or question) side of the card.  While the open state can be considered the back (or answer).  The syntax of the card determines what is shown or not show in each state.  The syntax for the card is markdown (easy-to-read, easy-to-write plain text format) with some additional formatting syntax:
