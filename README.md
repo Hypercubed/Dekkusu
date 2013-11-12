@@ -23,7 +23,7 @@ Text enclosed in double curly brackets is shown clozed in square brackets depend
 
 Source                                            | Clozed Display                       | Open Display                             
 --------------------------------------------------|--------------------------------------|------------------------------------------
-The capital of California {Sacramento}            | The capital of California Sacramento | The capital of California                
+The capital of California {Sacramento}            | The capital of California            | The capital of California Sacramento               
 The capital of California is {{Sacramento}}       | The capital of California is [...]   | The capital of California is [Sacramento]
 The capital of California is {{Sacramento::city}} | The capital of California is [city]  | The capital of California is [Sacramento]
 
