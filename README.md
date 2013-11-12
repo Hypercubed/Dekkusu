@@ -21,15 +21,19 @@ Text enclosed in double curly brackets is shown clozed in square brackets depend
 
 ### Examples
 
-Source                                            | Clozed Display                       | Open Display                             
---------------------------------------------------|--------------------------------------|------------------------------------------
-The capital of California {Sacramento}            | The capital of California            | The capital of California Sacramento               
-The capital of California is {{Sacramento}}       | The capital of California is [...]   | The capital of California is [Sacramento]
-The capital of California is {{Sacramento::city}} | The capital of California is [city]  | The capital of California is [Sacramento]
+Source                                  | Clozed Display                  | Open Display                             
+----------------------------------------|---------------------------------|---------------------------------------
+The capital of Japan {Tokyo}            | The capital of Japan            | The capital of Japan Tokyo               
+The capital of Japan is {{Tokyo}}       | The capital of Japan is [...]   | The capital of Japan is [Tokyo]
+The capital of Japan is {{Tokyo::東京}} | The capital of Japan is [東京]  | The capital of Japan is [Tokyo]
 
 ## Ruby text/Furigana
 
-A word (string of text preceded by white space or the beginning of the line) followed by square brackets is interpreted as ruby characters.  So `word[text]` becomes XXX.  Ruby text (like other text) can be switched using curly bracket notation above.
+A word (string of text preceded by white space or the beginning of the line) followed by square brackets is interpreted as ruby characters.  So `東京[とうきょう]` becomes <ruby>東京<rt>とうきょう</rt></ruby>.  Ruby text (like other text) can be switched using curly clozed bracket notation above.  For example:
+
+Source                                  | Clozed Display                  | Open Display                             
+----------------------------------------|---------------------------------|---------------------------------------
+The capital of Japan is {{Tokyo::東京[とうきょう]}} | The capital of Japan is [<ruby>東京<rt>とうきょう</rt></ruby>]  | The capital of Japan is [Tokyo]
 
 # License
 
