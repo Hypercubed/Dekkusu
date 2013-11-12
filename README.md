@@ -6,7 +6,7 @@ Hierarchical study decks (flash cards)
 # Goals
 
 1. Simple plain text card syntax.
-2. Spaced repetition based on deck Hierarchy.
+2. Spaced repetition based on deck hierarchy.
 3. No backend.
 
 # Card syntax
@@ -17,7 +17,7 @@ Unlike other flash card systems, here there is front and back or question and an
 
 Text enclosed in mustache brackets is hidden or shown depending on the card state.  `{A}` is hidden in the clozed state (front or question side) but becomes `A` in the open state (back or answer side).  Double colon can be used to add open (front side) text.  `{A::Q}` is shown as `Q` in the closed state and `A` in the open state.  Both sides of the `::` are optional.  In other-words `{::Q}` is only shown on the "front" (clozed state).
 
-Text enclosed in double curly brackets is shown clozed in square brackets depending on the card state.  `{{A}}` becomes `[...]` in the clozed state and `[A]` in the open state.  An alternate clozed text can be added after double colons `::`.  `\{{A::Q}}` becomes `[A]` in the open state and `[Q]` in the clozed state.
+Text enclosed in double curly brackets is shown clozed in square brackets depending on the card state.  `{{A}}` becomes `[...]` in the clozed state and `[A]` in the open state.  An alternate clozed text can be added after double colons `::`.  `{{A::Q}}` becomes `[A]` in the open state and `[Q]` in the clozed state.
 
 ### Examples
 
