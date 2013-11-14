@@ -102,6 +102,22 @@ footer {
   margin-bottom: 0px;
 }
 
+select.deck {
+  border: none;
+  background-color: transparent;
+}
 
+* > .pHover {
+  opacity: 0;
+  display: none;
+  transition: opacity .25s ease-in;
+   -moz-transition: opacity .25s ease-in;
+   -webkit-transition: opacity .25s ease-in;
+}
+
+*:hover > .pHover {
+  opacity: 1;
+  display: block;
+}
 
 
