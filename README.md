@@ -33,7 +33,7 @@ A word (string of text preceded by white space or the beginning of the line) fol
 
 Source                                  | Clozed Display                  | Open Display                             
 ----------------------------------------|---------------------------------|---------------------------------------
-The capital of Japan is {{Tokyo::東京[とうきょう]}} | The capital of Japan is [<ruby>東京<rt>とうきょう</rt></ruby>]  | The capital of Japan is [Tokyo]
+The capital of Japan is \{{Tokyo::東京[とうきょう]}} | The capital of Japan is [<ruby>東京<rt>とうきょう</rt></ruby>]  | The capital of Japan is [Tokyo]
 
 # License
 
