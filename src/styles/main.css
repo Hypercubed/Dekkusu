@@ -86,7 +86,7 @@ footer {
   margin-top: 5px;
 }
 
-.statsBox {
+.statsBox, .deckCard {
   border-radius: 3px;
   box-shadow: 0 1px 0 rgba(0,0,0,0.1);
   border: 1px solid #ddd;
@@ -94,7 +94,25 @@ footer {
   -moz-box-sizing: border-box;
   box-sizing: border-box;
   margin-bottom: 20px;
-  padding-
+  text-align: center;
+}
+
+.deckCard > h2 {
+  height: 50px;
+}
+
+.deckCard {
+  height: 150px;
+}
+
+.deckCard .progress {
+  margin: 5px;
+}
+
+.deckBox .btn-toolbar {
+  position: absolute;
+  right: 20px;
+  top: 10px;
 }
 
 .statsBox .progress {
