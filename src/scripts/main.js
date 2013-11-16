@@ -14,14 +14,10 @@ angular.module('mainApp').config(['$routeProvider', function($routeProvider) {
 
   $routeProvider.
     when('/', {
-      templateUrl: 'partials/deckView.html',
-      controller: 'DeckCtrl'
+      templateUrl: 'partials/deckListView.html',
+      controller: 'DeckListCtrl'
     }).
     when('/:deckId', {
-      templateUrl: 'partials/deckView.html',
-      controller: 'DeckCtrl'
-    }).
-    when('/:deckId?f=:filter', {
       templateUrl: 'partials/deckView.html',
       controller: 'DeckCtrl'
     }).
@@ -31,17 +27,18 @@ angular.module('mainApp').config(['$routeProvider', function($routeProvider) {
 
 }]);
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope',
-
+angular.module('mainApp').controller('DeckListCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope',
   function ($scope, cardStorage, $location, $http, $routeParams, $rootScope) {
-  //console.log($routeParams);
-
-  // TODO: find by id
-  $scope.deckId = $routeParams.deckId || 0;
 
   var decks = $scope.decks = cardStorage.getDecks();
-  $scope.deck = decks[$scope.deckId];
-  $scope.isEditing = false;
+
+  $scope.getCards = cardStorage.getCards;
+  $scope.listView = false;
+
+  function init() {
+    decks = $scope.decks = cardStorage.getDecks();
+    //$scope.deckCards = decks.map(function(d,i) { return cardStorage.getCards(i); })
+  }
 
   $scope.addDeck = function() {
     var name = 'Deck', i = 1;
@@ -52,22 +49,83 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
       //console.log(name);
     }
 
-    var index = decks.push({ name: name });
+    var index = decks.push({ name: name, cards: [] });
     cardStorage.saveDecks(decks);
-    $scope.gotoDeck(index-1);
   }
 
-  $scope.removeDeck = function() {
-    var index = decks.indexOf($scope.deck);
+  $scope.removeDeck = function(index) {
 
     if (index > -1) {
+      $scope.clearCards(index);
       decks.splice(index, 1);
       cardStorage.saveDecks(decks);
-      $scope.clearCards();
-      $scope.gotoDeck(index-1);
+      //$scope.gotoDeck(index-1);
     };
 
   }
+
+  //$scope.editDeck = function(b) {
+  //  $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
+  //}
+
+  //$scope.gotoDeck = function(index) {
+  //  $location.path('/'+index);
+  //}
+
+  function saveCards(index, cards) {
+    cardStorage.saveCards(index, cards);
+    decks = $scope.decks = cardStorage.getDecks();
+    //$rootScope.$broadcast('handleBroadcast');
+    //$location.path('/'+$scope.deckId);
+    //console.log($location);
+  }
+
+  $scope.resetCards = function(index) {
+    $http.get('data/first30.txt')
+      .success(function (data, status, headers, config) {
+        var cards = data.split('\n')
+          .filter(function(t) {
+            return t != '';
+          })
+          .map(function(c) {
+            c = c.replace(/\\n/g, '\n');
+            var now = Date.now();
+            return { text: c, due: now, last: null, interval: 0 }
+          });
+
+        decks[index].cards = cards;
+        cardStorage.saveDecks(decks);
+
+      });
+  }
+
+  $scope.clearCards = function(index) {
+    decks[index].cards = [];
+    cardStorage.saveDecks(decks);
+  }
+
+  //$scope.$watch('deck.name', function() {
+  //  cardStorage.saveDecks(decks);
+  //});
+
+}]);
+
+angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter',
+
+  function ($scope, cardStorage, $location, $http, $routeParams, $rootScope, statusFilter) {
+  //console.log($routeParams);
+
+  // TODO: find by id
+  $scope.deckId = $routeParams.deckId || 0;
+
+  function init() {
+    Sscope.decks = cardStorage.getDecks();
+    $scope.cards = $scope.decks[$scope.deckId];
+  }
+
+  var decks = $scope.decks = cardStorage.getDecks();
+  $scope.deck = decks[$scope.deckId];
+  $scope.isEditing = false;
 
   $scope.editDeck = function(b) {
     $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
@@ -79,7 +137,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
 
   function saveCards(cards) {
     cardStorage.saveCards($scope.deckId, cards);
-    $rootScope.$broadcast('handleBroadcast');
+    //$rootScope.$broadcast('handleBroadcast');
     //$location.path('/'+$scope.deckId);
     //console.log($location);
   }
@@ -97,12 +155,14 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
             return { text: c, due: now, last: null, interval: 0 }
           });
 
+        $scope.cards = cards;
         saveCards(cards);
 
       });
   }
 
   $scope.clearCards = function() {
+    $scope.cards = [];
     saveCards([]);
   }
 
@@ -110,10 +170,10 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
     cardStorage.saveDecks(decks);
   });
 
-}]);
+//}]);
 
-app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', 'statusFilterFilter', '$routeParams',
-  function($scope, cardStorage, $http, $filter, $location, statusFilter, $routeParams) {
+//app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', 'statusFilterFilter', '$routeParams',
+//  function($scope, cardStorage, $http, $filter, $location, statusFilter, $routeParams) {
   // TODO: move most of this to a directive this stuff to a directive
 
   //console.log('$routeParams',$routeParams);
@@ -147,8 +207,6 @@ app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$locati
     console.log('handleBroadcast');
     init();
   });
-
-  $routeParams.deckId
 
   function init() {
     $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
@@ -585,7 +643,7 @@ app.factory('cardStorage', ['$http', function ($http) {
     if (json) {
       return JSON.parse(json);
     } else {
-      return [ { name: 'Default'} ];
+      return [ { name: 'Default', cards: [] } ];
     }
   }
 
@@ -594,22 +652,30 @@ app.factory('cardStorage', ['$http', function ($http) {
   }
 
   exports.getCards = function(id) {
-    var id = id || '';
+    var id = id || 0;
 
-    var json = localStorage.getItem(STORAGE_ID+'-cards'+id);
+    var decks = exports.getDecks();
+    return decks[id].cards || [];
 
-    if (json) {
-      var cards = JSON.parse(json);
-      return cards;
-    } else {
-      return [];
-    }
+    //var json = localStorage.getItem(STORAGE_ID+'-cards'+id);
+
+   // if (json) {
+    //  var cards = JSON.parse(json);
+    //  return cards;
+    //} else {
+    //  return [];
+    //}
 
   }
 
   exports.saveCards = function(id, cards) {
-    var id = id || '';
-    localStorage.setItem(STORAGE_ID+'-cards'+id, JSON.stringify(cards));
+    var id = id || 0;
+
+    var decks = exports.getDecks();
+    decks.cards = cards;
+    exports.saveDecks(decks);
+
+    //localStorage.setItem(STORAGE_ID+'-cards'+id, JSON.stringify(cards));
   }
 
   return exports;

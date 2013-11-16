@@ -1,0 +1,67 @@
+
+<div class="jumbotron">
+  <div class="container">
+    <div class="col-md-11 col-md-offset-1">
+      <h2 ng-cloak>
+        <a href="/">Home</a>
+
+        <div class="btn-toolbar pull-right" >
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary" ng-click="addDeck()" tooltip="New"><i class="glyphicon glyphicon-plus-sign"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="listView = !listView" ><i class="glyphicon" ng-class="{true: 'glyphicon-th-list', false: 'glyphicon-th'}[listView]"></i> </button>
+          </div>
+        </div>
+
+      </h2>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="deck in decks track by $index">
+    <div class="btn-toolbar pHover pull-right">
+      <div class="btn-group dropdown">
+        <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-collapse-down"></i> </button>
+        <ul class="dropdown-menu">
+          <li><a href="" ng-click="clearCards($index)">Clear</a></li>
+          <li><a href="" ng-click="resetCards($index)">Reset</a></li>
+          <li><a href="" ng-click="removeDeck($index)">Delete</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="deckCard">
+      <h2><a href="#/{{$index}}">{{deck.name}}</a></h2>
+      <div class="row" ng-cloak>
+        <div class="col-md-12 text-center">
+          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>
+          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="1"><b>{{(deck.cards | statusFilter:1).length}}</b> due</a>
+          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="0"><b>{{(deck.cards | statusFilter:0).length}}</b> new</a>
+          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="-1"><b>{{deck.cards.length}}</b> total</a>
+        </div>
+      </div>
+      <div class="progress">
+        <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{((deck.cards | statusFilter:2).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:2).length}} done">
+          <span class="sr-only">{{(deck.cards | statusFilter:2).length}} done</span>
+        </div>
+        <div class="progress-bar progress-bar-danger" role="progressbar" style="width: {{((deck.cards | statusFilter:1).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:1).length}} due">
+          <span class="sr-only">{{(deck.cards | statusFilter:1).length}} due</span>
+        </div>
+        <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{((deck.cards | statusFilter:0).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:0).length}} new">
+          <span class="sr-only">{{(deck.cards | statusFilter:0).length}} new</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]">
+    <div class="deckCard">
+      <a class="btn btn-link" ng-click="addDeck()" tooltip="New"><h2>Add a deck
+      <br /><i class="glyphicon glyphicon-plus-sign"></i> </h2></a>
+    </div>
+  </div>
+
+
+
+
+
+</div>
