@@ -67,50 +67,60 @@
       </div>
     </div>
 
-    <div id="edit" ng-show="isEditing && filteredCards.length > 0" ng-cloak>
-      <div class="btn-toolbar pull-right" style="margin-bottom: 5px;">
-        <div class="btn-group" ng-show="isEditing" ng-cloak>
-          <button type="button" class="btn btn-primary" ng-click="wrap('*','*')" tooltip="Italic"><i class="glyphicon glyphicon-italic"></i></button>
-          <button type="button" class="btn btn-primary" ng-click="wrap('**','**')" tooltip="Bold"><i class="glyphicon glyphicon-bold"></i></button>
-        </div>
-        <div class="btn-group" ng-show="isEditing" ng-cloak>
-          <button type="button" class="btn btn-primary" ng-click="wrap('\{','\}')" tooltip="Hide this seletion">{ }</button>
-          <button type="button" class="btn btn-primary" ng-click="wrap('\{\{','\}\}')" tooltip="Cloze this selection">[..]</button>
-        </div>
-        <div class="btn-group" ng-show="isEditing" ng-cloak>
-          <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card"><i class="glyphicon glyphicon-plus-sign"></i> </button>
-          <button type="button" class="btn btn-primary" ng-show="!isEditing" ng-click="edit()" tooltip="Edit"><i class="glyphicon glyphicon-pencil"></i> </button>
-          <button type="button" class="btn btn-primary" ng-cloak ng-show="isEditing" ng-click="edit()" tooltip="Save"><i class="glyphicon glyphicon-save"></i> </button>
-          <button type="button" class="btn btn-primary" ng-click="deleteCard()"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
-        </div>
-      </div>
-      <textarea class="form-control cardEditor animate-show" rows="5" placeholder="Card contents" ng-model="card.text" card-blur="edit(false)"></textarea>
-    </div>
+    <div ng-controller="CardCtrl">
 
-    <div id="review" ng-hide="!filteredCards.length" tabindex="0" ui-keyup="{'left right space enter up down':'keypressCallback($event)'}">
-      <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html="card.text | formatCard"></div>
+      <div id="cardControl" class="statsBox" tabindex="0" ui-keyup="{'left right space enter':'keypressCallback($event)'}">
+
+        <div id="edit" ng-show="isEditing && filteredCards.length > 0" ng-cloak>
+          <div class="btn-toolbar pull-right" style="margin-bottom: 5px;">
+            <div class="btn-group" ng-show="isEditing" ng-cloak>
+              <button type="button" class="btn btn-primary" ng-click="wrap('*','*')" tooltip="Italic"><i class="glyphicon glyphicon-italic"></i></button>
+              <button type="button" class="btn btn-primary" ng-click="wrap('**','**')" tooltip="Bold"><i class="glyphicon glyphicon-bold"></i></button>
+            </div>
+            <div class="btn-group" ng-show="isEditing" ng-cloak>
+              <button type="button" class="btn btn-primary" ng-click="wrap('\{','\}')" tooltip="Hide this seletion">{ }</button>
+              <button type="button" class="btn btn-primary" ng-click="wrap('\{\{','\}\}')" tooltip="Cloze this selection">[..]</button>
+            </div>
+            <div class="btn-group" ng-show="isEditing" ng-cloak>
+              <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card"><i class="glyphicon glyphicon-plus-sign"></i> </button>
+              <button type="button" class="btn btn-primary" ng-show="!isEditing" ng-click="edit()" tooltip="Edit"><i class="glyphicon glyphicon-pencil"></i> </button>
+              <button type="button" class="btn btn-primary" ng-cloak ng-show="isEditing" ng-click="edit()" tooltip="Save"><i class="glyphicon glyphicon-save"></i> </button>
+              <button type="button" class="btn btn-primary" ng-click="deleteCard()"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
+            </div>
+          </div>
+          <textarea class="form-control cardEditor animate-show" rows="5" placeholder="Card contents" ng-model="card.text" card-blur="edit(false)"></textarea>
+        </div>
+
+        <div id="review" ng-hide="!filteredCards.length" tabindex="0" ui-keyup="{'left right space enter up down':'keypressCallback($event)'}">
+          <div class="card editable" ng-class="{clozed: clozed}" ng-dblclick="edit(card)" ng-bind-html="card.text | formatCard"></div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-3 text-center">
+            <div ng-cloak>
+              <x-small>
+              {{card | status | statusText}}
+              <br />Due {{card.due | dateDays }}
+              </x-small>
+            </div>
+          </div>
+
+          <div class="col-md-6 text-center">
+            <div class="btn-group" >
+              <button type="button" class="btn btn-lg btn-default" ng-click="up()" tooltip="Correct"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
+              <button type="button" class="btn btn-lg btn-default" ng-click="flip()" tooltip="Flip"><i class="glyphicon glyphicon-repeat"></i> </button>
+              <button type="button" class="btn btn-lg btn-default" ng-click="down()" tooltip="Incorrect"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
+            </div>
+          </div>
+
+      </div>
+      <div class="row"></div>
+
     </div>
 
     <div id="cardControl" class="statsBox" tabindex="0" ui-keyup="{'left right space enter':'keypressCallback($event)'}">
+
       <div class="row">
-
-        <div class="col-md-3 text-center">
-          <div ng-cloak>
-            <x-small>
-            {{card | status | statusText}}
-            <br />Due {{card.due | dateDays }}
-            </x-small>
-          </div>
-        </div>
-
-        <div class="col-md-6 text-center">
-          <div class="btn-group" >
-            <button type="button" class="btn btn-lg btn-default" ng-click="up()" tooltip="Correct"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
-            <button type="button" class="btn btn-lg btn-default" ng-click="flip()" tooltip="Flip"><i class="glyphicon glyphicon-repeat"></i> </button>
-            <button type="button" class="btn btn-lg btn-default" ng-click="down()" tooltip="Incorrect"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
-          </div>
-        </div>
-
         <div class="col-md-3 text-center">
           <div class="btn-group">
             <a class="btn btn-lg btn-default" ng-click="prev()"  tooltip="Next"><span class="glyphicon glyphicon-chevron-left"></span></a>

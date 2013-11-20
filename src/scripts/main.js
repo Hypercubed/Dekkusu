@@ -32,13 +32,7 @@ angular.module('mainApp').controller('DeckListCtrl', ['$scope', 'cardStorage', '
 
   var decks = $scope.decks = cardStorage.getDecks();
 
-  $scope.getCards = cardStorage.getCards;
   $scope.listView = false;
-
-  function init() {
-    decks = $scope.decks = cardStorage.getDecks();
-    //$scope.deckCards = decks.map(function(d,i) { return cardStorage.getCards(i); })
-  }
 
   $scope.addDeck = function() {
     var name = 'Deck', i = 1;
@@ -46,100 +40,30 @@ angular.module('mainApp').controller('DeckListCtrl', ['$scope', 'cardStorage', '
     while (decks.some(function(d) { return d.name == name; })) {
       i++;
       name = 'Deck '+i;
-      //console.log(name);
     }
 
-    var index = decks.push({ name: name, cards: [] });
-    cardStorage.saveDecks(decks);
+    decks.push({ name: name, cards: [] });
   }
 
-  $scope.removeDeck = function(index) {
+  $scope.removeDeck = function(index) {  // Move?
 
     if (index > -1) {
-      $scope.clearCards(index);
-      decks.splice(index, 1);
-      cardStorage.saveDecks(decks);
-      //$scope.gotoDeck(index-1);
+      $scope.decks.splice(index, 1);
     };
 
   }
 
-  //$scope.editDeck = function(b) {
-  //  $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
-  //}
-
-  //$scope.gotoDeck = function(index) {
-  //  $location.path('/'+index);
-  //}
-
-  function saveCards(index, cards) {
-    cardStorage.saveCards(index, cards);
-    decks = $scope.decks = cardStorage.getDecks();
-    //$rootScope.$broadcast('handleBroadcast');
-    //$location.path('/'+$scope.deckId);
-    //console.log($location);
-  }
-
-  $scope.resetCards = function(index) {
-    $http.get('data/first30.txt')
-      .success(function (data, status, headers, config) {
-        var cards = data.split('\n')
-          .filter(function(t) {
-            return t != '';
-          })
-          .map(function(c) {
-            c = c.replace(/\\n/g, '\n');
-            var now = Date.now();
-            return { text: c, due: now, last: null, interval: 0 }
-          });
-
-        decks[index].cards = cards;
-        cardStorage.saveDecks(decks);
-
-      });
-  }
-
-  $scope.clearCards = function(index) {
-    decks[index].cards = [];
+  $scope.$watch('decks', function() {
+    console.log('$scope.$watch decks');
     cardStorage.saveDecks(decks);
-  }
-
-  //$scope.$watch('deck.name', function() {
-  //  cardStorage.saveDecks(decks);
-  //});
+  });
 
 }]);
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter',
+angular.module('mainApp').controller('DeckCtrl2', ['$scope', '$http', 'cardStorage', function($scope, $http, cardStorage) {
 
-  function ($scope, cardStorage, $location, $http, $routeParams, $rootScope, statusFilter) {
-  //console.log($routeParams);
-
-  // TODO: find by id
-  $scope.deckId = $routeParams.deckId || 0;
-
-  function init() {
-    Sscope.decks = cardStorage.getDecks();
-    $scope.cards = $scope.decks[$scope.deckId];
-  }
-
-  var decks = $scope.decks = cardStorage.getDecks();
-  $scope.deck = decks[$scope.deckId];
-  $scope.isEditing = false;
-
-  $scope.editDeck = function(b) {
-    $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
-  }
-
-  $scope.gotoDeck = function(index) {
-    $location.path('/'+index);
-  }
-
-  function saveCards(cards) {
-    cardStorage.saveCards($scope.deckId, cards);
-    //$rootScope.$broadcast('handleBroadcast');
-    //$location.path('/'+$scope.deckId);
-    //console.log($location);
+  $scope.clearCards = function() {
+    $scope.deck.cards = [];
   }
 
   $scope.resetCards = function() {
@@ -155,96 +79,87 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
             return { text: c, due: now, last: null, interval: 0 }
           });
 
-        $scope.cards = cards;
-        saveCards(cards);
+        $scope.deck.cards = cards;
+
+      });
+  }
+
+  $scope.$watch('deck', function() {
+    console.log('$scope.$watch deck');
+    cardStorage.saveDecks($scope.decks);
+  }, true);
+
+}]);
+
+
+angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter',
+
+  function ($scope, cardStorage, $location, $http, $routeParams, $rootScope, statusFilter) {
+  //console.log($routeParams);
+
+  // TODO: find by id
+  $scope.deckId = $routeParams.deckId || 0;
+
+  $scope.editDeck = function(b) {
+    $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
+  }
+
+  $scope.gotoDeck = function(index) {
+    $location.path('/'+index);
+  }
+
+  function saveCards(cards) {
+    cardStorage.saveCards($scope.deckId, cards);
+  }
+
+  $scope.save = function save() {
+    cardStorage.saveCards($scope.deckId, $scope.cards);
+  };
+
+  $scope.resetCards = function() {
+    $http.get('data/first30.txt')
+      .success(function (data, status, headers, config) {
+        var cards = data.split('\n')
+          .filter(function(t) {
+            return t != '';
+          })
+          .map(function(c) {
+            c = c.replace(/\\n/g, '\n');
+            var now = Date.now();
+            return { text: c, due: now, last: null, interval: 0 }
+          });
+
+        $scope.deck.cards = cards;
+        getCards();
 
       });
   }
 
   $scope.clearCards = function() {
-    $scope.cards = [];
-    saveCards([]);
-  }
-
-  $scope.$watch('deck.name', function() {
-    cardStorage.saveDecks(decks);
-  });
-
-//}]);
-
-//app.controller('CardCtrl', ['$scope', 'cardStorage', '$http', '$filter','$location', 'statusFilterFilter', '$routeParams',
-//  function($scope, cardStorage, $http, $filter, $location, statusFilter, $routeParams) {
-  // TODO: move most of this to a directive this stuff to a directive
-
-  //console.log('$routeParams',$routeParams);
-  $scope.deckId = $routeParams.deckId || 0;
-
-  var el = angular.element(".cardEditor")[0];
-
-  //angular.element(".cardEditor").on('blur', function(e) {
- //   if (!e.relatedTarget) {
-  //    $scope.$apply(function() {
-  //      console.log('blur');
-  //      $scope.edit(false);
-  //    });
-  //  }
-  //});
-
-  $scope.location = $location;
-  $scope.search = $location.search();
-  //console.log($scope.search.f);
-
-  $scope.$watch(location.path, function (path) {
-    //console.log('location.path() changed', path);
-    init();
-  }, true);
-
-  //$scope.$watch('deckId', function (newVal, oldVal) {
-    //console.log('deckId changed', newVal, oldVal);
-  //});
-
-  $scope.$on('handleBroadcast', function() {
-    console.log('handleBroadcast');
-    init();
-  });
-
-  function init() {
-    $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
-    $scope.clozed = true;
-    $scope.filter = STATUSDUE;
-
+    $scope.deck.cards = [];
     getCards();
   }
 
-  /* $scope.setFilter = function(filter) {
-    console.log(filter);
+  //$scope.location = $location;
+  $scope.search = $location.search();
 
-    var filter = filter || $scope.search.f;
-    $location.search('f', filter);
-    if (filter == 'due') {
-      $scope.filter = STATUSDUE;
-    } else if (filter == 'all') {
-      $scope.filter = -1;
-    } else if (filter == 'done') {
-      $scope.filter = STATUSDONE;
-    } else if (filter == 'new') {
-      $scope.filter = STATUSNEW;
-    } else {
-      $scope.filter = STATUSDUE;
-    }
-  }; */
-
-  function getCards() {
-    $scope.cards = cardStorage.getCards($scope.deckId);
-    $scope.index = 0;
-    applyFilter($scope.filter);
+  function init() {
+    $scope.filter = STATUSDUE;
+    $scope.isEditing = false;
+    $scope.decks = cardStorage.getDecks();
+    $scope.deck = $scope.decks[$scope.deckId];
+    getCards();
   }
 
-  function applyFilter(filter) {
+  function getCards() {
+    $scope.cards = $scope.deck.cards;
+    $scope.index = 0;
+    $scope.applyFilter($scope.filter);
+  }
+
+  $scope.applyFilter = function applyFilter(filter) {
 
     $scope.filter = filter = filter || $scope.filter;
-
-    //console.log(statusFilter);
 
     $scope.filteredCards = statusFilter($scope.cards, $scope.filter)
       .sort(function(a,b) {
@@ -253,25 +168,6 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
 
     $scope.goto($scope.index);
   }
-
-  $scope.blurCallback = function() {
-    console.log('blur');
-  }
-
-  function save() {
-    cardStorage.saveCards($scope.deckId, $scope.cards);
-  };
-
-  //function nextDue() {
-  //  $scope.clozed = true;
-
- //   for (var i = $scope.index; i < $scope.filteredCards.length; i++) {
-  //    console.log($scope.filteredCards[i].due);
-  //  }
-
-  //  var index = $filter('firstDueIndex')($scope.filteredCards);
-  //  $scope.goto(0);
-  //}
 
   $scope.goto = function(index) {
     if (typeof index == 'object')
@@ -305,6 +201,101 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
       $scope.down();
     }
   }
+
+  $scope.prev = function() {
+    var index = ($scope.index > 0) ? $scope.index : $scope.filteredCards.length;
+    $scope.goto(index-1);
+  }
+
+  $scope.next = function() {
+    var index = ($scope.index < $scope.filteredCards.length-1) ? $scope.index+1 : 0;
+    $scope.goto(index);
+  }
+
+  $scope.add = function() {
+
+    var text = ''; //getSelectedText();
+
+    var card = {};
+    card.text = text || '';
+    card.due = card.due || Date.now();
+    card.interval = card.interval || 0;
+
+    $scope.cards.push(card);
+    $scope.filteredCards = $scope.cards;   // TODO: filter
+
+    $scope.goto(card);
+    $scope.isEditing = true;
+  }
+
+  $scope.deleteCard = function() {
+    var index = $scope.cards.indexOf($scope.card);
+    $scope.cards.splice(index,1);
+    $scope.goto($scope.index);
+  }
+
+  /* $scope.reset = function() {
+    console.log('reset');
+
+    $http.get('data/first30.txt')
+      .success(function (data, status, headers, config) {
+        console.log('data',data);
+        $scope.deck.cards = data.split('\n')
+          .filter(function(t) {
+            return t != '';
+          })
+          .map(function(c) {
+            c = c.replace(/\\n/g, '\n');
+            var now = Date.now();
+            return { text: c, due: now, last: null, interval: 0 }
+          });
+
+        //saveCards($scope.cards);
+        //getCards();
+
+      });
+
+  }
+
+  $scope.clear = function() {
+    $scope.deck.cards = [];
+
+    //$scope.save();
+    //getCards();
+  } */
+
+  //$scope.dueNow = function dueNow(c) {
+  //  var now = new Date();
+  //  return c.due < now;
+  //}
+
+  init();
+
+  $scope.$watch('filter', function(newVal, oldVal) {
+    //console.log('filter changed',newVal, oldVal);
+    if (newVal == oldVal) return;
+
+    $scope.applyFilter(newVal);
+
+  });
+
+  $scope.$watch('deck', function(newVal) {
+    console.log( '$scope.$watch deck', newVal);
+    cardStorage.saveDecks($scope.decks);
+  }, true);
+
+}]);
+
+angular.module('mainApp').controller('CardCtrl', ['$scope', 'cardStorage', function ($scope, cardStorage) {
+
+  var el = angular.element(".cardEditor")[0];
+
+  function init() {
+    $scope.isEditing = false;  // TODO: replace with $scope.editedCard;
+    $scope.clozed = true;
+  }
+
+  init();
 
   function getSelectedText() {
     var ws = window.getSelection();
@@ -341,15 +332,13 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
     }, 100);
   }
 
-  $scope.flip = function() {
-    $scope.clozed = !$scope.clozed;
-    //$scope.isEditing = false;
-  }
-
   $scope.edit = function(flag) {
     if (arguments.length < 1) flag = !$scope.isEditing;
     $scope.isEditing = flag;
-    //console.log('edit',flag);
+  }
+
+  $scope.flip = function() {
+    $scope.clozed = !$scope.clozed;
   }
 
   $scope.up = function() {
@@ -365,7 +354,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
     $scope.card.due = $scope.card.last+$scope.card.interval*DAYS;
 
     $scope.clozed = true;
-    applyFilter();
+    $scope.applyFilter();
   }
 
   $scope.down = function() {
@@ -373,99 +362,22 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
     $scope.card.interval = 0;
 
     $scope.clozed = true;
-    applyFilter();
+    $scope.applyFilter();
   }
-
-  $scope.prev = function() {
-    var index = ($scope.index > 0) ? $scope.index : $scope.filteredCards.length;
-    $scope.goto(index-1);
-  }
-
-  $scope.next = function() {
-    var index = ($scope.index < $scope.filteredCards.length-1) ? $scope.index+1 : 0;
-    $scope.goto(index);
-  }
-
-  $scope.add = function() {
-
-    var text = getSelectedText();
-
-    var card = {};
-    card.text = text || '';
-    card.due = card.due || Date.now();
-    card.interval = card.interval || 0;
-
-    $scope.cards.push(card);
-    $scope.filteredCards = $scope.cards;   // TODO: filter
-
-    $scope.goto(card);
-    $scope.isEditing = true;
-  }
-
-  $scope.deleteCard = function() {
-    var index = $scope.cards.indexOf($scope.card);
-    $scope.cards.splice(index,1);
-    $scope.goto($scope.index);
-  }
-
-  $scope.reset = function() {
-    console.log('reset');
-
-    $http.get('data/first30.txt')
-      .success(function (data, status, headers, config) {
-        console.log('data',data);
-        $scope.cards = data.split('\n')
-          .filter(function(t) {
-            return t != '';
-          })
-          .map(function(c) {
-            c = c.replace(/\\n/g, '\n');
-            var now = Date.now();
-            return { text: c, due: now, last: null, interval: 0 }
-          });
-
-        save();
-        getCards();
-
-      });
-
-  }
-
-  $scope.clear = function() {
-    $scope.cards = [];
-
-    save();
-    getCards();
-  }
-
-  //$scope.dueNow = function dueNow(c) {
-  //  var now = new Date();
-  //  return c.due < now;
-  //}
-
-  init();
 
   $scope.$watch('card.text', function(newVal, oldVal) {
     //console.log('card.text changed',newVal, oldVal);
 
     if (newVal == oldVal) return;
 
-    save();
+    //$scope.save();
   });
 
   $scope.$watch('card.due', function(newVal, oldVal) {
     //console.log('card.due changed',newVal, oldVal);
     if (newVal == oldVal) return;
 
-    save();
-  });
-
-  $scope.$watch('filter', function(newVal, oldVal) {
-    //console.log('filter changed',newVal, oldVal);
-    if (newVal == oldVal) return;
-
-    applyFilter(newVal);
-
+    //$scope.save();
   });
 
 }]);

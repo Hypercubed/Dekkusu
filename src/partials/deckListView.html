@@ -19,17 +19,17 @@
 
 <div class="container">
   <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="deck in decks track by $index">
-    <div class="btn-toolbar pHover pull-right">
-      <div class="btn-group dropdown">
-        <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-collapse-down"></i> </button>
-        <ul class="dropdown-menu">
-          <li><a href="" ng-click="clearCards($index)">Clear</a></li>
-          <li><a href="" ng-click="resetCards($index)">Reset</a></li>
-          <li><a href="" ng-click="removeDeck($index)">Delete</a></li>
-        </ul>
+    <div class="deckCard" ng-controller="DeckCtrl2">
+      <div class="btn-toolbar pHover pull-right">
+        <div class="btn-group dropdown">
+          <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-collapse-down"></i> </button>
+          <ul class="dropdown-menu">
+            <li><a href="" ng-click="clearCards($index)">Clear</a></li>
+            <li><a href="" ng-click="resetCards($index)">Reset</a></li>
+            <li><a href="" ng-click="removeDeck($index)">Delete</a></li>
+          </ul>
+        </div>
       </div>
-    </div>
-    <div class="deckCard">
       <h2><a href="#/{{$index}}">{{deck.name}}</a></h2>
       <div class="row" ng-cloak>
         <div class="col-md-12 text-center">
