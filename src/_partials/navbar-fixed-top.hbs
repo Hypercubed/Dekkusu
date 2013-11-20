@@ -12,6 +12,7 @@ component: navbar
       <a class="navbar-brand {{#is page.dest 'out/index.html'}}active{{/is}}" href="{{assets}}">{{site.title}}</a>
     </div>
     <div class="navbar-collapse collapse" ng-class="{collapse:collapse}">
+
       <ul class="nav navbar-nav">
         {{#each tags}}{{#is tag 'page'}}
             {{#each pages}}
@@ -21,15 +22,13 @@ component: navbar
             {{/each}}
         {{/is}}{{/each}}
       </ul>
-      <!-- ul class="nav navbar-nav navbar-right">
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">Deck <b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="" ng-click="clear()">Clear</a></li>
-            <li><a href="" ng-click="reset()">Reset</a></li>
-          </ul>
-        </li>
-      </ul -->
+
+      <ul class="nav navbar-nav navbar-right">
+        <li class="navbar-text" ng-show="user" ng-cloak>\{{user.name}}</li>
+        <li ng-show="user" ng-cloak><a href="#" ng-click="logout()">Logout</a></li>
+        <li ng-hide="user"><a href="#" ng-click="login()">Login</a></li>
+      </ul>
+
     </div>
   </div>
 </div>

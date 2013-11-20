@@ -6,9 +6,9 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Deck broswer
 - [x] Markdown?
 - [x] Furugana
-- [ ] Login
-- [ ] Firebase
-- [ ] Multiple decks
+- [x] Login
+- [x] Firebase
+- [x] Multiple decks
 - [ ] Native file format i.e. Markdown with tags? (@due 1-1-2020) (@tags japanese phrase) (@interval 0)?
 - [ ] Seperate deck from progress journal?
 - [x] Use position for bracketing instead of replace
@@ -40,7 +40,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Full markdown editor?
 - [ ] Undo
 - [x] Use $location to get filter
-- [ ] Use ids instead of index
+- [x] Use ids instead of index
 - [ ] Use moment.js?
 - [ ] Copy markup when creating a new card
 - [x] Improve markdown \{A::B}, \{::B}, \{{::B}}.
@@ -57,5 +57,5 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [x] Add position indicator to status bar
 - [ ] Move reset/clear buttons to deck controller
 - [ ] Add browser view
-- [ ] Add decks view
-- [ ] Use router
+- [x] Add decks view
+- [x] Use router
