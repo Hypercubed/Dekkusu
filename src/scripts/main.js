@@ -4,66 +4,122 @@ var DEBUG = false;
 var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 
 // Declare app level module which depends on filters, and services
-var app = angular.module('mainApp', ['ngRoute','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize']);
+var app = angular.module('mainApp',
+    ['ngRoute','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase']);
 
 angular.module('mainApp').config(['$routeProvider', function($routeProvider) {
-  //console.log('config');
-
-  // TODO: #/:username -> deck list
-  //       #/:username/:deckid -> deck
+  console.log($routeProvider);
 
   $routeProvider.
     when('/', {
+      templateUrl: 'partials/homeView.html',
+      controller: 'HomeCtrl'
+    }).
+    when('/:username', {
       templateUrl: 'partials/deckListView.html',
       controller: 'DeckListCtrl'
     }).
-    when('/:deckId', {
+    when('/:username/:deck', {
       templateUrl: 'partials/deckView.html',
       controller: 'DeckCtrl'
     }).
     otherwise({
-      redirectTo: '/'
+      redirectTo: '/guest'
     });
 
 }]);
 
-angular.module('mainApp').controller('DeckListCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope',
-  function ($scope, cardStorage, $location, $http, $routeParams, $rootScope) {
+app.controller('NavCtrl', ['$scope', 'angularFireAuth', function($scope, angularFireAuth) {
 
-  var decks = $scope.decks = cardStorage.getDecks();
+  $scope.collapse=true;
 
-  $scope.listView = false;
+  var ref = new Firebase("https://dekkusu.firebaseio.com/");
+  angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
 
-  $scope.addDeck = function() {
-    var name = 'Deck', i = 1;
+  $scope.login = function() {
+    angularFireAuth.login("github");
+  };
 
-    while (decks.some(function(d) { return d.name == name; })) {
-      i++;
-      name = 'Deck '+i;
-    }
+  $scope.logout = function() {
+    angularFireAuth.logout();
+  };
 
-    decks.push({ name: name, cards: [] });
-  }
+}]);
 
-  $scope.removeDeck = function(index) {  // Move?
+angular.module('mainApp')
+  .controller('HomeCtrl', ['$scope', 'angularFireAuth', '$location',
+                  function ($scope, angularFireAuth, $location) {
 
-    if (index > -1) {
-      $scope.decks.splice(index, 1);
-    };
+  $scope.login = function() {
+    angularFireAuth.login("github");
+  };
 
-  }
-
-  $scope.$watch('decks', function() {
-    console.log('$scope.$watch decks');
-    cardStorage.saveDecks(decks);
+  $scope.$on("angularFireAuth:login", function(evt, user) {
+    $location.path('/'+user.username);
+  });
+  $scope.$on("angularFireAuth:logout", function(evt) {
+    $location.path('/');
+  });
+  $scope.$on("angularFireAuth:error", function(evt, err) {
+    //
   });
 
 }]);
 
-angular.module('mainApp').controller('DeckCtrl2', ['$scope', '$http', 'cardStorage', function($scope, $http, cardStorage) {
+angular.module('mainApp')
+  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'angularFire', 'angularFireCollection',
+                      function ($scope, $location, $http, $routeParams, $rootScope, angularFire, angularFireCollection) {
+
+    $scope.username = $routeParams.username || 'default';
+    $scope.decks = [];
+    $scope.listView = false;
+
+    var ref = new Firebase('https://dekkusu.firebaseio.com/decks/'+$scope.username);
+    angularFire(ref, $scope, 'decks');
+    //$scope.decks = angularFireCollection(ref.limit(50));
+
+    //console.log($scope.decks);
+
+  $scope.addDeck = function() {
+    var name = 'Deck', index = 'deck', i = 1;
+
+    while ($scope.decks[index]) {
+      i++;
+      name = 'Deck '+i;
+      index = 'deck-'+i;
+    }
+
+    var cards = [{ text: "" }];
+    var deck = { id: index, name: name, cards: cards };
+
+    //$scope.decks[index] = deck;
+    ref.child(index).set(deck);
+    //console.log($scope.decks);
+    //$scope.decks.set(index,deck);
+  }
+
+  function slugify(input) {  // Todo: filter
+    return input
+      .replace('/', '-')
+      .replace(' ', '-')
+      .replace('#', '-')
+      .replace('?', '-');
+  }
+
+  $scope.removeDeck = function(index) {
+    ref.child(index).set(null);
+    //$scope.decks[index] = null;
+    //$scope.decks.remove(index);
+  }
+
+}]);
+
+angular.module('mainApp')
+  .controller('DeckCtrl2', ['$scope', '$http',
+                    function($scope, $http) {
 
   $scope.clearCards = function() {
-    $scope.deck.cards = [];
+    $scope.deck.cards = [{text:""}];
   }
 
   $scope.resetCards = function() {
@@ -84,37 +140,44 @@ angular.module('mainApp').controller('DeckCtrl2', ['$scope', '$http', 'cardStora
       });
   }
 
-  $scope.$watch('deck', function() {
-    console.log('$scope.$watch deck');
-    cardStorage.saveDecks($scope.decks);
-  }, true);
+  //$scope.$watch('deck', function() {
+  //  console.log('$scope.$watch deck');
+   // cardStorage.saveDecks($scope.decks);
+  //}, true);
 
 }]);
 
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter',
+angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter', 'angularFire',
+                                         function ($scope,   $location,   $http,   $routeParams,   $rootScope,   statusFilter,         angularFire) {
 
-  function ($scope, cardStorage, $location, $http, $routeParams, $rootScope, statusFilter) {
-  //console.log($routeParams);
+  $scope.username = $routeParams.username || 'default';
+  $scope.deckId = $routeParams.deck || 0;
+  $scope.decks = [];
+  $scope.deck = { cards: [] };
+  $scope.search = $location.search();
 
-  // TODO: find by id
-  $scope.deckId = $routeParams.deckId || 0;
+  var ref = new Firebase('https://dekkusu.firebaseio.com/decks/'+$scope.username);
+  var deckRef = ref.child($routeParams.deck);
+
+  angularFire(ref, $scope, 'decks');
+  angularFire(deckRef, $scope, 'deck');
 
   $scope.editDeck = function(b) {
     $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
   }
 
   $scope.gotoDeck = function(index) {
-    $location.path('/'+index);
+    $location.path('/'+$scope.username+'/'+index);
   }
 
-  function saveCards(cards) {
-    cardStorage.saveCards($scope.deckId, cards);
-  }
+  //function saveCards(cards) {
+    //cardStorage.saveCards($scope.deckId, cards);
+  //}
 
-  $scope.save = function save() {
-    cardStorage.saveCards($scope.deckId, $scope.cards);
-  };
+  //$scope.save = function save() {
+    //cardStorage.saveCards($scope.deckId, $scope.cards);
+  //};
 
   $scope.resetCards = function() {
     $http.get('data/first30.txt')
@@ -136,23 +199,22 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
   }
 
   $scope.clearCards = function() {
-    $scope.deck.cards = [];
+    $scope.deck.cards = [{text:""}];
     getCards();
   }
 
   //$scope.location = $location;
-  $scope.search = $location.search();
 
   function init() {
     $scope.filter = STATUSDUE;
     $scope.isEditing = false;
-    $scope.decks = cardStorage.getDecks();
-    $scope.deck = $scope.decks[$scope.deckId];
+    //$scope.decks = cardStorage.getDecks();
+    //$scope.deck = $scope.decks[$scope.deckId];
     getCards();
   }
 
   function getCards() {
-    $scope.cards = $scope.deck.cards;
+    //$scope.cards = $scope.deck.cards;
     $scope.index = 0;
     $scope.applyFilter($scope.filter);
   }
@@ -161,7 +223,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
 
     $scope.filter = filter = filter || $scope.filter;
 
-    $scope.filteredCards = statusFilter($scope.cards, $scope.filter)
+    $scope.filteredCards = statusFilter($scope.deck.cards, $scope.filter)
       .sort(function(a,b) {
         return a.due<b.due?-1:a.due>b.due?1:0;
       });
@@ -221,16 +283,16 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
     card.due = card.due || Date.now();
     card.interval = card.interval || 0;
 
-    $scope.cards.push(card);
-    $scope.filteredCards = $scope.cards;   // TODO: filter
+    $scope.deck.cards.push(card);
+    $scope.filteredCards = $scope.deck.cards;   // TODO: filter
 
     $scope.goto(card);
     $scope.isEditing = true;
   }
 
   $scope.deleteCard = function() {
-    var index = $scope.cards.indexOf($scope.card);
-    $scope.cards.splice(index,1);
+    var index = $scope.deck.cards.indexOf($scope.card);
+    $scope.deck.cards.splice(index,1);
     $scope.goto($scope.index);
   }
 
@@ -279,14 +341,16 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', 'cardStorage', '$loc
 
   });
 
-  $scope.$watch('deck', function(newVal) {
-    console.log( '$scope.$watch deck', newVal);
-    cardStorage.saveDecks($scope.decks);
-  }, true);
+  //$scope.$watch('decks', function(newVal) {
+  //  console.log( '$scope.$watch decks', newVal);
+    //cardStorage.saveDecks($scope.decks);
+  //}, true);
 
 }]);
 
-angular.module('mainApp').controller('CardCtrl', ['$scope', 'cardStorage', function ($scope, cardStorage) {
+angular.module('mainApp')
+  .controller('CardCtrl', ['$scope',
+                  function ($scope) {
 
   var el = angular.element(".cardEditor")[0];
 
@@ -544,7 +608,7 @@ app.filter("statusFilter", ['$filter', function($filter){
   // }
 
 
-app.factory('cardStorage', ['$http', function ($http) {
+/*app.factory('cardStorage', ['$http', function ($http) {
   var STORAGE_ID = 'cards-app';
 
   var exports = {};
@@ -592,12 +656,7 @@ app.factory('cardStorage', ['$http', function ($http) {
 
   return exports;
 
-}]);
+}]);*/
 
-app.controller('NavCtrl', ['$scope', function($scope) {
-
-  $scope.collapse=true
-
-}]);
 
 

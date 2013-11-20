@@ -3,7 +3,7 @@
   <div class="container">
     <div class="col-md-11 col-md-offset-1">
       <h2 ng-cloak>
-        <a href="/">Home</a>
+        <a href="#/{{username}}">{{username}}</a>
 
         <div class="btn-toolbar pull-right" >
           <div class="btn-group">
@@ -18,19 +18,19 @@
 </div>
 
 <div class="container">
-  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="deck in decks track by $index">
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id, deck) in decks">
     <div class="deckCard" ng-controller="DeckCtrl2">
       <div class="btn-toolbar pHover pull-right">
         <div class="btn-group dropdown">
           <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-collapse-down"></i> </button>
           <ul class="dropdown-menu">
-            <li><a href="" ng-click="clearCards($index)">Clear</a></li>
-            <li><a href="" ng-click="resetCards($index)">Reset</a></li>
-            <li><a href="" ng-click="removeDeck($index)">Delete</a></li>
+            <li><a href="" ng-click="clearCards(id)">Clear</a></li>
+            <li><a href="" ng-click="resetCards(id)">Reset</a></li>
+            <li><a href="" ng-click="removeDeck(id)">Delete</a></li>
           </ul>
         </div>
       </div>
-      <h2><a href="#/{{$index}}">{{deck.name}}</a></h2>
+      <h2><a href="#/{{username}}/{{id}}">{{deck.name}}</a></h2>
       <div class="row" ng-cloak>
         <div class="col-md-12 text-center">
           <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>

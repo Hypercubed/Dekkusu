@@ -10,7 +10,10 @@
     "angular-ui-utils": "~0.0.4",
     "showdown": "~0.3.1",
     "angular-sanitize": "~1.0.8",
-    "angular-route": "~1.2.0"
+    "angular-route": "~1.2.0",
+    "firebase": "*",
+    "angular-fire": "~0.3.1",
+    "firebase-simple-login": "*"
   },
   "devDependencies": {},
   "resolutions": {
