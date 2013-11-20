@@ -24,7 +24,7 @@ component: navbar
       </ul>
 
       <ul class="nav navbar-nav navbar-right">
-        <li class="navbar-text" ng-show="user" ng-cloak>\{{user.name}}</li>
+        <li ng-show="user" ng-cloak><a href="#/\{{user.username}}/" >\{{user.username}}</a></li>
         <li ng-show="user" ng-cloak><a href="#" ng-click="logout()">Logout</a></li>
         <li ng-hide="user"><a href="#" ng-click="login()">Login</a></li>
       </ul>

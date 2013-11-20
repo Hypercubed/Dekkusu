@@ -8,12 +8,13 @@ var app = angular.module('mainApp',
     ['ngRoute','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase']);
 
 angular.module('mainApp').config(['$routeProvider', function($routeProvider) {
-  //console.log(angularFireAuth);
-
-  // TODO: #/:username -> deck list
-  //       #/:username/:deckid -> deck
+  console.log($routeProvider);
 
   $routeProvider.
+    when('/', {
+      templateUrl: 'partials/homeView.html',
+      controller: 'HomeCtrl'
+    }).
     when('/:username', {
       templateUrl: 'partials/deckListView.html',
       controller: 'DeckListCtrl'
@@ -25,6 +26,43 @@ angular.module('mainApp').config(['$routeProvider', function($routeProvider) {
     otherwise({
       redirectTo: '/guest'
     });
+
+}]);
+
+app.controller('NavCtrl', ['$scope', 'angularFireAuth', function($scope, angularFireAuth) {
+
+  $scope.collapse=true;
+
+  var ref = new Firebase("https://dekkusu.firebaseio.com/");
+  angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
+
+  $scope.login = function() {
+    angularFireAuth.login("github");
+  };
+
+  $scope.logout = function() {
+    angularFireAuth.logout();
+  };
+
+}]);
+
+angular.module('mainApp')
+  .controller('HomeCtrl', ['$scope', 'angularFireAuth', '$location',
+                  function ($scope, angularFireAuth, $location) {
+
+  $scope.login = function() {
+    angularFireAuth.login("github");
+  };
+
+  $scope.$on("angularFireAuth:login", function(evt, user) {
+    $location.path('/'+user.username);
+  });
+  $scope.$on("angularFireAuth:logout", function(evt) {
+    $location.path('/');
+  });
+  $scope.$on("angularFireAuth:error", function(evt, err) {
+    //
+  });
 
 }]);
 
@@ -620,20 +658,5 @@ app.filter("statusFilter", ['$filter', function($filter){
 
 }]);*/
 
-app.controller('NavCtrl', ['$scope', 'angularFireAuth', function($scope, angularFireAuth) {
-
-  $scope.collapse=true;
-
-  var ref = new Firebase("https://dekkusu.firebaseio.com/");
-  angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
-
-  $scope.login = function() {
-    angularFireAuth.login("github");
-  };
-  $scope.logout = function() {
-    angularFireAuth.logout();
-  };
-
-}]);
 
 
