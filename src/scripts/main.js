@@ -3,38 +3,13 @@
 var DEBUG = false;
 var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 
-// Declare app level module which depends on filters, and services
-var app = angular.module('mainApp',
-    ['ngRoute','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase']);
-
-angular.module('mainApp').config(['$routeProvider', function($routeProvider) {
-  console.log($routeProvider);
-
-  $routeProvider.
-    when('/', {
-      templateUrl: 'partials/homeView.html',
-      controller: 'HomeCtrl'
-    }).
-    when('/:username', {
-      templateUrl: 'partials/deckListView.html',
-      controller: 'DeckListCtrl'
-    }).
-    when('/:username/:deck', {
-      templateUrl: 'partials/deckView.html',
-      controller: 'DeckCtrl'
-    }).
-    otherwise({
-      redirectTo: '/guest'
-    });
-
-}]);
-
-app.controller('NavCtrl', ['$scope', 'angularFireAuth', function($scope, angularFireAuth) {
+angular.module('mainApp').controller('NavCtrl', ['$scope', 'angularFireAuth',  'FBURL', '$rootScope',
+                                         function($scope,   angularFireAuth, FBURL, $rootScope) {
 
   $scope.collapse=true;
 
-  var ref = new Firebase("https://dekkusu.firebaseio.com/");
-  angularFireAuth.initialize(ref, {scope: $scope, name: "user"});
+  //var ref = new Firebase(FBURL);
+  //angularFireAuth.initialize(ref, {scope: $rootScope, name: "user"});
 
   $scope.login = function() {
     angularFireAuth.login("github");
@@ -47,8 +22,8 @@ app.controller('NavCtrl', ['$scope', 'angularFireAuth', function($scope, angular
 }]);
 
 angular.module('mainApp')
-  .controller('HomeCtrl', ['$scope', 'angularFireAuth', '$location',
-                  function ($scope, angularFireAuth, $location) {
+  .controller('HomeCtrl', ['$scope', '$rootScope','angularFireAuth', '$location',
+                  function ($scope, $rootScope, angularFireAuth, $location) {
 
   $scope.login = function() {
     angularFireAuth.login("github");
@@ -57,9 +32,11 @@ angular.module('mainApp')
   $scope.$on("angularFireAuth:login", function(evt, user) {
     $location.path('/'+user.username);
   });
+
   $scope.$on("angularFireAuth:logout", function(evt) {
     $location.path('/');
   });
+
   $scope.$on("angularFireAuth:error", function(evt, err) {
     //
   });
@@ -67,20 +44,37 @@ angular.module('mainApp')
 }]);
 
 angular.module('mainApp')
-  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'angularFire', 'angularFireCollection',
-                      function ($scope, $location, $http, $routeParams, $rootScope, angularFire, angularFireCollection) {
+  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'angularFire', 'angularFireCollection', 'FBURL',
+                      function ($scope, $location, $http, $routeParams, $rootScope, angularFire, angularFireCollection, FBURL) {
 
-    $scope.username = $routeParams.username || 'default';
+    $scope.username = $routeParams.username || 'guest';
     $scope.decks = [];
     $scope.listView = false;
 
-    var ref = new Firebase('https://dekkusu.firebaseio.com/decks/'+$scope.username);
-    angularFire(ref, $scope, 'decks');
-    //$scope.decks = angularFireCollection(ref.limit(50));
 
-    //console.log($scope.decks);
+    console.log($scope.user);
 
-  $scope.addDeck = function() {
+
+
+    var ref = new Firebase(FBURL).child('decks/'+$scope.username);
+    angularFire(ref, $scope, 'decks').then(function() {
+      $scope.isOwner = ($scope.user) ? $scope.user.username == $scope.username : $scope.username == 'guest';
+    });
+
+  $scope.$on("angularFireAuth:login", function(evt, user) {
+    $scope.isOwner = ($scope.user) ? $scope.user.username == $scope.username : $scope.username == 'guest';
+  });
+
+  $scope.$on("angularFireAuth:logout", function(evt) {
+    $scope.isOwner = $scope.username == 'guest';
+  });
+
+  $scope.$on("angularFireAuth:error", function(evt, err) {
+    $scope.isOwner = $scope.username == 'guest';
+  });
+
+  $scope.addDeck = function(cards) {
+    var cards = cards || [{text:""}];
     var name = 'Deck', index = 'deck', i = 1;
 
     while ($scope.decks[index]) {
@@ -89,7 +83,6 @@ angular.module('mainApp')
       index = 'deck-'+i;
     }
 
-    var cards = [{ text: "" }];
     var deck = { id: index, name: name, cards: cards };
 
     //$scope.decks[index] = deck;
@@ -140,6 +133,8 @@ angular.module('mainApp')
       });
   }
 
+
+
   //$scope.$watch('deck', function() {
   //  console.log('$scope.$watch deck');
    // cardStorage.saveDecks($scope.decks);
@@ -148,20 +143,50 @@ angular.module('mainApp')
 }]);
 
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter', 'angularFire',
-                                         function ($scope,   $location,   $http,   $routeParams,   $rootScope,   statusFilter,         angularFire) {
+angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter', 'angularFire', 'angularFireCollection', 'FBURL',
+                                         function ($scope,   $location,   $http,   $routeParams,   $rootScope,   statusFilter,         angularFire,   angularFireCollection,   FBURL) {
 
   $scope.username = $routeParams.username || 'default';
   $scope.deckId = $routeParams.deck || 0;
   $scope.decks = [];
   $scope.deck = { cards: [] };
+  $scope.cards = [];
   $scope.search = $location.search();
 
-  var ref = new Firebase('https://dekkusu.firebaseio.com/decks/'+$scope.username);
-  var deckRef = ref.child($routeParams.deck);
+  var ref = new Firebase(FBURL).child('decks/'+$scope.username);
 
-  angularFire(ref, $scope, 'decks');
-  angularFire(deckRef, $scope, 'deck');
+  angularFire(ref, $scope, 'decks').then(function(v) {
+    $scope.filter = STATUSALL;
+    $scope.isEditing = false;
+    $scope.isOwner = ($scope.user) ? $scope.user.username == $scope.username : $scope.username == 'guest';
+    $scope.deck = $scope.decks[$scope.deckId];
+    $scope.cards = $scope.deck.cards;
+    //$scope.deck.cards = angularFireCollection(ref.child($scope.deckId).child('cards'));
+    getCards();
+  });
+
+  $scope.$on("angularFireAuth:login", function(evt, user) {
+    $scope.isOwner = ($scope.user) ? $scope.user.username == $scope.username : $scope.username == 'guest';
+  });
+
+  $scope.$on("angularFireAuth:logout", function(evt) {
+    $scope.isOwner = $scope.username == 'guest';
+  });
+
+  $scope.$on("angularFireAuth:error", function(evt, err) {
+    $scope.isOwner = $scope.username == 'guest';
+  });
+
+  //$scope.cards = angularFireCollection(ref.child($scope.deckId).child('cards'));
+
+  $scope.copyCards = function() {
+    var deck = $scope.deck;
+    var user = $scope.user.username;
+    var loc = user+'/'+deck.id
+    var ref = new Firebase(FBURL).child('decks/'+loc).set(deck);
+    $location.path('/'+loc);
+    //console.log('Todo: copy',$scope.deckId,'from',$scope.username,'to',$scope.user);
+  }
 
   $scope.editDeck = function(b) {
     $scope.isEditing = (arguments.length > 0) ? b : !$scope.isEditing;
@@ -206,7 +231,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
   //$scope.location = $location;
 
   function init() {
-    $scope.filter = STATUSDUE;
+    $scope.filter = STATUSALL;
     $scope.isEditing = false;
     //$scope.decks = cardStorage.getDecks();
     //$scope.deck = $scope.decks[$scope.deckId];
@@ -276,7 +301,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
 
   $scope.add = function() {
 
-    var text = ''; //getSelectedText();
+    var text = getSelectedText();
 
     var card = {};
     card.text = text || '';
@@ -294,6 +319,28 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
     var index = $scope.deck.cards.indexOf($scope.card);
     $scope.deck.cards.splice(index,1);
     $scope.goto($scope.index);
+  }
+
+  var el = angular.element(".cardEditor")[0];
+
+  function getSelectedText() {
+    var ws = window.getSelection();
+
+    if (ws.type == 'Range') {
+      DEBUG && console.log('Window selection');
+
+      return ws.toString().trim();
+    } else if (ws.type == 'None') {
+      DEBUG && console.log('Input selection');
+
+      var start = el.selectionStart;
+      var end = el.selectionEnd;
+
+      if (start !== end)
+        return el.value.slice(start, end).trim();
+    }
+
+    return null;
   }
 
   /* $scope.reset = function() {
@@ -331,7 +378,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
   //  return c.due < now;
   //}
 
-  init();
+  //init();
 
   $scope.$watch('filter', function(newVal, oldVal) {
     //console.log('filter changed',newVal, oldVal);
@@ -429,24 +476,24 @@ angular.module('mainApp')
     $scope.applyFilter();
   }
 
-  $scope.$watch('card.text', function(newVal, oldVal) {
+  //$scope.$watch('card.text', function(newVal, oldVal) {
     //console.log('card.text changed',newVal, oldVal);
 
-    if (newVal == oldVal) return;
+    //if (newVal == oldVal) return;
 
     //$scope.save();
-  });
+  //});
 
-  $scope.$watch('card.due', function(newVal, oldVal) {
+  //$scope.$watch('card.due', function(newVal, oldVal) {
     //console.log('card.due changed',newVal, oldVal);
-    if (newVal == oldVal) return;
+    //if (newVal == oldVal) return;
 
     //$scope.save();
-  });
+  //});
 
 }]);
 
-app.filter('formatCard', ['$sanitize', function ($sanitize) {
+angular.module('mainApp').filter('formatCard', ['$sanitize', function ($sanitize) {
 
   var furigana = function(converter) {
     return [
@@ -489,7 +536,7 @@ app.filter('formatCard', ['$sanitize', function ($sanitize) {
 
 }]);
 
-app.filter('firstDueIndex', function() {
+angular.module('mainApp').filter('firstDueIndex', function() {
 
   return function(input) {
     var out = undefined;
@@ -504,7 +551,7 @@ app.filter('firstDueIndex', function() {
 
 });
 
-app.filter('dueNow', function() {
+angular.module('mainApp').filter('dueNow', function() {
 
   return function dueNow(input) {
     var now = Date.now();
@@ -515,7 +562,7 @@ app.filter('dueNow', function() {
 
 });
 
-app.filter('dateDays', function() {
+angular.module('mainApp').filter('dateDays', function() {
   var now = Date.now();
   return function dueNow(input) {
     if (!input) return '-';
@@ -531,7 +578,7 @@ app.filter('dateDays', function() {
 
 });
 
-app.filter('markdown', [function () {
+angular.module('mainApp').filter('markdown', [function () {
     var converter = new Showdown.converter();
     return function (value) {
         //return $sce.trustAsHtml(converter.makeHtml(value || ''));
@@ -545,7 +592,7 @@ var STATUSNEW = 0;
 var STATUSDUE = 1;
 var STATUSDONE = 2;
 
-app.filter('status', [function () {
+angular.module('mainApp').filter('status', [function () {
     var now = Date.now();
     return function (card) {
       if (!card) return -1;
@@ -559,7 +606,7 @@ app.filter('status', [function () {
     };
 }]);
 
-app.filter('statusText', [function () {
+angular.module('mainApp').filter('statusText', [function () {
 
     return function (value) {
 
@@ -572,7 +619,7 @@ app.filter('statusText', [function () {
     };
 }]);
 
-app.filter("statusFilter", ['$filter', function($filter){
+angular.module('mainApp').filter("statusFilter", ['$filter', function($filter){
   var statusCode = $filter('status');
 
   return function(input, code){
@@ -608,7 +655,7 @@ app.filter("statusFilter", ['$filter', function($filter){
   // }
 
 
-/*app.factory('cardStorage', ['$http', function ($http) {
+/*angular.module('mainApp').factory('cardStorage', ['$http', function ($http) {
   var STORAGE_ID = 'cards-app';
 
   var exports = {};

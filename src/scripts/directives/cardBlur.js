@@ -3,7 +3,7 @@
 /**
  * Directive that executes an expression when the element it is applied to loses focus
  */
-app.directive('cardBlur', function () {
+angular.module('mainApp').directive('cardBlur', function () {
 	return function (scope, elem, attrs) {
 		elem.bind('blur', function (e) {
 			if (!e.relatedTarget) {

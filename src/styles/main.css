@@ -51,14 +51,21 @@ footer {
   margin: 10px 0;
   padding: 5px;
   text-align: center;
-  border-radius: 4px;
+  /* border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
-  box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
+  box-shadow: inset 0 1px 1px rgba(0,0,0,0.05); */
   height: 240px;
   /* font-family: "MS PGothic", Meiryo, Arial;
   font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; */
   font-family:  "MS PGothic", Meiryo, sans-serif;
   overflow-y: auto;
+}
+
+.cardEditor {
+  background-image: none;
+  outline: 0;
+  -webkit-box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
+  box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 }
 
 .card span.cloze {
@@ -115,6 +122,11 @@ footer {
   top: 10px;
 }
 
+#cardControl .btn-group {
+  line-height:22px;
+  padding:5px;
+}
+
 .statsBox .progress {
   border-radius: 3px;
   margin-bottom: 0px;
@@ -138,4 +150,30 @@ select.deck {
   display: block;
 }
 
+/* ng-animate */
+
+.animate-show {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  opacity:1;
+}
+
+.cardEditor.animate-show {
+  line-height:24px;
+  padding:10px;
+}
+
+.animate-show.ng-hide-add,
+.animate-show.ng-hide-remove {
+  display:block!important;
+}
+
+.animate-show.ng-hide {
+  opacity:0;
+}
+
+.cardEditor.animate-show.ng-hide {
+  line-height:0;
+  padding:0 10px;
+}
 

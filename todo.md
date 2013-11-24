@@ -2,60 +2,63 @@
 
 _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
-- [ ] Better editor
-- [ ] Deck broswer
-- [x] Markdown?
-- [x] Furugana
-- [x] Login
-- [x] Firebase
-- [x] Multiple decks
+# Next
+- [ ] Copy deck
+- [ ] Enable/disable actions based on user
+- [ ] Fix progressing algo
+- [ ] Fix login/logout buttons
+- [ ] Dont redirect on login/logout
+- [ ] Better isOwner?
+- [x] app constants ('FBURL')
+
+# Soon
+- [ ] Denormalize data
+- [ ] user object
+- [ ] $user.admin
+- [ ] private decks?
+- [ ] localStorage backup for guests?
+- [ ] Guest account reset
+- [ ] Cards -> angularFirebaseCollection
+- [ ] Optimize stats ($scope.stats = getDeckStats();)
+- [ ] Cache stats?
+- [ ] Fix new card UI
+- [ ] Card study/edit directive
+- [ ] Multiple guests
+
+# Longer term
+- [ ] User profile
+- [ ] Import/export decks
+- [ ] better navbar controller
+- [ ] Optimize view-controller
+- [ ] Parent/child relationships
+
+# General
+- Use more services, filters, and directives
+- Use app constants
+
+# Other
+- [ ] Better study -> editor -> study UI
 - [ ] Native file format i.e. Markdown with tags? (@due 1-1-2020) (@tags japanese phrase) (@interval 0)?
 - [ ] Seperate deck from progress journal?
-- [x] Use position for bracketing instead of replace
+- [ ] Seperate cards from deck?
 - [ ] Multiple seletions?
-- [ ] Improve view/edit switch.
 - [ ] After creating a new sub card, mark due, return to original
-- [ ] Add new sub-card without moving from original.
-- [ ] Store hierarchy?
-- [ ] Native file Import/export
-- [ ] External file (cvs, anki, etc) import/export
-- [ ] External system import (Anki web, google docs, github)
+- [ ] Add new sub-card without moving from original?
 - [ ] Google translate helper?
-- [ ] Improve interval algorithm
 - [ ] Algorithm should consider hierarchy
-- [ ] Directives
-- [x] Filter... (All, Due, Due soon)
-- [x] Progress bar
 - [ ] Timer?
-- [x] Ruby/furigana fallback
-- [x] Fix kanji font
 - [ ] Move forward/back buttons?
 - [ ] Swipe forward/back?
-- [x] Move flip buttons (keep fixed position)
-- [x] Increase button size (esp. on mobile)
-- [x] Fix overflow
-- [x] Display add msg when cards missing
 - [ ] Syntax help
-- [ ] Statistics popup
+- [ ] Statistics popup?
 - [ ] Full markdown editor?
 - [ ] Undo
-- [x] Use $location to get filter
-- [x] Use ids instead of index
 - [ ] Use moment.js?
 - [ ] Copy markup when creating a new card
-- [x] Improve markdown \{A::B}, \{::B}, \{{::B}}.
 - [ ] Tests for markdown, ruby text
 - [ ] Fix/improve filters: New, due, done, all
-- [ ] Add card position counter.
-- [ ] Move due text and card number.
 - [ ] Finish examples in readme.
 - [ ] Rethink filters
-- [ ] Create status service?
 - [ ] Down vote should move card to 'due'
 - [ ] Improve/Optimize clozed markdown plugin
-- [ ] Optimize stats ($scope.getStats)
-- [x] Add position indicator to status bar
 - [ ] Move reset/clear buttons to deck controller
-- [ ] Add browser view
-- [x] Add decks view
-- [x] Use router
