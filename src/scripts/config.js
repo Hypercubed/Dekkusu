@@ -1,7 +1,7 @@
 
 (function() {
   var app = angular.module('mainApp',
-      ['ngRoute','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate']);
+      ['ui.router','ngRoute', 'ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate']);
 
   app
     .constant('FBURL', 'https://dekkusu.firebaseio.com/')
@@ -12,8 +12,45 @@
       year: '2013'
     });
 
-  app.config(['$provide', '$routeProvider', function($provide, $routeProvider) {
-      $routeProvider.
+  app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+
+    $urlRouterProvider.otherwise("/");
+
+    $stateProvider
+    .state('home', {
+      url: "/",
+      templateUrl: 'partials/homeView.html',
+      controller: 'HomeCtrl'
+    })
+    .state('user', {
+      url: "/:username",
+      templateUrl: 'partials/userView.html',
+      controller: 'DeckListCtrl'
+    })
+    .state('user.deckList', {
+      url: "/",
+      templateUrl: 'partials/user.deckList.html',
+      controller: 'DeckListCtrl'
+    })
+    .state('user.deck', {
+      url: "/:deck",
+      templateUrl: 'partials/user.deckView.html',
+      controller: 'DeckCtrl'
+    })
+    .state('user.deck.cardList', {
+      url: "/",
+      templateUrl: 'partials/user.deck.cardList.html',
+      controller: 'DeckCtrl'
+    })
+    .state('user.deck.card', {
+      url: "/:index",
+      templateUrl: 'partials/user.deck.cardView.html',
+      controller: 'DeckCtrl'
+    });
+
+    // TODO: user.deck.study
+
+      /* $routeProvider.
         when('/', {
           templateUrl: 'partials/homeView.html',
           controller: 'HomeCtrl'
@@ -28,7 +65,7 @@
         }).
         otherwise({
           redirectTo: '/'
-        });
+        }); */
 
     }]);
 

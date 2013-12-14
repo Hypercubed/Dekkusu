@@ -46,10 +46,10 @@ angular.module('mainApp')
 }]);
 
 angular.module('mainApp')
-  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'angularFire', 'angularFireCollection', 'FBURL',
-                      function ($scope, $location, $http, $routeParams, $rootScope, angularFire, angularFireCollection, FBURL) {
+  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'angularFire', 'angularFireCollection', 'FBURL',
+                      function ($scope, $location, $http, $stateParams, $rootScope, angularFire, angularFireCollection, FBURL) {
 
-    $scope.username = $routeParams.username || 'guest';
+    $scope.username = $stateParams.username || 'guest';
     $scope.decks = [];
     $scope.listView = false;
 
@@ -140,11 +140,11 @@ angular.module('mainApp')
 }]);
 
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$routeParams', '$rootScope', 'statusFilterFilter', 'angularFire', 'angularFireCollection', 'FBURL',
-                                         function ($scope,   $location,   $http,   $routeParams,   $rootScope,   statusFilter,         angularFire,   angularFireCollection,   FBURL) {
+angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', 'angularFire', 'angularFireCollection', 'FBURL',
+                                         function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter,         angularFire,   angularFireCollection,   FBURL) {
 
-  $scope.username = $routeParams.username || 'default';
-  $scope.deckId = $routeParams.deck || 0;
+  $scope.username = $stateParams.username || 'default';
+  $scope.deckId = $stateParams.deck || 0;
   $scope.decks = [];
   $scope.deck = { cards: [] };
   $scope.cards = [];

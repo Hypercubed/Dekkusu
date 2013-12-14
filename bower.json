@@ -13,7 +13,8 @@
     "angular-route": "~1.2.0",
     "firebase": "*",
     "angular-fire": "~0.3.1",
-    "firebase-simple-login": "*"
+    "firebase-simple-login": "*",
+    "angular-ui-router": "~0.2.7"
   },
   "devDependencies": {},
   "resolutions": {

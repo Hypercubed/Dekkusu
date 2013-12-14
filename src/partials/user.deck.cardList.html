@@ -1,0 +1,13 @@
+
+    <div ng-repeat="card in cards">
+      <div card-view card="card" cards="cards" is-owner="isOwner"></div>
+    </div>
+
+    <div id="add" class="card editable col-md-12" ng-click="add()" ng-cloak>
+        <span>
+          <br />Click to add
+          <p>
+            <button type="button" class="btn btn-lg btn-link" tooltip="Add"><i class="glyphicon glyphicon-plus-sign"></i>  </button>
+          </p>
+        </span>
+    </div>
