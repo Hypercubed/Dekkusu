@@ -3,10 +3,12 @@
 var DEBUG = false;
 var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 
-angular.module('mainApp').controller('NavCtrl', ['$scope', 'angularFireAuth',  'FBURL', '$rootScope',
-                                         function($scope,   angularFireAuth, FBURL, $rootScope) {
+angular.module('mainApp').controller('NavCtrl', ['$scope', 'angularFireAuth',  'FBURL', 'SITE', '$rootScope',
+                                         function($scope,   angularFireAuth, FBURL,      SITE,  $rootScope) {
 
   $scope.collapse=true;
+
+  $scope.site = SITE;
 
   //var ref = new Firebase(FBURL);
   //angularFireAuth.initialize(ref, {scope: $rootScope, name: "user"});

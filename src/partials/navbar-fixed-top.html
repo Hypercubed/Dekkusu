@@ -1,6 +1,3 @@
----
-component: navbar
----
 <div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapse=true" ng-controller="NavCtrl">
   <div class="container">
     <div class="navbar-header">
@@ -9,11 +6,11 @@ component: navbar
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand {{#is page.dest 'out/index.html'}}active{{/is}}" href="{{assets}}">{{site.title}}</a>
+      <a class="navbar-brand" href="/">{{site.title}}</a>
     </div>
     <div class="navbar-collapse collapse" ng-class="{collapse:collapse}">
 
-      <ul class="nav navbar-nav">
+      <!-- ul class="nav navbar-nav">
         {{#each tags}}{{#is tag 'page'}}
             {{#each pages}}
               <li typeof="sioc:Page" about="document.url" class="{{#is ../../../page.dest dest}}active{{/is}}" >
@@ -21,10 +18,10 @@ component: navbar
               </li>
             {{/each}}
         {{/is}}{{/each}}
-      </ul>
+      </ul -->
 
       <ul class="nav navbar-nav navbar-right">
-        <li ng-show="user" ng-cloak><a href="#/\{{user.username}}/" >\{{user.username}}</a></li>
+        <li ng-show="user" ng-cloak><a href="#/{{user.username}}/" >{{user.username}}</a></li>
         <li ng-show="user" ng-cloak><a href ng-click="logout()">Logout</a></li>
         <li ng-hide="user"><a href ng-click="login()">Login</a></li>
       </ul>

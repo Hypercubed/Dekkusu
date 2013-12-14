@@ -5,7 +5,12 @@
 
   app
     .constant('FBURL', 'https://dekkusu.firebaseio.com/')
-    .constant('DEBUG', false);
+    .constant('DEBUG', false)
+    .constant('SITE', {
+      title: 'Dekkusu',
+      company: 'J. Harshbarger',
+      year: '2013'
+    });
 
   app.config(['$provide', '$routeProvider', function($provide, $routeProvider) {
       $routeProvider.

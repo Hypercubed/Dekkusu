@@ -13,18 +13,6 @@ module.exports = function (grunt) {
       dist: 'dist'
     },
 
-    shell: {
-      options: {
-        stdout: true
-      },
-      npm: {
-        command: 'npm install'
-      },
-      bower: {
-        command: 'node ./node_modules/bower/bin/bower install'
-      },
-    },
-
     watch: {
       src: {
         files: [
@@ -32,17 +20,17 @@ module.exports = function (grunt) {
           'test/**/*.{html,htm,js,css}'
         ],
         options: { livereload: true }
-      },
-      assemble: {
-        files: [
-          '<%= assemble.pages.src %>',
-          '<%= assemble.options.layoutdir %>/*.hbs',
-          '<%= assemble.options.data %>',
-          '<%= assemble.options.partials %>'
-        ],
-        tasks: ['assemble'],
-        options: { livereload: true }
-      }
+      }//,
+      //assemble: {
+      //  files: [
+      //    '<%= assemble.pages.src %>',
+      //    '<%= assemble.options.layoutdir %>/*.hbs',
+      //    '<%= assemble.options.data %>',
+      //    '<%= assemble.options.partials %>'
+      //  ],
+      //  tasks: ['assemble'],
+      //  options: { livereload: true }
+      //}
     },
 
     connect: {
@@ -54,25 +42,6 @@ module.exports = function (grunt) {
           livereload: true,
           open: true
         }
-      }
-    },
-
-    assemble: {
-      options: {
-        flatten: false,
-        partials: '<%= build.src %>/_partials/*.hbs',
-        layoutdir: '<%= build.src %>/_layouts',
-        data: ['<%= build.src %>/_data/*.{json,yml}', 'package.json'],
-        assets: '<%= build.out %>/'
-      },
-      pages: {
-        options: {
-          layout: 'page.hbs',
-        },
-        expand: true,
-        cwd: '<%= build.src %>/',
-        src: ['**/*.hbs','!_*/**'],
-        dest: '<%= build.out %>/'
       }
     },
 
@@ -232,7 +201,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean',
-    'assemble',
+    //'assemble',
     'copy',
     //'imagemin',
     'useminPrepare',
@@ -246,13 +215,13 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', [
       'clean',
-      'assemble',
+      //'assemble',
       'connect:devserver',
       'mocha'
   ]);
 
   grunt.registerTask('server', ['connect:devserver','watch']);
-  grunt.registerTask('run', ['clean','assemble','server']);
+  grunt.registerTask('run', ['clean','server']);
   grunt.registerTask('run:build', ['build','server']);
 
   //grunt.registerTask('deploy:rsync', ['build','rsync']);

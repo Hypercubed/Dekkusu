@@ -1,5 +1,0 @@
-title: <%= package.name %>
-url: './'
-company: <%= package.author %>
-ga: 'UA-XXXXX-X'
-date: <%= new Date() %>
