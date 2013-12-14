@@ -5,14 +5,19 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 # Next
 - [ ] Copy deck
 - [ ] Enable/disable actions based on user
-- [ ] Fix progressing algo
+- [ ] Fix progressing algo!!
 - [ ] Fix login/logout buttons
 - [ ] Dont redirect on login/logout
-- [ ] Better isOwner?
+- [ ] Better isOwner?  (Authorized list)
 - [x] app constants ('FBURL')
+- [ ] Unique deck names: http://weblogs.asp.net/dwahlin/archive/2013/09/24/building-a-custom-angularjs-unique-value-directive.aspx
+- [ ] Firebase v2
+- [ ] Deck factory: https://github.com/vojtajina/WebApp-CodeLab/blob/angularjs/FinalProject/js/services.js
 
 # Soon
-- [ ] Denormalize data
+- [ ] Sidebar showing login info and deck list
+- [ ] Drag and drop
+- [ ] De-normalize data?
 - [ ] user object
 - [ ] $user.admin
 - [ ] private decks?
@@ -39,9 +44,9 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 # Other
 - [ ] Better study -> editor -> study UI
 - [ ] Native file format i.e. Markdown with tags? (@due 1-1-2020) (@tags japanese phrase) (@interval 0)?
-- [ ] Seperate deck from progress journal?
-- [ ] Seperate cards from deck?
-- [ ] Multiple seletions?
+- [ ] Separate deck from progress journal?
+- [ ] Separate cards from deck?
+- [ ] Multiple selections?
 - [ ] After creating a new sub card, mark due, return to original
 - [ ] Add new sub-card without moving from original?
 - [ ] Google translate helper?
