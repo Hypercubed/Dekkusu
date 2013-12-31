@@ -1,5 +1,4 @@
     <div>
-
       <div id="cardControl" class="statsBox" tabindex="0">
 
          <div class="btn-toolbar pull-right">
@@ -13,7 +12,7 @@
           </div>
           <div class="btn-group">
             <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card" ng-if="isOwner"><i class="glyphicon glyphicon-plus-sign" ></i> </button>
-            <button type="button" class="btn btn-primary" ng-cloak ng-if="cards.length" ng-click="edit()" tooltip="{{{true: 'save', false: 'edit'}[isEditing]}}"><i class="glyphicon" ng-class="'glyphicon-'+{true: 'save', false: 'pencil'}[isEditing]"></i> </button>
+            <button type="button" class="btn btn-primary" ng-cloak ng-if="card != null" ng-click="edit()" tooltip="{{{true: 'save', false: 'edit'}[isEditing]}}"><i class="glyphicon" ng-class="'glyphicon-'+{true: 'save', false: 'pencil'}[isEditing]"></i> </button>
             <button type="button" class="btn btn-primary" ng-click="cards.remove(card)" ng-if="cards.length && isOwner"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
           </div>
         </div>

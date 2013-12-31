@@ -5,7 +5,8 @@ angular.module('mainApp').directive('cardView', ['angularFire', function(angular
       scope: {
         card: '=',
         cards: '=',
-        isOwner: '='
+        isOwner: '=',
+        ngClass: '='
       },
       templateUrl: 'partials/cardView.html',
       link: function(scope, element, attrs) {

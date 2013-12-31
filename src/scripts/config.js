@@ -16,6 +16,25 @@
 
     $urlRouterProvider.otherwise("/");
 
+    // Deal with missing trailing slash
+    $urlRouterProvider.rule(function($injector, $location) {
+      var path = $location.path(), search = $location.search(), params;
+
+      if (path[path.length - 1] !== '/') {
+        return;
+      }
+
+      if (Object.keys(search).length === 0) {
+        return path.slice(0,path.length-1);
+      }
+
+      params = [];
+      angular.forEach(search, function(v, k){
+        params.push(k + '=' + v);
+      });
+      return path + '?' + params.join('&');
+    });
+
     $stateProvider
     .state('home', {
       url: "/",
@@ -23,30 +42,40 @@
       controller: 'HomeCtrl'
     })
     .state('user', {
+      abstract: true,
       url: "/:username",
       templateUrl: 'partials/userView.html',
-      controller: 'DeckListCtrl'
+      controller: 'userViewCtrl'
     })
     .state('user.deckList', {
-      url: "/",
+      url: '',
       templateUrl: 'partials/user.deckList.html',
       controller: 'DeckListCtrl'
     })
     .state('user.deck', {
-      url: "/:deck",
-      templateUrl: 'partials/user.deckView.html',
-      controller: 'DeckCtrl'
+       abstract: true,
+       url: "/:deck",
+       templateUrl: 'partials/user.deckView.html',
+       controller: 'DeckCtrl',
+       resolve:  { cardList: ['$stateParams', 'FBURL', 'angularFireCollection', function($stateParams, FBURL, angularFireCollection) {
+
+          var ref = new Firebase(FBURL).child('decks/'+$stateParams.username);
+          var refCards = ref.child($stateParams.deck+'/cards');
+
+          return angularFireCollection(refCards);
+       }]}
     })
     .state('user.deck.cardList', {
-      url: "/",
-      templateUrl: 'partials/user.deck.cardList.html',
-      controller: 'DeckCtrl'
+       url: "",
+       templateUrl: 'partials/user.deck.cardList.html',
+       controller: 'DeckCtrl'
     })
     .state('user.deck.card', {
-      url: "/:index",
+      url: "/:id",
       templateUrl: 'partials/user.deck.cardView.html',
-      controller: 'DeckCtrl'
-    });
+      controller: 'cardViewCtrl'
+    })
+    ;
 
     // TODO: user.deck.study
 
