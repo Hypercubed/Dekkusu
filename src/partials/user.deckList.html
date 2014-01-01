@@ -5,9 +5,10 @@
         <div class="btn-group dropdown">
           <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-wrench"></i> </button>
           <ul class="dropdown-menu">
-            <li><a href="" ng-click="clearCards(id)">Clear</a></li>
+            <li>{{id}}</li>
+            <li><a href="" ng-click="clearCards(id)">Clear - {{id}}</a></li>
             <li><a href="" ng-click="resetCards(id)">Reset</a></li>
-            <li><a href="" ng-click="removeDeck(id)">Delete</a></li>
+            <li><a href="" ng-click="decks.$remove(id)">Delete</a></li>
           </ul>
         </div>
       </div>
@@ -34,7 +35,7 @@
     </div>
   </div>
 
-  <div ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]">
+  <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]">
     <div class="deckCard" ng-show="isOwner">
       <a class="btn btn-link" ng-click="addDeck()" tooltip="New"><h2>Add a deck
       <br /><i class="glyphicon glyphicon-plus-sign"></i> </h2></a>

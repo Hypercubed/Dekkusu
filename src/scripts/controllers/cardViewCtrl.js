@@ -1,8 +1,9 @@
-angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', 'angularFire', 'angularFireCollection', 'FBURL',
-                                         function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter,         angularFire,   angularFireCollection,   FBURL) {
+angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter',
+                                             function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter) {
 
   $scope.index = 0;
 
+  console.log($scope.cards);
 
   $scope.goto = function(index) {
     if (typeof index == 'object')

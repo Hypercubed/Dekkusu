@@ -61,6 +61,11 @@ footer {
   overflow-y: auto;
 }
 
+.gridview .card, .gridview .cardEditor {
+  font-size: large;
+  height: 120px;
+}
+
 .cardEditor {
   background-image: none;
   outline: 0;

@@ -1,19 +1,18 @@
-    <div>
-      <div id="cardControl" class="statsBox" tabindex="0">
 
+      <div id="cardControl" class="statsBox" tabindex="0">
          <div class="btn-toolbar pull-right">
           <div class="btn-group animate-show" ng-show="isEditing" ng-cloak>
-            <button type="button" class="btn btn-primary" ng-click="wrap('*','*')" tooltip="Italic"><i class="glyphicon glyphicon-italic"></i></button>
-            <button type="button" class="btn btn-primary" ng-click="wrap('**','**')" tooltip="Bold"><i class="glyphicon glyphicon-bold"></i></button>
+            <button type="button" class="btn btn-primary" ng-click="wrap('*','*')" tooltip="Italic" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-italic"></i></button>
+            <button type="button" class="btn btn-primary" ng-click="wrap('**','**')" tooltip="Bold" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-bold"></i></button>
           </div>
           <div class="btn-group animate-show" ng-show="isEditing" ng-cloak>
-            <button type="button" class="btn btn-primary" ng-click="wrap('\{','\}')" tooltip="Hide this seletion">{ }</button>
-            <button type="button" class="btn btn-primary" ng-click="wrap('\{\{','\}\}')" tooltip="Cloze this selection">[..]</button>
+            <button type="button" class="btn btn-primary" ng-click="wrap('\{','\}')" tooltip="Hide this seletion" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]">{ }</button>
+            <button type="button" class="btn btn-primary" ng-click="wrap('\{\{','\}\}')" tooltip="Cloze this selection" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]">[..]</button>
           </div>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card" ng-if="isOwner"><i class="glyphicon glyphicon-plus-sign" ></i> </button>
-            <button type="button" class="btn btn-primary" ng-cloak ng-if="card != null" ng-click="edit()" tooltip="{{{true: 'save', false: 'edit'}[isEditing]}}"><i class="glyphicon" ng-class="'glyphicon-'+{true: 'save', false: 'pencil'}[isEditing]"></i> </button>
-            <button type="button" class="btn btn-primary" ng-click="cards.remove(card)" ng-if="cards.length && isOwner"  tooltip="Delete this card"><i class="glyphicon glyphicon-remove"></i ></button>
+            <button type="button" class="btn btn-primary" ng-click="add()"  tooltip="New card" ng-if="isOwner" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-plus-sign" ></i> </button>
+            <button type="button" class="btn btn-primary" ng-cloak ng-if="card != null" ng-click="edit()" tooltip="{{{true: 'save', false: 'edit'}[isEditing]}}" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon" ng-class="'glyphicon-'+{true: 'save', false: 'pencil'}[isEditing]"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="cards.remove(card)" ng-if="cards.length && isOwner"  tooltip="Delete this card" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-remove"></i ></button>
           </div>
         </div>
 
@@ -24,7 +23,7 @@
         </div>
 
         <div class="row">
-          <div class="col-md-3 text-center">
+          <div class="col-md-2 text-center">
             <div ng-cloak ng-if="isOwner">
               <x-small>
               {{card | status | statusText}}
@@ -33,16 +32,13 @@
             </div>
           </div>
 
-          <div class="col-md-6 text-center" >
+          <div class="col-md-8 text-center" >
 
             <div class="btn-group" >
-              <button type="button" class="btn btn-lg btn-default" ng-click="up()" tooltip="Correct" ng-if="isOwner && !clozed"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
-              <button type="button" class="btn btn-lg btn-default" ng-click="flip()" tooltip="Flip"><i class="glyphicon glyphicon-repeat"></i> </button>
-              <button type="button" class="btn btn-lg btn-default" ng-click="down()" tooltip="Incorrect" ng-if="isOwner && !clozed"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
+              <button type="button" class="btn btn-default" ng-click="up()" tooltip="Correct" ng-if="isOwner && !clozed" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-thumbs-up"></i> </button>
+              <button type="button" class="btn btn-default" ng-click="flip()" tooltip="Flip" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-repeat" ></i> </button>
+              <button type="button" class="btn btn-default" ng-click="down()" tooltip="Incorrect" ng-if="isOwner && !clozed"  ng-class="{true: 'btn-lg', false: 'btn-sm'}[listview]"><i class="glyphicon glyphicon-thumbs-down"></i> </button>
             </div>
           </div>
 
       </div>
-      <div class="row"></div>
-
-    </div>

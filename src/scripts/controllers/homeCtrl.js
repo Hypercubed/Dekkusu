@@ -1,21 +1,17 @@
 angular.module('mainApp')
-  .controller('HomeCtrl', ['$scope', '$rootScope','angularFireAuth', '$location',
-                  function ($scope, $rootScope, angularFireAuth, $location) {
+  .controller('HomeCtrl', ['$scope', '$rootScope','$location',
+                  function ($scope, $rootScope, $location) {
 
-  $scope.login = function() {
-    angularFireAuth.login("github");
-  };
-
-  $scope.$on("angularFireAuth:login", function(evt, user) {
+  $scope.$on("$firebaseAuth:login", function(evt, user) {
     $location.path('/'+user.username);
   });
 
-  $scope.$on("angularFireAuth:logout", function(evt) {
+  $scope.$on("$firebaseAuth:logout", function(evt) {
     $location.path('/');
   });
 
-  $scope.$on("angularFireAuth:error", function(evt, err) {
-    //
+  $scope.$on("$firebaseAuth:error", function(evt, err) {
+    console.log(err);
   });
 
 }]);

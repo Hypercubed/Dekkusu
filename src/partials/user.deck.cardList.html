@@ -1,12 +1,12 @@
-    <div ng-repeat="card in cards">
-      <div card-view card="card" cards="cards" is-owner="isOwner" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]"></div>
+    <div ng-repeat="card in cards | orderByPriority">
+      <div card-view card="card" cards="cards" is-owner="isOwner" ng-class="{true: 'col-md-12 listview', false: 'col-md-4 gridview'}[listView]" listview="listView"></div>
     </div>
 
-    <div id="add" class="card editable col-md-12" ng-click="add()" ng-cloak>
+    <div id="add" class="card editable statsBox" ng-click="cards.$add({text: ''})" ng-cloak ng-class="{true: 'col-md-12 listview', false: 'col-md-4 gridview'}[listView]">
         <span>
           <br />Click to add
           <p>
-            <button type="button" class="btn btn-lg btn-link" tooltip="Add"><i class="glyphicon glyphicon-plus-sign"></i>  </button>
+            <button type="button" class="btn btn-lg btn-link" tooltip="Add" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listView]"><i class="glyphicon glyphicon-plus-sign"></i>  </button>
           </p>
         </span>
     </div>

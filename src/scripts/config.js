@@ -1,7 +1,7 @@
 
 (function() {
   var app = angular.module('mainApp',
-      ['ui.router','ngRoute', 'ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate']);
+      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate']);
 
   app
     .constant('FBURL', 'https://dekkusu.firebaseio.com/')
@@ -56,14 +56,7 @@
        abstract: true,
        url: "/:deck",
        templateUrl: 'partials/user.deckView.html',
-       controller: 'DeckCtrl',
-       resolve:  { cardList: ['$stateParams', 'FBURL', 'angularFireCollection', function($stateParams, FBURL, angularFireCollection) {
-
-          var ref = new Firebase(FBURL).child('decks/'+$stateParams.username);
-          var refCards = ref.child($stateParams.deck+'/cards');
-
-          return angularFireCollection(refCards);
-       }]}
+       controller: 'DeckCtrl'
     })
     .state('user.deck.cardList', {
        url: "",
@@ -102,11 +95,14 @@
       $logProvider.debugEnabled(DEBUG);
     }]);
 
-  app.run(['angularFireAuth', 'FBURL', '$rootScope', 'DEBUG', '$log', '$location',
-    function(angularFireAuth, FBURL, $rootScope, DEBUG, $log, $location) {
-      //$log.debug($log);
-      angularFireAuth.initialize(new Firebase(FBURL), {scope: $rootScope, name: 'user'});
-      //$rootScope.user = null;
+  app.run(['$firebaseAuth', 'FBURL', '$rootScope', 'DEBUG', '$log', '$location',
+    function($firebaseAuth, FBURL, $rootScope, DEBUG, $log, $location) {
+      var ref = new Firebase(FBURL);
+      $rootScope.auth = $firebaseAuth(ref);
     }]);
+
+  app.run(['$rootScope','SITE', function($rootScope,SITE) {
+    $rootScope.site = SITE;
+  }]);
 
 })();

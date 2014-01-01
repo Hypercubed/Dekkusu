@@ -1,25 +1,19 @@
 'use strict';
 
-angular.module('mainApp').directive('cardView', ['angularFire', function(angularFire) {
+angular.module('mainApp').directive('cardView', [function() {
     return {
       scope: {
         card: '=',
         cards: '=',
         isOwner: '=',
-        ngClass: '='
+        ngClass: '=',
+        listview: '='
       },
       templateUrl: 'partials/cardView.html',
       link: function(scope, element, attrs) {
 
         scope.isEditing = false;
         scope.clozed = true;
-
-        //scope.$watchCollection('[card.text, card.due, card.interval]', function() {
-
-        //  if (scope.card && !scope.isEditing)
-        //    scope.cards.update(scope.card);
-
-        //});
 
         var el = angular.element(".cardEditor")[0];
 
@@ -62,7 +56,8 @@ angular.module('mainApp').directive('cardView', ['angularFire', function(angular
           if (arguments.length < 1) flag = !scope.isEditing;
           scope.isEditing = flag;
           if (!flag) {
-            scope.cards.update(scope.card);
+            //console.log(scope.cards, scope.card);
+            scope.cards.$save(scope.card.$id);
           }
         }
 

@@ -3,85 +3,9 @@
 var DEBUG = false;
 var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
 
-angular.module('mainApp').controller('NavCtrl', ['$scope', 'angularFireAuth',  'FBURL', 'SITE', '$rootScope',
-                                         function($scope,   angularFireAuth, FBURL,      SITE,  $rootScope) {
-
-  $scope.collapse=true;
-
-  $scope.site = SITE;
-
-  //var ref = new Firebase(FBURL);
-  //angularFireAuth.initialize(ref, {scope: $rootScope, name: "user"});
-
-  $scope.login = function() {
-    angularFireAuth.login("github");
-  };
-
-  $scope.logout = function() {
-    angularFireAuth.logout();
-  };
-
-}]);
-
-// angular.module('mainApp')
-//   .controller('HomeCtrl', ['$scope', '$rootScope','angularFireAuth', '$location',
-//                   function ($scope, $rootScope, angularFireAuth, $location) {
-
-//   $scope.login = function() {
-//     angularFireAuth.login("github");
-//   };
-
-//   $scope.$on("angularFireAuth:login", function(evt, user) {
-//     $location.path('/'+user.username);
-//   });
-
-//   $scope.$on("angularFireAuth:logout", function(evt) {
-//     $location.path('/');
-//   });
-
-//   $scope.$on("angularFireAuth:error", function(evt, err) {
-//     //
-//   });
-
-// }]);
-
 angular.module('mainApp')
-  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'angularFire', 'angularFireCollection', 'FBURL',
-                      function ($scope, $location, $http, $stateParams, $rootScope, angularFire, angularFireCollection, FBURL) {
-
-  console.log('DeckListCtrl',$stateParams);
-
-  $scope.addDeck = function(cards) {
-    var cards = cards || [{text:""}];
-    var name = 'Deck', index = 'deck', i = 1;
-
-    while ($scope.decks[index]) {
-      i++;
-      name = 'Deck '+i;
-      index = 'deck-'+i;
-    }
-
-    var deck = { id: index, name: name, cards: cards };
-
-    //$scope.decks[index] = deck;
-    ref.child(index).set(deck);
-    //console.log($scope.decks);
-    //$scope.decks.set(index,deck);
-  }
-
-  function slugify(input) {  // Todo: filter
-    return input
-      .replace('/', '-')
-      .replace(' ', '-')
-      .replace('#', '-')
-      .replace('?', '-');
-  }
-
-  $scope.removeDeck = function(index) {
-    ref.child(index).set(null);
-    //$scope.decks[index] = null;
-    //$scope.decks.remove(index);
-  }
+  .controller('DeckListCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope',
+                      function ($scope, $location, $http, $stateParams, $rootScope) {
 
 }]);
 
@@ -121,60 +45,40 @@ angular.module('mainApp')
 }]);
 
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', 'angularFire', 'angularFireCollection', 'FBURL','cardList',
-                                         function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter,         angularFire,   angularFireCollection,   FBURL, cardList) {
+angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', '$firebase', 'FBURL',
+                                         function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter,         $firebase,   FBURL) {
 
   $scope.username = $stateParams.username || 'default';
   $scope.deckId = $stateParams.deck || 0;
   $scope.decks = [];
   $scope.deck = { cards: [] };
-  $scope.cards = [];
   $scope.search = $location.search();
 
-  console.log(cardList);
+  $scope.filter = STATUSALL;
+  $scope.isEditing = false;
 
-    $scope.filter = STATUSALL;
-    $scope.isEditing = false;
+  var ref = new Firebase(FBURL).child('decks/'+$stateParams.username);
+  var cardRef = ref.child($stateParams.deck+'/cards');
 
-  var ref = new Firebase(FBURL).child('decks/'+$scope.username);
-  var refCards = ref.child($scope.deckId+'/cards');
+  $scope.decks = $firebase(ref);
+  $scope.cards = $firebase(cardRef);
 
-  angularFire(ref, $scope, 'decks').then(function(v) {
-    $scope.isOwner = ($scope.user) ? $scope.user.username == $scope.username : $scope.username == 'guest';
-    $scope.deck = $scope.decks[$scope.deckId];
-  });
+  $scope.cards.$on("loaded", getStats);
+  $scope.cards.$on("change", getStats);
 
-  //$scope.cards = angularFireCollection(refCards, function(snap) {
-  //  getStats(snap);
-  //});
+  function getStats() {
 
-  $scope.cards = cardList;
+    var keys = $scope.cards.$getIndex();
+    console.log(keys);
 
-  function getStats(snap) {
-
-    var stats = {
+    $scope.stats = {
       new: 0,
       due: 0,
       done: 0,
-      total: snap.numChildren()
+      total: keys.length
     };
 
-    $scope.stats = stats;
   }
-
-  $scope.$on("angularFireAuth:login", function(evt, user) {
-    $scope.isOwner = ($scope.user) ? $scope.user.username == $scope.username : $scope.username == 'guest';
-  });
-
-  $scope.$on("angularFireAuth:logout", function(evt) {
-    $scope.isOwner = $scope.username == 'guest';
-  });
-
-  $scope.$on("angularFireAuth:error", function(evt, err) {
-    $scope.isOwner = $scope.username == 'guest';
-  });
-
-  //$scope.cards = angularFireCollection(ref.child($scope.deckId).child('cards'));
 
   $scope.copyCards = function() {
     var deck = $scope.deck;
@@ -238,18 +142,6 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
     //$scope.goto($scope.index);
     //$scope.applyFilter($scope.filter);
   }
-
-  //$scope.applyFilter = function applyFilter(filter) {
-
-    //$scope.filter = filter = filter || $scope.filter;
-
-    //$scope.filteredCards = statusFilter($scope.deck.cards, $scope.filter)
-    //  .sort(function(a,b) {
-    //    return a.due<b.due?-1:a.due>b.due?1:0;
-    //  });
-
-    //$scope.goto($scope.index);
-  //}
 
   $scope.goto = function(index) {
     if (typeof index == 'object')
