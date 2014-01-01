@@ -3,6 +3,10 @@
 _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
 # Next
+- [ ] Firebase v2
+- [ ] Data services
+- [ ] Move all controllers
+- [ ] Chanmte controller/view layout
 - [ ] Copy deck
 - [ ] Enable/disable actions based on user
 - [ ] Fix progressing algo!!
@@ -11,7 +15,6 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Better isOwner?  (Authorized list)
 - [x] app constants ('FBURL')
 - [ ] Unique deck names: http://weblogs.asp.net/dwahlin/archive/2013/09/24/building-a-custom-angularjs-unique-value-directive.aspx
-- [ ] Firebase v2
 - [ ] Deck factory: https://github.com/vojtajina/WebApp-CodeLab/blob/angularjs/FinalProject/js/services.js
 
 # Soon
