@@ -1,0 +1,9 @@
+<div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapseNav=true"><div class="container"><div class="navbar-header"><button type="button" class="navbar-toggle" ng-click="collapseNav=!collapseNav"><span class="icon-bar"></span> <span class="icon-bar"></span> <span class="icon-bar"></span></button> <a class="navbar-brand" href="/">{{site.title}}</a></div><div class="navbar-collapse collapse" ng-class="{collapse:collapseNav}"><!-- ul class="nav navbar-nav">
+        {{#each tags}}{{#is tag 'page'}}
+            {{#each pages}}
+              <li typeof="sioc:Page" about="document.url" class="{{#is ../../../page.dest dest}}active{{/is}}" >
+                <a href="{{relative ../../../page.dest dest}}" property="dc:title">{{data.title}}</a>
+              </li>
+            {{/each}}
+        {{/is}}{{/each}}
+      </ul --><ul class="nav navbar-nav navbar-right" ng-cloak=""><li ng-if="auth.user" ng-cloak=""><a href="#/{{auth.user.username}}/">{{auth.user.username}}</a></li><li ng-if="auth.user" ng-cloak=""><a href="" ng-click="auth.$logout()">Logout</a></li><li ng-if="!auth.user"><a href="" ng-click="auth.$login('github')">Login</a></li></ul></div></div></div>
