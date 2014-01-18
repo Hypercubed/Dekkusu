@@ -3,11 +3,11 @@ angular.module('mainApp')
                   function ($scope, $rootScope, $location) {
 
   $scope.$on("$firebaseAuth:login", function(evt, user) {
-    $location.path('/'+user.username);
+    //$location.path('/'+user.username);
   });
 
   $scope.$on("$firebaseAuth:logout", function(evt) {
-    $location.path('/');
+    //$location.path('/');
   });
 
   $scope.$on("$firebaseAuth:error", function(evt, err) {
