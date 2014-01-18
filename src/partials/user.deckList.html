@@ -1,19 +1,19 @@
 
-  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id, deck) in decks">
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,deck) in decks">
     <div class="deckCard" ng-controller="DeckCtrl2">
       <div class="btn-toolbar pHover pull-right" ng-show="isOwner">
         <div class="btn-group dropdown">
           <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-wrench"></i> </button>
           <ul class="dropdown-menu">
             <li>{{id}}</li>
-            <li><a href="" ng-click="clearCards(id)">Clear - {{id}}</a></li>
+            <li><a href="" ng-click="clearCards(id)">Clear</a></li>
             <li><a href="" ng-click="resetCards(id)">Reset</a></li>
-            <li><a href="" ng-click="decks.$remove(id)">Delete</a></li>
+            <li><a href="" ng-click="removeDeck(id)">Delete</a></li>
           </ul>
         </div>
       </div>
-      <h2><a href="#/{{username}}/{{id}}">{{deck.name}}</a></h2>
-      <div class="row" ng-cloak>
+      <h2><a href="#/{{username}}/{{id}}">{{id.substr(id.length-4)}}</a></h2>
+      <!-- div class="row" ng-cloak>
         <div class="col-md-12 text-center">
           <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>
           <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="1"><b>{{(deck.cards | statusFilter:1).length}}</b> due</a>
@@ -31,7 +31,7 @@
         <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{((deck.cards | statusFilter:0).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:0).length}} new">
           <span class="sr-only">{{(deck.cards | statusFilter:0).length}} new</span>
         </div>
-      </div>
+      </div -->
     </div>
   </div>
 

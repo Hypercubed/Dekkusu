@@ -1,17 +1,23 @@
 # Todo list for [Dekkusu](https://github.com/Hypercubed/Dekkusu)
 
+Key -
+  [ ] - Due
+  [x] - Done
+  [-] - Skipped
+  [*] - Inprogress
+
 _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
 # Next
-- [ ] Firebase v2
-- [ ] Data services
+- [x] Firebase v2
+- [*] Data services
 - [ ] Move all controllers
-- [ ] Chanmte controller/view layout
+- [ ] Change controller/view layout
 - [ ] Copy deck
 - [ ] Enable/disable actions based on user
 - [ ] Fix progressing algo!!
 - [ ] Fix login/logout buttons
-- [ ] Dont redirect on login/logout
+- [ ] Don't redirect on login/logout
 - [ ] Better isOwner?  (Authorized list)
 - [x] app constants ('FBURL')
 - [ ] Unique deck names: http://weblogs.asp.net/dwahlin/archive/2013/09/24/building-a-custom-angularjs-unique-value-directive.aspx

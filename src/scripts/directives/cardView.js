@@ -15,6 +15,8 @@ angular.module('mainApp').directive('cardView', [function() {
         scope.isEditing = false;
         scope.clozed = true;
 
+        console.log(scope);
+
         var el = angular.element(".cardEditor")[0];
 
         function getSelectedText() {

@@ -1,22 +1,21 @@
 angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter',
                                              function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter) {
 
+  //$scope.cardIds = $scope.$parent.cards.$getIndex();
   $scope.index = 0;
 
-  console.log($scope.cards);
+  console.log('cardViewCtrl $scope', $scope);
 
   $scope.goto = function(index) {
-    if (typeof index == 'object')
-      index = $scope.cards.indexOf(index);
+    console.log(index);
 
-    if (index > $scope.cards.length)
-      index = $scope.cards.length;
+    if (index > $scope.$parent.cardIds.length)
+      index = 0;
 
     if (index < 0)
-      $scope.index = 0;
+      index = $scope.$parent.cardIds.length;
 
     $scope.index = index;
-    //$scope.card = $scope.cards[$scope.index];
 
   }
 
@@ -40,13 +39,11 @@ angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$h
   }
 
   $scope.prev = function() {
-    var index = ($scope.index > 0) ? $scope.index : $scope.cards.length;
-    $scope.goto(index-1);
+    $scope.goto($scope.index-1);
   }
 
   $scope.next = function() {
-    var index = ($scope.index < $scope.cards.length-1) ? $scope.index+1 : 0;
-    $scope.goto(index);
+    $scope.goto($scope.index+1);
   }
 
   $scope.add = function() {

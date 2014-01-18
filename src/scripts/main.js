@@ -45,11 +45,11 @@ angular.module('mainApp')
 }]);
 
 
-angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', '$firebase', 'FBURL',
-                                         function ($scope,   $location,   $http,   $stateParams,   $rootScope,   statusFilter,         $firebase,   FBURL) {
+angular.module('mainApp').controller('DeckCtrl', ['$state','$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', '$firebase', 'FBURL', 'deckManager',
+                                         function ($state, $scope, $location,   $http,   $stateParams,   $rootScope,   statusFilter,         $firebase,   FBURL,  deckManager) {
 
   $scope.username = $stateParams.username || 'default';
-  $scope.deckId = $stateParams.deck || 0;
+  $rootScope.deckId = $scope.deckId = $stateParams.deck || 0;
   $scope.decks = [];
   $scope.deck = { cards: [] };
   $scope.search = $location.search();
@@ -57,19 +57,20 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
   $scope.filter = STATUSALL;
   $scope.isEditing = false;
 
-  var ref = new Firebase(FBURL).child('decks/'+$stateParams.username);
-  var cardRef = ref.child($stateParams.deck+'/cards');
+  var ref = new Firebase(FBURL).child('decks');
+  var cardRef = ref.child($stateParams.deck).child('cards');
 
-  $scope.decks = $firebase(ref);
-  $scope.cards = $firebase(cardRef);
+  $scope.decks = deckManager.getUserDeckIds($scope.username);
+  $scope.cards = deckManager.getDeckById($scope.deckId);
 
   $scope.cards.$on("loaded", getStats);
   $scope.cards.$on("change", getStats);
 
   function getStats() {
 
-    var keys = $scope.cards.$getIndex();
-    console.log(keys);
+
+    var keys = $scope.cardIds = $scope.cards.$getIndex();
+    //console.log(keys);
 
     $scope.stats = {
       new: 0,
@@ -185,22 +186,6 @@ angular.module('mainApp').controller('DeckCtrl', ['$scope', '$location', '$http'
   $scope.next = function() {
     var index = ($scope.index < $scope.cards.length-1) ? $scope.index+1 : 0;
     $scope.goto(index);
-  }
-
-  $scope.add = function() {
-
-    var text = getSelectedText();
-
-    var card = {};
-    card.text = text || '';
-    card.due = card.due || Date.now();
-    card.interval = card.interval || 0;
-
-    $scope.cards.add(card);
-    //$scope.filteredCards = $scope.deck.cards;   // TODO: filter
-
-    $scope.goto(card);
-    $scope.isEditing = true;
   }
 
   $scope.deleteCard = function() {

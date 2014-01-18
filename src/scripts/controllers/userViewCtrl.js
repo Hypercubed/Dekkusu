@@ -1,28 +1,24 @@
 angular.module('mainApp')
-  .controller('userViewCtrl', ['$scope','$rootScope', '$location', '$http', '$stateParams', '$rootScope', '$firebase', 'FBURL', '$state',
-                      function ($scope, $rootScope, $location, $http, $stateParams, $rootScope, $firebase, FBURL,$state) {
+  .controller('userViewCtrl', ['$scope','$rootScope', '$location', '$http', '$stateParams', '$rootScope', '$firebase', 'FBURL', '$state','deckManager',
+                      function ($scope, $rootScope, $location, $http, $stateParams, $rootScope, $firebase, FBURL,$state,deckManager) {
 
     $scope.username = $stateParams.username || 'guest';
-    $scope.deckId = $stateParams.deck || null;
+    $scope.deckId = $state.params.deck || null;
     $scope.decks = [];
     $scope.listView = false;
 
-    var ref = new Firebase(FBURL).child('decks/'+$scope.username);
-    $scope.decks = $firebase(ref);
+    $rootScope.$on('$stateChangeSuccess', function(){
+      $scope.deckId = $state.params.deck || null;
+    })
 
-    $scope.addDeck = function(cards) {
-      var cards = cards || [{text:""}];
-      var name = 'Deck', index = 'deck', i = 1;
+    $scope.decks = deckManager.getUserDeckIds($scope.username);
 
-      while ($scope.decks[index]) {
-        i++;
-        name = 'Deck '+i;
-        index = 'deck-'+i;
-      }
+    $scope.addDeck = function() {
+      deckManager.addDeck($scope.username);
+    }
 
-      var deck = { id: index, name: name, cards: cards };
-
-      $scope.decks.$add(deck);
+    $scope.removeDeck = function(id) {
+      deckManager.removeDeck($scope.username, id);
     }
 
     function slugify(input) {  // Todo: filter
