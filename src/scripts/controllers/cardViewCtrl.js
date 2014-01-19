@@ -4,20 +4,15 @@ angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$h
   //$scope.cardIds = $scope.$parent.cards.$getIndex();
   $scope.index = 0;
 
-  console.log('cardViewCtrl $scope', $scope);
-
-  $scope.goto = function(index) {
-    console.log(index);
-
-    if (index > $scope.$parent.cardIds.length)
+  $scope.$watch('index', function(index) {
+    if (index >= $scope.$parent.cardIds.length)
       index = 0;
 
     if (index < 0)
-      index = $scope.$parent.cardIds.length;
+      index = $scope.$parent.cardIds.length-1;
 
     $scope.index = index;
-
-  }
+  });
 
   $scope.keypressCallback = function($event) {
     console.log($event.keyCode);
@@ -39,14 +34,14 @@ angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$h
   }
 
   $scope.prev = function() {
-    $scope.goto($scope.index-1);
+    $scope.index--;
   }
 
   $scope.next = function() {
-    $scope.goto($scope.index+1);
+    $scope.index++;
   }
 
-  $scope.add = function() {
+  /* $scope.add = function() {
 
     var text = getSelectedText();
 
@@ -88,6 +83,6 @@ angular.module('mainApp').controller('cardViewCtrl', ['$scope', '$location', '$h
     }
 
     return null;
-  }
+  } */
 
 }]);

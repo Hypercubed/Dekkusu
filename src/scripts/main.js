@@ -1,7 +1,11 @@
 'use strict';
 
 var DEBUG = false;
-var DAYS = 1*1000*60*60*24  // 1 day in milliseconds
+
+var SECONDS = 1000;
+var MINS = 60*SECONDS;
+var HOURS = 60*MINS;
+var DAYS = 24*HOURS;  // 1 day in milliseconds
 
 angular.module('mainApp')
   .controller('DeckListCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope',
@@ -51,23 +55,31 @@ angular.module('mainApp').controller('DeckCtrl', ['$state','$scope', '$location'
   $scope.username = $stateParams.username || 'default';
   $rootScope.deckId = $scope.deckId = $stateParams.deck || 0;
   $scope.decks = [];
-  $scope.deck = { cards: [] };
+  //$scope.deck = { cards: [] };
   $scope.search = $location.search();
 
   $scope.filter = STATUSALL;
   $scope.isEditing = false;
 
-  var ref = new Firebase(FBURL).child('decks');
-  var cardRef = ref.child($stateParams.deck).child('cards');
+  //var ref = new Firebase(FBURL).child('decks');
+  //var cardRef = ref.child($stateParams.deck).child('cards');
 
   $scope.decks = deckManager.getUserDeckIds($scope.username);
-  $scope.deck = deckManager.getDeckById($scope.deckId);
   $scope.cards = deckManager.getCardsByDeckId($scope.deckId);
 
   $scope.cards.$on("loaded", getStats);
   $scope.cards.$on("change", getStats);
 
+  $scope.add = function(card) {
+    card.due = new Date()+5*MINS;
+
+    $scope.cards.$add(card);
+    card.text = '';
+  }
+
   function getStats() {
+
+    //console.log($scope.cards);
 
     //$scope.cards = $scope.deck.cards;
     var keys = $scope.cardIds = $scope.cards.$getIndex();
@@ -82,7 +94,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$state','$scope', '$location'
 
   }
 
-  $scope.copyCards = function() {
+  /* $scope.copyCards = function() {
     var deck = $scope.deck;
     var user = $scope.user.username;
     var loc = user+'/'+deck.id
@@ -215,7 +227,7 @@ angular.module('mainApp').controller('DeckCtrl', ['$state','$scope', '$location'
     }
 
     return null;
-  }
+  } */
 
   /* $scope.reset = function() {
     console.log('reset');
@@ -346,14 +358,14 @@ angular.module('mainApp').filter('dueNow', function() {
 angular.module('mainApp').filter('dateDays', function() {
   var now = Date.now();
   return function dueNow(input) {
-    if (!input) return '-';
+    if (!input) return 'now';
 
     var delta = input - now;  // milli
-    if (delta < 0) return 'now';
+    if (delta < 0 || !delta) return 'now';
     delta = delta/1000/60;  // min
     if (delta < 1) return 'soon';
     delta = delta/60/24;       // day
-    if (delta < 1) return '<1 day';
+    if (delta < 1) return 'today';
     return Math.floor(delta) + ' days';
   }
 

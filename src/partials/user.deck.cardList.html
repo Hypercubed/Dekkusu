@@ -2,15 +2,20 @@
       <div card-view card="card" cards="cards" is-owner="isOwner" ng-class="{true: 'col-md-12 listview', false: 'col-md-4 gridview'}[listView]" listview="listView"></div>
     </div>
 
-    <div id="add" ng-click="cards.$add({text: ''})" ng-cloak ng-class="{true: 'col-md-12 listview', false: 'col-md-4 gridview'}[listView]">
-      <div class="statsBox" >
-      <div class="card" >
-        <span>
-          <br />Click to add
-          <p>
-            <button type="button" class="btn btn-lg btn-link" tooltip="Add" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listView]"><i class="glyphicon glyphicon-plus-sign"></i>  </button>
-          </p>
-        </span>
-      </div>
+    <div id="add" ng-cloak ng-class="{true: 'col-md-12 listview', false: 'col-md-4 gridview'}[listView]">
+      <div id="cardControl" class="statsBox" >
+        <div class="newCard" >
+          <textarea id="edit" class="form-control cardEditor" rows="5" placeholder="Card contents" ng-model="newcard.text"></textarea>
+        </div>
+        <div class="row">
+          <div class="btn-group">
+            <button type="button" class="btn btn-lg btn-primary" ng-class="{true: 'btn-lg', false: 'btn-sm'}[listView]" ng-click="add(newcard)">Add new card</button>
+          </div>
+        </div>
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style="width: 0%;" >
+            <span class="sr-only"></span>
+          </div>
+        </div>
       </div>
     </div>

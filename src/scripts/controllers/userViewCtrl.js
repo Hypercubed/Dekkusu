@@ -4,10 +4,14 @@ angular.module('mainApp')
 
     $scope.username = $stateParams.username || 'guest';
     $scope.deckId = $state.params.deck || null;
-    $scope.decks = [];
-    $scope.listView = false;
+    $scope.decks = deckManager.getUserDeckIds($scope.username);
 
+    $scope.listView = false;
     $scope.newdeck = { name: '', owner: $scope.username };
+
+    $scope.isOwner = true;  // Fix this.
+
+    $rootScope.state = $state;
 
     loadDeck();
 
@@ -16,14 +20,13 @@ angular.module('mainApp')
 
       if ($scope.deckId) {
         $scope.deck = deckManager.getDeckById($scope.deckId);
+        console.log($scope.deck.cards);
       } else {
         $scope.deck = null;
       }
     }
 
     $rootScope.$on('$stateChangeSuccess', loadDeck);
-
-    $scope.decks = deckManager.getUserDeckIds($scope.username);
 
     $scope.addDeck = function(deck) {
       deckManager.addDeck($scope.username, deck);
@@ -33,33 +36,5 @@ angular.module('mainApp')
     $scope.removeDeck = function(id) {
       deckManager.removeDeck($scope.username, id);
     }
-
-    function slugify(input) {  // Todo: filter
-      return input
-        .replace('/', '-')
-        .replace(' ', '-')
-        .replace('#', '-')
-        .replace('?', '-');
-    }
-
-    setAuth();
-
-    function setAuth() {
-      $scope.isOwner = ($rootScope.auth.user) ? $rootScope.auth.user.username == $scope.username : $scope.username == 'guest';
-      console.log('setAuth', $scope.isOwner, $rootScope.auth.user, $rootScope.username);
-    }
-
-    $rootScope.$on("$firebaseAuth:login", function(e, user) {
-      console.log("User " + user.id + " successfully logged in!");
-      setAuth();
-    });
-
-    $scope.$on("$firebaseAuth:logout", function(evt) {
-      setAuth()
-    });
-
-    $scope.$on("$firebaseAuth:error", function(evt, err) {
-      setAuth()
-    });
 
 }]);

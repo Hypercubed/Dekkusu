@@ -1,6 +1,19 @@
 'use strict';
 
-angular.module('mainApp').directive('cardView', [function() {
+var SECONDS = 1000;
+var MINS = 60*SECONDS;
+var HOURS = 60*MINS;
+var DAYS = 24*HOURS;  // 1 day in milliseconds
+
+var PROGRESS = [5*MINS,1*HOURS,1*DAYS,3*DAYS,7*DAYS,30*DAYS,60*DAYS,365*DAYS];
+
+// TODO: Don't do this
+var STATUSALL = -1;
+var STATUSNEW = 0;
+var STATUSDUE = 1;
+var STATUSDONE = 2;
+
+angular.module('mainApp').directive('cardView', ['statusFilter', 'statusTextFilter', function(statusFilter, statusTextFilter) {
     return {
       scope: {
         card: '=',
@@ -15,9 +28,22 @@ angular.module('mainApp').directive('cardView', [function() {
         scope.isEditing = false;
         scope.clozed = true;
 
-        console.log(scope);
+        update();
 
-        var el = angular.element(".cardEditor")[0];
+        function update() {
+          scope.card.$priority = scope.card.due;
+          scope.status = statusFilter(scope.card);
+          scope.statusText = statusTextFilter(scope.status);
+        }
+
+        function save() {
+          update();
+          scope.cards.$save(scope.card.$id);
+        }
+
+        console.log(scope.card);
+
+        /* var el = angular.element(".cardEditor")[0];
 
         function getSelectedText() {
           var ws = window.getSelection();
@@ -52,14 +78,13 @@ angular.module('mainApp').directive('cardView', [function() {
             el.selectionStart = start+left.length;
             el.selectionEnd = end+left.length;
           }, 100);
-        }
+        } */
 
         scope.edit = function(flag) {
           if (arguments.length < 1) flag = !scope.isEditing;
           scope.isEditing = flag;
           if (!flag) {
-            //console.log(scope.cards, scope.card);
-            scope.cards.$save(scope.card.$id);
+            save();
           }
         }
 
@@ -72,28 +97,35 @@ angular.module('mainApp').directive('cardView', [function() {
           //    n = 1   when n = 0  (view one day later)
           //    n = 2*n otherwise   (view 2*n days later)
 
-          scope.card.last = Date.now();
+          var now = Date.now();
 
-          if ((scope.card.due - scope.card.last) <= 0)                                        // if card is due
-            scope.card.interval = (scope.card.interval > 0) ? scope.card.interval*2 : 1;     // Increase interval
+          scope.card.last = scope.card.last || now;
+          scope.card.due = scope.card.due || scope.card.last-1;
 
-          scope.card.due = scope.card.last+scope.card.interval*DAYS;
-          scope.cards.update(card);
+          var interval = scope.card.due - scope.card.last;
+
+          if (scope.card.due - now >= 0) {  // If card was due, increase interval
+            interval = (interval > 0) ? 2 * interval : 5*MINS;
+          }
+
+          scope.card.last = now;
+          scope.card.due = now+interval;
+
+          save();
 
           scope.clozed = true;
-          //scope.applyFilter();
         }
 
         scope.down = function() {
-          scope.card.due = scope.card.last = Date.now()-5;
+          scope.card.last = Date.now();
+          scope.card.due = scope.card.last;
           scope.card.interval = 0;
-          scope.cards.update(card);
+          save();
 
           scope.clozed = true;
-          //scope.applyFilter();
         }
 
-        scope.add = function() {
+        /* scope.add = function() {
 
           var text = getSelectedText();
 
@@ -104,7 +136,7 @@ angular.module('mainApp').directive('cardView', [function() {
 
           scope.cards.add(card);
           scope.edit(true);
-        }
+        } */
 
       }
     };
