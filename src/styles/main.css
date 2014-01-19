@@ -121,6 +121,30 @@ footer {
   margin: 5px;
 }
 
+.newCard {
+  padding: 10px;
+}
+
+.newCard input {
+  margin-bottom: 10px;
+  -moz-box-shadow: none;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  border: 1px solid #d2d4e0;
+  color: #e7e8ef;
+  background: #f2f3f7;
+  cursor: pointer;
+  font-size: 30px;
+  width: 100%;
+  text-align: center;
+}
+
+.newCard input:focus {
+  border: 1px solid #50b1ff;
+  background: #fffbf3;
+  color: #322f31;
+}
+
 .deckBox .btn-toolbar {
   position: absolute;
   right: 20px;

@@ -5,14 +5,13 @@
         <div class="btn-group dropdown">
           <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-wrench"></i> </button>
           <ul class="dropdown-menu">
-            <li>{{id}}</li>
             <li><a href="" ng-click="clearCards(id)">Clear</a></li>
             <li><a href="" ng-click="resetCards(id)">Reset</a></li>
             <li><a href="" ng-click="removeDeck(id)">Delete</a></li>
           </ul>
         </div>
       </div>
-      <h2><a href="#/{{username}}/{{id}}">{{id.substr(id.length-4)}}</a></h2>
+      <h2><a href="#/{{username}}/{{id}}">{{decks[id]}}</a></h2>
       <!-- div class="row" ng-cloak>
         <div class="col-md-12 text-center">
           <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>
@@ -36,8 +35,12 @@
   </div>
 
   <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]">
-    <div class="deckCard" ng-show="isOwner">
-      <a class="btn btn-link" ng-click="addDeck()" tooltip="New"><h2>Add a deck
-      <br /><i class="glyphicon glyphicon-plus-sign"></i> </h2></a>
+    <div class="deckCard newCard" ng-show="isOwner">
+      <input type="text" placeholder="Deck name" ng-model="newdeck.name"></input>
+      <br /><button class="btn btn-primary" ng-click="addDeck(newdeck)" tooltip="New">
+          Add a new deck
+      </button>
     </div>
   </div>
+
+

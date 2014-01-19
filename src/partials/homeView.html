@@ -1,9 +1,13 @@
 <div class="jumbotron">
   <div class="container">
     <h1 class="heading">Build study decks better, together.</h1>
-    <div>
+    <div ng-if="!auth.user">
       <button class="btn btn-primary button-block" ng-click="auth.$login('github')">Sign in using GitHub</button>
       <a class="btn btn-default button-block" href="#/guest">Browse as guest</a>
+    </div>
+    <div ng-if="auth.user" ng-cloak>
+      <button class="btn btn-primary button-block" ng-click="auth.$logout()">Logout</button>
+      <a class="btn btn-default button-block" href="#/{{auth.user.username}}">Browse your decks</a>
     </div>
   </div>
 </div>

@@ -61,14 +61,15 @@ angular.module('mainApp').controller('DeckCtrl', ['$state','$scope', '$location'
   var cardRef = ref.child($stateParams.deck).child('cards');
 
   $scope.decks = deckManager.getUserDeckIds($scope.username);
-  $scope.cards = deckManager.getDeckById($scope.deckId);
+  $scope.deck = deckManager.getDeckById($scope.deckId);
+  $scope.cards = deckManager.getCardsByDeckId($scope.deckId);
 
   $scope.cards.$on("loaded", getStats);
   $scope.cards.$on("change", getStats);
 
   function getStats() {
 
-
+    //$scope.cards = $scope.deck.cards;
     var keys = $scope.cardIds = $scope.cards.$getIndex();
     //console.log(keys);
 

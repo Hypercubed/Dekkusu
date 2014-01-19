@@ -11,14 +11,22 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
     };
 
     this.getDeckById = function(id) {
+      var cardRef = decksRef.child(id);
+      return $firebase(cardRef);
+    }
+
+    this.getCardsByDeckId = function(id) {
       var cardRef = decksRef.child(id).child('cards');
       return $firebase(cardRef);
     }
 
-    this.addDeck = function(username) {
+    this.addDeck = function(username, deck) {
+      var deck = deck || { owner: username };
+
       var d = decksRef.push();
-      d.set({ owner: username });
-      usersRef.child(username).child('decks').child(d.name()).set(true);
+      deck.name = deck.name || d.name().substr(d.name().length-4);
+      d.set(deck);
+      usersRef.child(username).child('decks').child(d.name()).set(deck.name);
     };
 
     this.removeDeck = function(username, id) {

@@ -7,14 +7,27 @@ angular.module('mainApp')
     $scope.decks = [];
     $scope.listView = false;
 
-    $rootScope.$on('$stateChangeSuccess', function(){
+    $scope.newdeck = { name: '', owner: $scope.username };
+
+    loadDeck();
+
+    function loadDeck() {
       $scope.deckId = $state.params.deck || null;
-    })
+
+      if ($scope.deckId) {
+        $scope.deck = deckManager.getDeckById($scope.deckId);
+      } else {
+        $scope.deck = null;
+      }
+    }
+
+    $rootScope.$on('$stateChangeSuccess', loadDeck);
 
     $scope.decks = deckManager.getUserDeckIds($scope.username);
 
-    $scope.addDeck = function() {
-      deckManager.addDeck($scope.username);
+    $scope.addDeck = function(deck) {
+      deckManager.addDeck($scope.username, deck);
+      deck.name = '';
     }
 
     $scope.removeDeck = function(id) {
