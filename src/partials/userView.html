@@ -4,12 +4,10 @@
     <div class="col-md-11 col-md-offset-1">
       <h2>
         <i class="glyphicon glyphicon-user"></i>
-        <a href="#/{{username}}" ng-cloak>{{username}}</a> /
+        <a href="#/{{username}}" ng-cloak>{{username}}</a>
 
         <span class="dropdown" ng-cloak>
           <a href="" class="dropdown-toggle" data-toggle="dropdown">
-            <span ng-dblclick="editDeck(true)" ng-hide="isEditing" >{{deck.name}}</span>
-            <input type="text" ng-model="deck.name" ng-show="isEditing" card-blur="editDeck(false)"></input>
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
@@ -18,7 +16,7 @@
         </span>
 
         <div class="btn-toolbar pull-right" >
-          <div ng-if="state.current.name == 'user.deck.cardList'"  ng-cloak class="btn-group">
+          <div ng-if="state.current.name == 'user.deck.cardList'" ng-cloak class="btn-group">
             <a href="#/{{username}}/{{deckId}}/study" class="btn btn-primary">Study now</a>
           </div>
           <div class="btn-group">

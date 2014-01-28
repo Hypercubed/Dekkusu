@@ -121,11 +121,11 @@ footer {
   margin: 5px;
 }
 
-.newCard {
+.newCard, .deckCard {
   padding: 10px;
 }
 
-.newCard input {
+.deckCard textarea, .newCard textarea {
   margin-bottom: 10px;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -139,7 +139,7 @@ footer {
   text-align: center;
 }
 
-.newCard input:focus {
+.deckCard textarea:focus, .newCard textarea:focus {
   border: 1px solid #50b1ff;
   background: #fffbf3;
   color: #322f31;

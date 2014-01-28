@@ -11,13 +11,15 @@ angular.module('mainApp')
   .controller('DeckListCtrl', ['$scope', '$location', '$http', '$stateParams', '$rootScope',
                       function ($scope, $location, $http, $stateParams, $rootScope) {
 
+  console.log($stateParams);
+
 }]);
 
 angular.module('mainApp')
   .controller('DeckCtrl2', ['$scope', '$http',
                     function($scope, $http) {
 
-  $scope.clearCards = function() {
+  /* $scope.clearCards = function() {
     $scope.deck.cards = [{text:""}];
   }
 
@@ -37,9 +39,7 @@ angular.module('mainApp')
         $scope.deck.cards = cards;
 
       });
-  }
-
-
+  } */
 
   //$scope.$watch('deck', function() {
   //  console.log('$scope.$watch deck');

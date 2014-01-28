@@ -41,23 +41,31 @@
       templateUrl: 'partials/homeView.html',
       controller: 'HomeCtrl'
     })
-    .state('user', {
+    .state('user', {  // Rename to set?
       abstract: true,
-      url: "/:username",
+      url: "/:username",  // TODO: username -> path?
       templateUrl: 'partials/userView.html',
-      controller: 'userViewCtrl'
+      controller: 'userViewCtrl',
+      resolve: { rootIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
+        return deckManager.getDeckIds($stateParams.username);
+      }] }
     })
     .state('user.deckList', {
       url: '',
       templateUrl: 'partials/user.deckList.html',
-      controller: 'DeckListCtrl'
+      controller: 'userDeckListCtrl',
+      resolve: { deckIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
+        return deckManager.getDeckIds($stateParams.username);
+      }] }
     })
     .state('user.deck', {
-       abstract: true,
-       url: "/:deck",
-       templateUrl: 'partials/user.deckView.html',
-       controller: 'DeckCtrl'
-    })
+      url: "/:deck",
+      templateUrl: 'partials/user.deckList.html',
+      controller: 'userDeckListCtrl',
+      resolve: { deckIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
+        return deckManager.getDeckIds($stateParams.username, $stateParams.deck);
+      }] }
+    }); /*
     .state('user.deck.cardList', {
        url: "",
        templateUrl: 'partials/user.deck.cardList.html',
@@ -68,7 +76,7 @@
       templateUrl: 'partials/user.deck.cardView.html',
       controller: 'cardViewCtrl'
     })
-    ;
+    ; */
 
     // TODO: user.deck.study
 
@@ -95,10 +103,24 @@
       $logProvider.debugEnabled(DEBUG);
     }]);
 
-  app.run(['$firebaseAuth', 'FBURL', '$rootScope', 'DEBUG', '$log', '$location',
-    function($firebaseAuth, FBURL, $rootScope, DEBUG, $log, $location) {
+  app.run(['$firebase','$firebaseAuth', 'FBURL', '$rootScope','deckManager',
+    function($firebase, $firebaseAuth, FBURL, $rootScope,deckManager) {
+
       var ref = new Firebase(FBURL);
       $rootScope.auth = $firebaseAuth(ref);
+
+      $rootScope.$on("$firebaseAuth:login", function(evt, user) {
+        //$rootScope.userRootSet = deckManager.getSet(user.username);
+      });
+
+      $rootScope.$on("$firebaseAuth:logout", function(evt) {
+        //$rootScope.userRootSet = null;
+      });
+
+      $rootScope.$on("$firebaseAuth:error", function(evt, err) {
+        console.log(err);
+      });
+
     }]);
 
   app.run(['$rootScope','SITE', function($rootScope,SITE) {

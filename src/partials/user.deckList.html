@@ -1,17 +1,14 @@
 
   <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,deck) in decks">
-    <div class="deckCard" ng-controller="DeckCtrl2">
+    <div class="deckCard" ng-controller='deckCardCtrl'>
       <div class="btn-toolbar pHover pull-right" ng-show="isOwner">
-        <div class="btn-group dropdown">
-          <button href="#" class="btn btn-link dropdown-toggle" data-toggle="dropdown"><i class="glyphicon glyphicon-wrench"></i> </button>
-          <ul class="dropdown-menu">
-            <li><a href="" ng-click="clearCards(id)">Clear</a></li>
-            <li><a href="" ng-click="resetCards(id)">Reset</a></li>
-            <li><a href="" ng-click="removeDeck(id)">Delete</a></li>
-          </ul>
+        <div class="btn-group">
+          <a href="" class="btn btn-link btn-sm" ng-click="removeDeck(id)"><i class="glyphicon glyphicon-trash"></i> </a>
+          <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
         </div>
       </div>
-      <h2><a href="#/{{username}}/{{id}}">{{decks[id]}}</a></h2>
+      <h2 ng-if="!editCard" ng-class="{clozed: clozed}"><a href="#/{{username}}/{{id}}" ng-bind-html="decks[id] | formatCard" ></a></h2>
+      <textarea placeholder="" ng-model="decks[id]" ng-if="editCard"></textarea>
       <!-- div class="row" ng-cloak>
         <div class="col-md-12 text-center">
           <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>
@@ -36,9 +33,9 @@
 
   <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]">
     <div class="deckCard newCard" ng-show="isOwner">
-      <input type="text" placeholder="Deck name" ng-model="newdeck.name"></input>
-      <br /><button class="btn btn-primary" ng-click="addDeck(newdeck)" tooltip="New">
-          Add a new deck
+      <textarea placeholder="" ng-model="newdeck.name"></textarea>
+      <br /><button class="btn btn-primary" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">
+        Add
       </button>
     </div>
   </div>

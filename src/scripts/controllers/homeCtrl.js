@@ -1,17 +1,20 @@
 angular.module('mainApp')
-  .controller('HomeCtrl', ['$scope', '$rootScope','$location',
-                  function ($scope, $rootScope, $location) {
+  .controller('HomeCtrl', ['$scope', '$rootScope','$location','$firebaseAuth', 'FBURL',
+                  function ($scope, $rootScope, $location,$firebaseAuth, FBURL) {
 
-  $scope.$on("$firebaseAuth:login", function(evt, user) {
-    //$location.path('/'+user.username);
+  /* var ref = new Firebase(FBURL);
+  $rootScope.auth = $firebaseAuth(ref);
+
+  $rootScope.$on("$firebaseAuth:login", function(evt, user) {
+    console.log('Logged in as',user.username);
   });
 
-  $scope.$on("$firebaseAuth:logout", function(evt) {
+  $rootScope.$on("$firebaseAuth:logout", function(evt) {
     //$location.path('/');
   });
 
-  $scope.$on("$firebaseAuth:error", function(evt, err) {
+  $rootScope.$on("$firebaseAuth:error", function(evt, err) {
     console.log(err);
-  });
+  }); */
 
 }]);
