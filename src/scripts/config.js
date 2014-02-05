@@ -54,16 +54,16 @@
       url: '',
       templateUrl: 'partials/user.deckList.html',
       controller: 'userDeckListCtrl',
-      resolve: { deckIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
-        return deckManager.getDeckIds($stateParams.username);
+      resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
+        return deckManager.getDeck($stateParams.username);
       }] }
     })
     .state('user.deck', {
       url: "/:deck",
       templateUrl: 'partials/user.deckList.html',
       controller: 'userDeckListCtrl',
-      resolve: { deckIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
-        return deckManager.getDeckIds($stateParams.username, $stateParams.deck);
+      resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
+        return deckManager.getDeck($stateParams.username, $stateParams.deck);
       }] }
     }); /*
     .state('user.deck.cardList', {
@@ -103,21 +103,36 @@
       $logProvider.debugEnabled(DEBUG);
     }]);
 
-  app.run(['$firebase','$firebaseAuth', 'FBURL', '$rootScope','deckManager',
-    function($firebase, $firebaseAuth, FBURL, $rootScope,deckManager) {
+  app.run(['$firebase','$firebaseSimpleLogin', 'FBURL', '$rootScope','deckManager',
+    function($firebase, $firebaseSimpleLogin, FBURL, $rootScope,deckManager) {
 
       var ref = new Firebase(FBURL);
-      $rootScope.auth = $firebaseAuth(ref);
 
-      $rootScope.$on("$firebaseAuth:login", function(evt, user) {
-        //$rootScope.userRootSet = deckManager.getSet(user.username);
+      $rootScope.auth = $firebaseSimpleLogin(ref);
+
+      //$rootScope.login = $fireUser.login;
+      //$rootScope.logout = $fireUser.logout;
+
+      $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) { // Move to a service
+
+        var userRef = ref.child('userData/' + user.username);
+
+        var _ = $firebase(userRef);
+        _.$bind($rootScope, 'userData', function() {
+          return {listView: false};
+        });
+
+        //_.$on('loaded', function(d) {
+        ////  _.listView = _.listView || false;
+        //});
+
       });
 
-      $rootScope.$on("$firebaseAuth:logout", function(evt) {
+      $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
         //$rootScope.userRootSet = null;
       });
 
-      $rootScope.$on("$firebaseAuth:error", function(evt, err) {
+      $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {
         console.log(err);
       });
 

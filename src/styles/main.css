@@ -73,16 +73,16 @@ footer {
   box-shadow: inset 0 3px 5px rgba(0,0,0,0.125);
 }
 
-.card span.cloze {
+.card span.cloze, .deck span.cloze {
   background-color: #999;
   color: #333;
 }
 
-.card.clozed span.cloze, .card span.uncloze {
+.card.clozed span.cloze, .card span.uncloze, .deck.clozed span.cloze, .deck span.uncloze {
   display: none;
 }
 
-.card.clozed span.uncloze {
+.card.clozed span.uncloze, .deck.clozed span.uncloze {
   display: inline;
 }
 
@@ -110,11 +110,11 @@ footer {
 }
 
 .deckCard > h2 {
-  height: 50px;
+  min-height: 50px;
 }
 
 .deckCard {
-  height: 150px;
+  min-height: 150px;
 }
 
 .deckCard .progress {

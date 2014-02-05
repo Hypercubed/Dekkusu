@@ -1,6 +1,6 @@
 angular.module('mainApp')
-  .controller('HomeCtrl', ['$scope', '$rootScope','$location','$firebaseAuth', 'FBURL',
-                  function ($scope, $rootScope, $location,$firebaseAuth, FBURL) {
+  .controller('HomeCtrl', [
+                  function () {
 
   /* var ref = new Firebase(FBURL);
   $rootScope.auth = $firebaseAuth(ref);

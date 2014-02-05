@@ -2,11 +2,11 @@
   <div class="container">
     <h1 class="heading">Build study decks better, together.</h1>
     <div ng-if="!auth.user">
-      <button class="btn btn-primary button-block" ng-click="auth.$login('github')">Sign in using GitHub</button>
+      <button class="btn btn-primary button-block" ng-click="login('github')">Sign in using GitHub</button>
       <a class="btn btn-default button-block" href="#/guest">Browse as guest</a>
     </div>
     <div ng-if="auth.user" ng-cloak>
-      <button class="btn btn-primary button-block" ng-click="auth.$logout()">Logout</button>
+      <button class="btn btn-primary button-block" ng-click="logout()">Logout</button>
       <a class="btn btn-default button-block" href="#/{{auth.user.username}}">Browse your decks</a>
     </div>
   </div>
@@ -18,16 +18,22 @@
     <div class="col-md-4">
       <h2>Open-source</h2>
       <p data-meaningful="true" ct-id="2">100% open source code built using great open source tools such as angularjs and grunt.</p>
-      <p><a class="btn btn-default" href="https://github.com/Hypercubed/Dekkusu" role="button">View source »</a></p>
     </div>
     <div class="col-md-4">
       <h2>Back-end free</h2>
       <p data-meaningful="true" ct-id="3">Using Firebase no database required.</p>
-      <p><a class="btn btn-default" href="http://www.firebase.com/" role="button">More about Firebase »</a></p>
    </div>
     <div class="col-md-4">
       <h2>Innovative study features</h2>
-      <p data-meaningful="true" ct-id="4">With Dekkusu creating your study deck is part of the learning process.  Jumping between studding and editing should be seamless.  Hierarchal decks (pending development) will enable continuous refactoring and learning.</p>
+      <p data-meaningful="true" ct-id="4">With Dekkusu creating your study deck is part of the learning process.  Jumping between studding and editing should be seamless.  Hierarchal decks (pending development) will enable continuous refactoring and learning.
+    </div>
+    <div class="col-md-4">
+      <p><a class="btn btn-default" href="https://github.com/Hypercubed/Dekkusu" role="button">View source »</a></p>
+    </div>
+    <div class="col-md-4">
+      <p><a class="btn btn-default" href="http://www.firebase.com/" role="button">More about Firebase »</a></p>
+   </div>
+    <div class="col-md-4">
       <!-- p><a class="btn btn-default" href="#" role="button"></a></p -->
     </div>
   </div>

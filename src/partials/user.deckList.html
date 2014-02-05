@@ -1,5 +1,12 @@
 
-  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,deck) in decks">
+  <div class="deckBox col-md-12" ng-if="deckId != 'root'">
+    <div class="deckCard" ng-controller='deckCardCtrl'>
+      <h2 ng-if="!editCard" class="deck" ng-class="{clozed: clozed}"><span ng-bind-html="deck.name | formatCard" ></a></h2>
+      <div class="row"><button class="btn btn-primary" ng-click="clozed = !clozed">Flip</button></div>
+    </div>
+  </div>
+
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[userData.listView]" ng-repeat="(id,child) in deck.children">
     <div class="deckCard" ng-controller='deckCardCtrl'>
       <div class="btn-toolbar pHover pull-right" ng-show="isOwner">
         <div class="btn-group">
@@ -7,8 +14,10 @@
           <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
         </div>
       </div>
-      <h2 ng-if="!editCard" ng-class="{clozed: clozed}"><a href="#/{{username}}/{{id}}" ng-bind-html="decks[id] | formatCard" ></a></h2>
-      <textarea placeholder="" ng-model="decks[id]" ng-if="editCard"></textarea>
+      <h2 ng-if="!editCard" class="deck" ng-class="{clozed: clozed}"><a href="#/{{username}}/{{id}}" ng-bind-html="deck.children[id] | formatCard" ></a></h2>
+      <textarea placeholder="" ng-model="deck.children[id]" ng-if="editCard"></textarea>
+      <div class="row"><button class="btn btn-primary" ng-click="clozed = !clozed">Flip</button></div>
+
       <!-- div class="row" ng-cloak>
         <div class="col-md-12 text-center">
           <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>
@@ -28,10 +37,11 @@
           <span class="sr-only">{{(deck.cards | statusFilter:0).length}} new</span>
         </div>
       </div -->
+
     </div>
   </div>
 
-  <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]">
+  <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[userData.listView]">
     <div class="deckCard newCard" ng-show="isOwner">
       <textarea placeholder="" ng-model="newdeck.name"></textarea>
       <br /><button class="btn btn-primary" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">

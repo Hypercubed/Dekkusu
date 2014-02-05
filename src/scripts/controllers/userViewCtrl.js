@@ -1,23 +1,29 @@
 angular.module('mainApp')
-  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds',
-                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds) {
+  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','userStorage',
+                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, userStorage) {
 
     $scope.username = $stateParams.username || 'guest';
     //$scope.deckId = $state.params.deck || 'root';
 
     $scope.decks = rootIds;
-    $scope.listView = false;
+    $scope.listView = false;;
 
     $rootScope.state = $state;
 
 }]);
 
 angular.module('mainApp')
-  .controller('userDeckListCtrl', ['$scope','$stateParams','deckManager','deckIds',
-                          function ($scope, $stateParams,deckManager,deckIds) {
+  .controller('userDeckListCtrl', ['$scope','$stateParams','deckManager','deck',
+                          function ($scope, $stateParams,deckManager,deck) {
 
     $scope.deckId = $stateParams.deck || 'root';
-    $scope.decks = deckIds;
+    //console.log($scope.deckId);
+
+    $scope.deck = deck;
+
+    //$scope.decks = deckIds;
+    //deckIds.$bind($scope, "decks");
+    //console.log(deckIds);
 
     $scope.newdeck = { name: '' };
     $scope.isOwner = true;

@@ -11,17 +11,20 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 # Next
 - [x] Firebase v2
 - [*] Data services
-- [ ] Move all controllers
-- [ ] Change controller/view layout
-- [ ] Copy deck
-- [ ] Enable/disable actions based on user
-- [ ] Fix progressing algo!!
-- [ ] Fix login/logout buttons
-- [ ] Don't redirect on login/logout
-- [ ] Better isOwner?  (Authorized list)
+- [ ] Reorganize controllers/view files
+- [ ] Copy & move decks
+- [ ] Fix progressing algo (Again!)
 - [x] app constants ('FBURL')
 - [ ] Unique deck names: http://weblogs.asp.net/dwahlin/archive/2013/09/24/building-a-custom-angularjs-unique-value-directive.aspx
 - [ ] Deck factory: https://github.com/vojtajina/WebApp-CodeLab/blob/angularjs/FinalProject/js/services.js
+
+- [ ] Fix editing
+- [ ] Tab while editing saves
+- [ ] Re-implement double click to edit
+- [ ] Firebase uilt?
+- [ ] Security (Authorized list)
+- [ ] Redirect on logout
+- [ ] Better services
 
 # Soon
 - [ ] Sidebar showing login info and deck list
