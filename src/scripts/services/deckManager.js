@@ -13,8 +13,24 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
 
   this.getDeck = function(path,id) {
     var id = id || 'root';
-    return $firebase(decksRef.child(path+'/'+id));
+    var ref = decksRef.child(path+'/'+id);
+    var fb = $firebase(ref);
+    fb.$children = self.getChildren(path,id);
+    return fb;
   }
+
+  this.getChildren = function(path,id) {
+    var id = id || 'root';
+
+    var ref2 = decksRef.child(path);
+    var ref1 = ref2.child(id+'/children');
+
+    var ref = Firebase.util.intersection(
+      {ref: ref1, keyMap: {'.value': 'name2'} } ,
+      ref2 );
+
+    return $firebase(ref);
+  };
 
     //this.getCardsByDeckId = function(id) {
     //  var cardRef = decksRef.child(id).child('cards');
@@ -35,22 +51,6 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
       decksRef.child(path+'/'+id).remove();
       decksRef.child(path+'/'+parent+'/children/'+id).remove();
     };
-
-
-}]);
-
-angular.module('mainApp').service('userStorage', ['$rootScope', 'FBURL', '$firebase', function($rootScope, FBURL, $firebase) {  // TODO: create provider
-  //var self = this;
-
-  //console.log($rootScope.auth);
-
-  var baseRef = new Firebase(FBURL);
-  //var userRef = baseRef.child('users/'+$rootScope.auth.username);
-
-  //var ref = new Firebase("https://<my-firebase>.firebaseio.com/text");
-  //return $firebase(ref);
-
-  //console.log($rootScope.auth);
 
 }]);
 

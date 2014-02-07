@@ -22,8 +22,8 @@
 
       <ul class="nav navbar-nav navbar-right" ng-cloak>
         <li ng-if="auth.user" ng-cloak><a href="#/{{auth.user.username}}/" >{{auth.user.username}}</a></li>
-        <li ng-if="auth.user" ng-cloak><a href ng-click="logout()">Logout</a></li>
-        <li ng-if="!auth.user"><a href ng-click="login('github')">Login with GitHub</a></li>
+        <li ng-if="auth.user" ng-cloak><a href ng-click="auth.$logout()">Logout</a></li>
+        <li ng-if="!auth.user"><a href ng-click="auth.$login('github')">Login with GitHub</a></li>
       </ul>
 
     </div>

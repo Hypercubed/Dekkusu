@@ -1,16 +1,32 @@
 
 (function() {
   var app = angular.module('mainApp',
-      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate']);
+      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage']);
 
   app
-    .constant('FBURL', 'https://dekkusu.firebaseio.com/')
-    .constant('DEBUG', false)
-    .constant('SITE', {
-      title: 'Dekkusu',
-      company: 'J. Harshbarger',
-      year: '2013'
-    });
+
+
+  if (window.location.hostname == "127.0.0.1") {
+    app
+      .constant("ENV", "development")
+      .constant('FBURL','https://dekkusu.firebaseio.com/')
+      .constant('DEBUG', true)
+      .constant('SITE', {
+        title: 'Dekkusu - Dev',
+        company: 'J. Harshbarger',
+        year: '2013'
+      });
+  } else {
+    app
+      .constant("ENV", "production")
+      .constant('FBURL','https://dekkusu-prod.firebaseio.com/')
+      .constant('DEBUG', false)
+      .constant('SITE', {
+        title: 'Dekkusu',
+        company: 'J. Harshbarger',
+        year: '2013'
+      });
+  };
 
   app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
 
@@ -36,12 +52,18 @@
     });
 
     $stateProvider
-    .state('home', {
+    .state("authroot", {
+      abstract: true,
+      url: "",
+      controller: 'HomeCtrl',
+      resolve: {  currentUser: ['userAuth',function(userAuth) { return userAuth.$getCurrentUser(); } ] },
+      templateUrl: 'partials/rootView.html'
+    })
+    .state('authroot.home', {
       url: "/",
       templateUrl: 'partials/homeView.html',
-      controller: 'HomeCtrl'
     })
-    .state('user', {  // Rename to set?
+    .state('authroot.user', {  // Rename to set?
       abstract: true,
       url: "/:username",  // TODO: username -> path?
       templateUrl: 'partials/userView.html',
@@ -50,7 +72,7 @@
         return deckManager.getDeckIds($stateParams.username);
       }] }
     })
-    .state('user.deckList', {
+    .state('authroot.user.deckList', {
       url: '',
       templateUrl: 'partials/user.deckList.html',
       controller: 'userDeckListCtrl',
@@ -58,7 +80,7 @@
         return deckManager.getDeck($stateParams.username);
       }] }
     })
-    .state('user.deck', {
+    .state('authroot.user.deck', {
       url: "/:deck",
       templateUrl: 'partials/user.deckList.html',
       controller: 'userDeckListCtrl',
@@ -100,46 +122,7 @@
     }]);
 
   app.config(['$logProvider', 'DEBUG',function($logProvider, DEBUG) {
-      $logProvider.debugEnabled(DEBUG);
-    }]);
-
-  app.run(['$firebase','$firebaseSimpleLogin', 'FBURL', '$rootScope','deckManager',
-    function($firebase, $firebaseSimpleLogin, FBURL, $rootScope,deckManager) {
-
-      var ref = new Firebase(FBURL);
-
-      $rootScope.auth = $firebaseSimpleLogin(ref);
-
-      //$rootScope.login = $fireUser.login;
-      //$rootScope.logout = $fireUser.logout;
-
-      $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) { // Move to a service
-
-        var userRef = ref.child('userData/' + user.username);
-
-        var _ = $firebase(userRef);
-        _.$bind($rootScope, 'userData', function() {
-          return {listView: false};
-        });
-
-        //_.$on('loaded', function(d) {
-        ////  _.listView = _.listView || false;
-        //});
-
-      });
-
-      $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
-        //$rootScope.userRootSet = null;
-      });
-
-      $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {
-        console.log(err);
-      });
-
-    }]);
-
-  app.run(['$rootScope','SITE', function($rootScope,SITE) {
-    $rootScope.site = SITE;
+    $logProvider.debugEnabled(DEBUG);
   }]);
 
 })();

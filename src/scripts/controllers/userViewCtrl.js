@@ -1,40 +1,48 @@
 angular.module('mainApp')
-  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','userStorage',
-                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, userStorage) {
+  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','storage',
+                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, storage) {
+
+    //console.log('storage',storage);
 
     $scope.username = $stateParams.username || 'guest';
     //$scope.deckId = $state.params.deck || 'root';
 
     $scope.decks = rootIds;
-    $scope.listView = false;;
+    //$scope.listView = false;
+    storage.bind($scope,'listView',{defaultValue: false});
 
     $rootScope.state = $state;
 
 }]);
 
 angular.module('mainApp')
-  .controller('userDeckListCtrl', ['$scope','$stateParams','deckManager','deck',
-                          function ($scope, $stateParams,deckManager,deck) {
+  .controller('userDeckListCtrl', ['$scope','$stateParams','deckManager','deck','$firebase',
+                          function ($scope, $stateParams,deckManager,deck,$firebase) {
 
     $scope.deckId = $stateParams.deck || 'root';
     //console.log($scope.deckId);
 
     $scope.deck = deck;
+    //deck.$bind($scope,'deck');
 
-    //$scope.decks = deckIds;
-    //deckIds.$bind($scope, "decks");
-    //console.log(deckIds);
+    $scope.children = deck.$children;
+    //deck.$children.$bind($scope,'children');
+
+    console.log($scope.children);
 
     $scope.newdeck = { name: '' };
     $scope.isOwner = true;
 
     $scope.addDeck = function(deck) {
-      deckManager.addDeck($scope.username, $scope.deckId, deck);
+      deck.name2 = deck.name;
+      $scope.children.$add(deck);
+      //deckManager.addDeck($scope.username, $scope.deckId, deck);
       deck.name = '';
     }
 
     $scope.removeDeck = function(id) {
-      deckManager.removeDeck($scope.username, $scope.deckId, id);
+      $scope.children.$remove(id);
+      //deckManager.removeDeck($scope.username, $scope.deckId, id);
     }
 
 }]);

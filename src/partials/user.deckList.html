@@ -6,7 +6,7 @@
     </div>
   </div>
 
-  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[userData.listView]" ng-repeat="(id,child) in deck.children">
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children">
     <div class="deckCard" ng-controller='deckCardCtrl'>
       <div class="btn-toolbar pHover pull-right" ng-show="isOwner">
         <div class="btn-group">
@@ -41,7 +41,7 @@
     </div>
   </div>
 
-  <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[userData.listView]">
+  <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]">
     <div class="deckCard newCard" ng-show="isOwner">
       <textarea placeholder="" ng-model="newdeck.name"></textarea>
       <br /><button class="btn btn-primary" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">

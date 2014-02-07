@@ -40,9 +40,9 @@
 
     <!-- a href="https://github.com/you"><img style="position: absolute; top: 0; right: 0; border: 0; z-index: 2000;" src="https://s3.amazonaws.com/github/ribbons/forkme_right_red_aa0000.png" alt="Fork me on GitHub"></a -->
 
-		<div ng-include="'partials/navbar-fixed-top.html'"></div>
-		<div ui-view></div>
-		<div ng-include="'partials/footer.html'"></div>
+    <!-- div ng-include="'partials/navbar-fixed-top.html'"></div -->
+    <div ui-view></div>
+    <!-- div ng-include="'partials/footer.html'"></div -->
 
 		<!-- build:js(src) scripts/vendor.js -->
 		<script src="_bower_components/jquery/jquery.js"></script>
@@ -50,8 +50,11 @@
     <script src="_bower_components/angular-ui-router/release/angular-ui-router.js"></script>
     <script src="_bower_components/angular-animate/angular-animate.js"></script>
     <script src="_bower_components/firebase/firebase.js"></script>
+    <script src="_bower_components/firebase-util/firebase-util.js"></script>
     <script src="_bower_components/firebase-simple-login/firebase-simple-login.js"></script>
     <script src="_bower_components/angularfire/angularfire.js"></script>
+    <script src="_bower_components/angular-cookies/angular-cookies.js"></script>
+    <script src="_bower_components/angularLocalStorage/src/angularLocalStorage.js"></script>
     <script src="_bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="_bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="_bower_components/angular-ui-utils/modules/keypress/keypress.js"></script>
@@ -72,6 +75,7 @@
     <!-- build:js(src) scripts/main.js -->
     <script src="scripts/config.js"></script>
     <script src="scripts/main.js"></script>
+    <script src="scripts/services/userManager.js"></script>
     <script src="scripts/services/deckManager.js"></script>
     <script src="scripts/directives/cardView.js"></script>
     <script src="scripts/directives/cardBlur.js"></script>

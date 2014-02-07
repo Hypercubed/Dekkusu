@@ -156,6 +156,10 @@ footer {
   padding:5px;
 }
 
+.deckCard .btn-group .btn-sm, .btn-xs {
+  padding: 0 5px;
+}
+
 .statsBox .progress {
   border-radius: 3px;
   margin-bottom: 0px;
