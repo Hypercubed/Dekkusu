@@ -6,9 +6,9 @@
           <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard;deck.$save()"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
         </div>
       </div>
-      <h2 ng-if="!editCard" class="deck" ng-class="{clozed: clozed}" ><span ng-bind-html="deck.name | formatCard"></a></h2>
+      <h2 ng-if="!editCard" class="deck clozed" ng-class="{clozed: clozed}" ><span ng-bind-html="deck.name | formatCard"></a></h2>
       <textarea placeholder="" ng-model="deck.name" ng-if="editCard"></textarea>
-      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed"><i class="flip glyphicon glyphicon-random"></i> </button></div>
+      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
     </div>
   </div>
 
@@ -22,7 +22,7 @@
       </div>
       <h2 ng-if="!editCard" class="deck" ng-class="{clozed: clozed}"><a href="#/{{username}}/{{id}}" ng-bind-html="child.name | formatCard" ></a></h2>
       <textarea placeholder="" ng-model="child.name" ng-if="editCard"></textarea>
-      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed"><i class="flip glyphicon glyphicon-random"></i> </button></div>
+      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
 
       <!-- div class="row" ng-cloak>
         <div class="col-md-12 text-center">

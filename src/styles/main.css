@@ -80,10 +80,16 @@ footer {
 
 .card.clozed span.cloze, .card span.uncloze, .deck.clozed span.cloze, .deck span.uncloze {
   display: none;
+  visibility:hidden;
+  opacity: 0;
+  transition:opacity 1s linear;
 }
 
 .card.clozed span.uncloze, .deck.clozed span.uncloze {
   display: inline;
+  visibility:visible;
+  opacity: 1;
+  transition:opacity 1s linear;
 }
 
 
@@ -124,17 +130,21 @@ footer {
 
 .deckCard i.flip {
 
-  transform:rotateX(180deg);
-  -ms-transform:rotateX(180deg); /* IE 9 */
-  -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+  transform:rotate(90deg);
+  -ms-transform:rotate(90deg); /* IE 9 */
+  -webkit-transform:rotate(90deg); /* Safari and Chrome */
+
+  transition: all 0.5s;
 
 }
 
 .deckCard.clozed i.flip {
 
-  transform:rotateX(0deg);
-  -ms-transform:rotateX(0deg); /* IE 9 */
-  -webkit-transform:rotateX(0deg); /* Safari and Chrome */
+  transform:rotate(0deg);
+  -ms-transform:rotate(0deg); /* IE 9 */
+  -webkit-transform:rotate(0deg); /* Safari and Chrome */
+
+  transition: all 0.5s;
 
 }
 
