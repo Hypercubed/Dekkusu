@@ -69,7 +69,7 @@
       templateUrl: 'partials/userView.html',
       controller: 'userViewCtrl',
       resolve: { rootIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
-        return deckManager.getDeckIds($stateParams.username);
+        return deckManager.getChildren($stateParams.username);
       }] }
     })
     .state('authroot.user.deckList', {

@@ -86,6 +86,8 @@ footer {
   display: inline;
 }
 
+
+
 .pagination {
   margin: 0;
 }
@@ -99,7 +101,7 @@ footer {
 }
 
 .statsBox, .deckCard {
-  border-radius: 3px;
+  border-radius: 0;
   box-shadow: 0 1px 0 rgba(0,0,0,0.1);
   border: 1px solid #ddd;
   background-color: #fff;
@@ -107,6 +109,33 @@ footer {
   box-sizing: border-box;
   margin-bottom: 20px;
   text-align: center;
+}
+
+
+.deckCard {  /* "back" side */
+  box-shadow: -2px -2px 0 rgba(0,0,0,0.3);
+
+}
+
+.deckCard.clozed {  /* "front" side */
+  box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
+
+}
+
+.deckCard i.flip {
+
+  transform:rotateX(180deg);
+  -ms-transform:rotateX(180deg); /* IE 9 */
+  -webkit-transform:rotateX(180deg); /* Safari and Chrome */
+
+}
+
+.deckCard.clozed i.flip {
+
+  transform:rotateX(0deg);
+  -ms-transform:rotateX(0deg); /* IE 9 */
+  -webkit-transform:rotateX(0deg); /* Safari and Chrome */
+
 }
 
 .deckCard > h2 {

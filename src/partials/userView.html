@@ -11,7 +11,7 @@
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li ng-repeat="(id, d) in decks"><a href="#/{{username}}/{{id}}/">{{decks[id]}}</a></li>
+            <li ng-repeat="(id, d) in decks"><a href="#/{{username}}/{{id}}/">{{d.name}}</a></li>
           </ul>
         </span>
 
@@ -20,7 +20,8 @@
             <a href="#/{{username}}/{{deckId}}/study" class="btn btn-primary">Study now</a>
           </div>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary" ng-click="listView = !listView" ><i class="glyphicon" ng-class="{true: 'glyphicon-th-list', false: 'glyphicon-th'}[listView || false]"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="listView = !listView" ><i class="glyphicon" ng-class="{true: 'glyphicon-th-list', false: 'glyphicon-th'}[listView]"></i> </button>
+            <button type="button" class="btn btn-primary" ng-click="editView = !editView" ><i class="glyphicon glyphicon-edit"></i> </button>
           </div>
         </div>
 
