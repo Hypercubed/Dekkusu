@@ -1,15 +1,25 @@
 
-  <div class="deckBox col-md-12" ng-if="deckId != ''">
+  <div class="deckBox col-md-12">
     <div class="deckCard" ng-controller='deckCardCtrl' ng-class="{clozed: clozed}">
-      <div class="btn-toolbar pHover pull-right" ng-show="isOwner">
-        <div class="btn-group">
-          <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard;deck.$save()"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
+      <div>
+        <div class="btn-toolbar pHover pull-right" ng-show="isOwner" ng-class="{pHover: !editView}">
+          <div class="btn-group">
+            <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard;deck.$save()"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
+          </div>
+        </div>
+        <h2 ng-if="!editCard" class="card clozed" ng-class="{clozed: clozed}" >
+          <span ng-bind-html="deck.name | formatCard">
+        </h2>
+        <textarea placeholder="" ng-model="deck.name" ng-if="editCard"></textarea>
+        <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed" ng-if="isClozed(deck.name)"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
+      </div>
+      <div class="progress" tooltip="Due {{deck.due | dateDays }}" tooltip-placement="bottom">
+        <div class="progress-bar" role="progressbar" style="width: 100%;" ng-class="{ 0: 'progress-bar-danger', 1: 'progress-bar-warning', 2: 'progress-bar-success' }[status]">
+          <span class="sr-only">Due {{deck.due | dateDays }}</span>
         </div>
       </div>
-      <h2 ng-if="!editCard" class="deck clozed" ng-class="{clozed: clozed}" ><span ng-bind-html="deck.name | formatCard"></a></h2>
-      <textarea placeholder="" ng-model="deck.name" ng-if="editCard"></textarea>
-      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
     </div>
+
   </div>
 
   <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children">
@@ -17,41 +27,29 @@
       <div class="btn-toolbar pHover pull-right" ng-if="isOwner" ng-class="{pHover: !editView}">
         <div class="btn-group">
           <a href="" class="btn btn-link btn-sm" ng-click="removeDeck(id)"><i class="glyphicon glyphicon-trash"></i> </a>
-          <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard; save(id)"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
+          <a href="" class="btn btn-link btn-sm" ng-click="edit(id)"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
         </div>
       </div>
-      <h2 ng-if="!editCard" class="deck" ng-class="{clozed: clozed}"><a href="#/{{username}}/{{id}}" ng-bind-html="child.name | formatCard" ></a></h2>
+      <h2 ng-if="!editCard" class="card" ng-class="{clozed: clozed}">
+        <a href="#/{{username}}/{{id}}" ng-bind-html="child.name | formatCard"></a>
+      </h2>
       <textarea placeholder="" ng-model="child.name" ng-if="editCard"></textarea>
-      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
+      <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed" ng-if="isClozed(child.name)"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
 
-      <!-- div class="row" ng-cloak>
-        <div class="col-md-12 text-center">
-          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="2"><b>{{(deck.cards | statusFilter:2).length}}</b> done</a>
-          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="1"><b>{{(deck.cards | statusFilter:1).length}}</b> due</a>
-          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="0"><b>{{(deck.cards | statusFilter:0).length}}</b> new</a>
-          <a class="col-md-3 btn btn-link" ng-model="filter" btn-radio="-1"><b>{{deck.cards.length}}</b> total</a>
+      <div class="progress" tooltip="Due {{child.due | dateDays }}" tooltip-placement="bottom">
+        <div class="progress-bar" role="progressbar" style="width: 100%;" ng-class="{ 0: 'progress-bar-danger', 1: 'progress-bar-warning', 2: 'progress-bar-success' }[status]">
+          <span class="sr-only">Due {{child.due | dateDays }}</span>
         </div>
       </div>
-      <div class="progress">
-        <div class="progress-bar progress-bar-success" role="progressbar" style="width: {{((deck.cards | statusFilter:2).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:2).length}} done">
-          <span class="sr-only">{{(deck.cards | statusFilter:2).length}} done</span>
-        </div>
-        <div class="progress-bar progress-bar-danger" role="progressbar" style="width: {{((deck.cards | statusFilter:1).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:1).length}} due">
-          <span class="sr-only">{{(deck.cards | statusFilter:1).length}} due</span>
-        </div>
-        <div class="progress-bar progress-bar-info" role="progressbar" style="width: {{((deck.cards | statusFilter:0).length)/(deck.cards.length)*100}}%;" tooltip="{{(deck.cards | statusFilter:0).length}} new">
-          <span class="sr-only">{{(deck.cards | statusFilter:0).length}} new</span>
-        </div>
-      </div -->
 
     </div>
   </div>
 
   <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]" ng-if="editView && isOwner">
-    <div class="deckCard newCard">
+    <div class="deckCard newCard clozed" >
       <textarea placeholder="" ng-model="newdeck.name"></textarea>
-      <br /><button class="btn btn-primary" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">
-        Add
+      <br /><button class="btn btn-link" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">
+        <i class="glyphicon glyphicon-plus"></i>
       </button>
     </div>
   </div>

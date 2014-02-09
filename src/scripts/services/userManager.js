@@ -7,6 +7,7 @@ angular.module('mainApp').service('userAuth', ['$log','$rootScope', 'FBURL', '$f
   var auth = $firebaseSimpleLogin(ref);
 
   $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
+    console.log('user',user);
 
     //var userRef = ref.child('userData/' + user.username);
 

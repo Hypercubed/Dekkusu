@@ -54,7 +54,7 @@ footer {
   /* border-radius: 4px;
   -webkit-box-shadow: inset 0 1px 1px rgba(0,0,0,0.05);
   box-shadow: inset 0 1px 1px rgba(0,0,0,0.05); */
-  height: 240px;
+  max-height: 150px;
   /* font-family: "MS PGothic", Meiryo, Arial;
   font-family:"ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro",Osaka, "メイリオ", Meiryo, "ＭＳ Ｐゴシック", "MS PGothic", sans-serif; */
   font-family:  "MS PGothic", Meiryo, sans-serif;
@@ -109,10 +109,10 @@ footer {
 .statsBox, .deckCard {
   border-radius: 0;
   box-shadow: 0 1px 0 rgba(0,0,0,0.1);
-  border: 1px solid #ddd;
-  background-color: #fff;
-  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
   box-sizing: border-box;
+  background-color: #fff;
+  border: 1px solid #d8d8d8;
   margin-bottom: 20px;
   text-align: center;
 }
@@ -149,19 +149,17 @@ footer {
 }
 
 .deckCard > h2 {
-  min-height: 50px;
-}
-
-.deckCard {
-  min-height: 150px;
-}
-
-.deckCard .progress {
-  margin: 5px;
+  min-height: 100px;
 }
 
 .newCard, .deckCard {
-  padding: 10px;
+  padding: 10px 0 0 0;
+}
+
+.deckCard .progress, .statsBox .progress {
+  margin: 0;
+  border-radius: 0;
+  height: 10px;
 }
 
 .deckCard textarea, .newCard textarea {
@@ -197,11 +195,6 @@ footer {
 
 .deckCard .btn-group .btn-sm, .btn-xs {
   padding: 0 5px;
-}
-
-.statsBox .progress {
-  border-radius: 3px;
-  margin-bottom: 0px;
 }
 
 select.deck {
