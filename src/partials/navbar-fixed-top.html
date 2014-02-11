@@ -21,7 +21,12 @@
       </ul -->
 
       <ul class="nav navbar-nav navbar-right" ng-cloak>
-        <li ng-if="auth.user" ng-cloak><a href="#/{{auth.user.username || auth.user.id}}/" >{{auth.user.username  || auth.user.uid}}</a></li>
+        <li ng-if="auth.user" ng-cloak>
+          <a href="#/{{auth.user.username || auth.user.id}}/" >
+            <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{auth.user.gravatar_id}}?s=20">
+            {{auth.user.username  || 'Guest'}}
+          </a>
+        </li>
         <li ng-if="auth.user" ng-cloak><a href ng-click="auth.$logout()">Logout</a></li>
         <li ng-if="!auth.user"><a href ng-click="auth.$login('github')">Login with GitHub</a></li>
       </ul>

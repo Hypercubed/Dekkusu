@@ -1,13 +1,13 @@
 "use strict";
 
-angular.module('mainApp').service('userAuth', ['$log','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin',
-                                       function($log,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin) {  // TODO: create provider
+angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin',
+                                       function($location,$log,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin) {  // TODO: create provider
 
   var ref = new Firebase(FBURL);
   var auth = $firebaseSimpleLogin(ref);
 
   $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
-    console.log('user',user);
+    //console.log('user',user);
 
     //var userRef = ref.child('userData/' + user.username);
 
@@ -20,6 +20,7 @@ angular.module('mainApp').service('userAuth', ['$log','$rootScope', 'FBURL', '$f
 
   $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
     //$rootScope.userData = null;
+    $location.path('/');
   });
 
   $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {

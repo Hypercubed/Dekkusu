@@ -44,6 +44,10 @@ footer {
 	border-top: 1px solid #e5e5e5;
 }
 
+.userView {
+  padding: 10px 0 0 0;
+}
+
 .card, .cardEditor {
   background-color: #fff;
   color: #333;
@@ -74,25 +78,21 @@ footer {
 }
 
 .card span.cloze, .deck span.cloze {
-  background-color: #999;
+  background-color: #ddd;
   color: #333;
+  opacity: 1;
+  transition:all 0.5s linear;
 }
 
 .card.clozed span.cloze, .card span.uncloze, .deck.clozed span.cloze, .deck span.uncloze {
-  display: none;
-  visibility:hidden;
   opacity: 0;
-  transition:opacity 1s linear;
+  transition:all 0.5s linear;
 }
 
 .card.clozed span.uncloze, .deck.clozed span.uncloze {
-  display: inline;
-  visibility:visible;
   opacity: 1;
-  transition:opacity 1s linear;
+  transition:all 0.5s linear;
 }
-
-
 
 .pagination {
   margin: 0;
@@ -125,7 +125,6 @@ footer {
 
 .deckCard.clozed {  /* "front" side */
   box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
-
 }
 
 .deckCard i.flip {
@@ -240,5 +239,9 @@ select.deck {
 .cardEditor.animate-show.ng-hide {
   line-height:0;
   padding:0 10px;
+}
+
+.user_gravatar {
+  border-radius: 10%;
 }
 

@@ -2,7 +2,7 @@ angular.module('mainApp')
   .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','storage',
                       function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, storage) {
 
-    //console.log('storage',storage);
+    console.log('$stateParams',$stateParams);
 
     $scope.username = $stateParams.username || 'guest';
     //$scope.deckId = $state.params.deck || 'root';
@@ -10,12 +10,27 @@ angular.module('mainApp')
     $scope.decks = rootIds;
     //$scope.listView = false;
 
+    //console.log(rootIds);
+
+    /* $scope.decks.$set('_temp', function(error) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log('success');
+      }
+    }); */
+
     storage.bind($scope,'listView',{defaultValue: false});
     storage.bind($scope,'editView',{defaultValue: false});
 
     $rootScope.state = $state;
     //console.log($rootScope.auth.user.username);
-    $scope.isOwner = ($rootScope.auth.user.username == $stateParams.username || $rootScope.auth.user.id == $stateParams.username);
+
+    if (!$rootScope.auth.user) {  // Need a better way
+      $scope.isOwner = false;
+    } else {
+      $scope.isOwner = ($rootScope.auth.user.username == $stateParams.username || $rootScope.auth.user.id == $stateParams.username);
+    }
 
 }]);
 
@@ -28,6 +43,7 @@ angular.module('mainApp')
 
     $scope.deck = deck;
     //console.log(deck);
+
     deck.$bind($scope,'deck');
     //console.log($scope.deckId);
 
