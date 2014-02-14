@@ -1,34 +1,12 @@
 
 (function() {
-  var app = angular.module('mainApp',
-      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage','ngDragDrop']);
 
-  app
+  angular.module('mainApp')
+    .config([
+      '$stateProvider',
+      '$urlRouterProvider',
 
-
-  if (window.location.hostname == "127.0.0.1") {
-    app
-      .constant("ENV", "development")
-      .constant('FBURL','https://dekkusu.firebaseio.com/')
-      .constant('DEBUG', true)
-      .constant('SITE', {
-        title: 'Dekkusu - Dev',
-        company: 'J. Harshbarger',
-        year: '2013'
-      });
-  } else {
-    app
-      .constant("ENV", "production")
-      .constant('FBURL','https://dekkusu-prod.firebaseio.com/')
-      .constant('DEBUG', false)
-      .constant('SITE', {
-        title: 'Dekkusu',
-        company: 'J. Harshbarger',
-        year: '2013'
-      });
-  };
-
-  app.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider) {
+    function($stateProvider, $urlRouterProvider) {
 
     $urlRouterProvider.otherwise("/");
 
@@ -57,16 +35,16 @@
       url: "",
       controller: 'HomeCtrl',
       resolve: {  currentUser: ['userAuth',function(userAuth) { return userAuth.$getCurrentUser(); } ] },
-      templateUrl: 'partials/rootView.html'
+      templateUrl: 'components/home/rootView.html'
     })
     .state('authroot.home', {
       url: "/",
-      templateUrl: 'partials/homeView.html',
+      templateUrl: 'components/home/homeView.html',
     })
     .state('authroot.user', {  // Rename to set?
       abstract: true,
       url: "/:username",  // TODO: username -> path?
-      templateUrl: 'partials/userView.html',
+      templateUrl: 'components/decks/userView.html',
       controller: 'userViewCtrl',
       resolve: { rootIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
         return deckManager.getChildren($stateParams.username);
@@ -74,7 +52,7 @@
     })
     .state('authroot.user.deckList', {
       url: '',
-      templateUrl: 'partials/user.deckList.html',
+      templateUrl: 'components/decks/user.deckList.html',
       controller: 'userDeckListCtrl',
       resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
         return deckManager.getDeck($stateParams.username);
@@ -82,7 +60,7 @@
     })
     .state('authroot.user.deck', {
       url: "/:deck",
-      templateUrl: 'partials/user.deckList.html',
+      templateUrl: 'components/decks/user.deckList.html',
       controller: 'userDeckListCtrl',
       resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
         return deckManager.getDeck($stateParams.username, $stateParams.deck);
@@ -120,9 +98,5 @@
         }); */
 
     }]);
-
-  app.config(['$logProvider', 'DEBUG',function($logProvider, DEBUG) {
-    $logProvider.debugEnabled(DEBUG);
-  }]);
 
 })();

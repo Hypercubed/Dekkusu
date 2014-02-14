@@ -16,7 +16,8 @@
 		<link rel="stylesheet" href="_bower_components/bootstrap/dist/css/bootstrap.css">
 		<!-- endbuild -->
 		<!-- build:css(src) styles/main.css -->
-		<link rel="stylesheet" href="styles/main.css">
+		<link rel="stylesheet" href="components/main.css">
+    <link rel="stylesheet" href="components/decks/decks.css">
 		<!-- endbuild -->
 		<!-- build:js(src) scripts/vendor/modernizr.js -->
 		<script src="_bower_components/modernizr/modernizr.js"></script>
@@ -75,15 +76,22 @@
 		</script -->
 
     <!-- build:js(src) scripts/main.js -->
-    <script src="scripts/config.js"></script>
-    <script src="scripts/main.js"></script>
-    <script src="scripts/services/userManager.js"></script>
-    <script src="scripts/services/deckManager.js"></script>
-    <script src="scripts/directives/cardView.js"></script>
-    <script src="scripts/directives/cardBlur.js"></script>
-    <script src="scripts/controllers/homeCtrl.js"></script>
-    <script src="scripts/controllers/userViewCtrl.js"></script>
-    <script src="scripts/controllers/cardViewCtrl.js"></script>
+    <script src="components/config.js"></script>
+    <script src="components/main.js"></script>
+    <script src="components/routes.js"></script>
+
+    <script src="components/users/userAuth-service.js"></script>
+
+    <script src="components/home/homeCtrl.js"></script>
+
+    <script src="components/decks/deck-service.js"></script>
+    <script src="components/decks/userViewCtrl.js"></script>
+
+    <!-- script src="scripts/directives/cardView.js"></script>
+    <script src="scripts/directives/cardBlur.js"></script -->
+
+
+    <!-- script src="scripts/controllers/cardViewCtrl.js"></script  -->
     <!-- endbuild -->
 
 </body>

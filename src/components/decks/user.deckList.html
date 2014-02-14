@@ -1,5 +1,5 @@
 
-  <div class="deckBox col-md-12" ng-controller='deckCardCtrl' ng-include="'partials/deckCard.html'" ng-init="child = deck; id = deckId">
+  <div class="deckBox col-md-12" ng-controller='deckCardCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deckId">
     <!-- div class="deckCard" ng-class="{true: 'clozed', false: 'unclozed'}[clozed]">
       <div>
         <div class="btn-toolbar pHover pull-right" ng-show="isOwner" ng-class="{pHover: !editView}">
@@ -22,7 +22,7 @@
 
   </div>
 
-  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children" ng-include="'partials/deckCard.html'" ng-controller='deckCardCtrl'>
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children" ng-include="'components/decks/deckCard.html'" ng-controller='deckCardCtrl'>
   </div>
 
   <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]" ng-if="editView && isOwner">
