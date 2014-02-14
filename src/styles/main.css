@@ -127,26 +127,6 @@ footer {
   box-shadow: 2px 2px 0 rgba(0,0,0,0.3);
 }
 
-.deckCard i.flip {
-
-  transform:rotate(90deg);
-  -ms-transform:rotate(90deg); /* IE 9 */
-  -webkit-transform:rotate(90deg); /* Safari and Chrome */
-
-  transition: all 0.5s;
-
-}
-
-.deckCard.clozed i.flip {
-
-  transform:rotate(0deg);
-  -ms-transform:rotate(0deg); /* IE 9 */
-  -webkit-transform:rotate(0deg); /* Safari and Chrome */
-
-  transition: all 0.5s;
-
-}
-
 .deckCard > h2 {
   min-height: 100px;
 }

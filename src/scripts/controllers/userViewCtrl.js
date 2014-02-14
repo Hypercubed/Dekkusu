@@ -55,11 +55,12 @@ angular.module('mainApp')
 
     //console.log($scope.children);
 
-    $scope.save = function(id) {
-      var card = $scope.children[id];  // Shouldn't need to do this.
-      card.name2 = card.name;
-
-      deck.$children.$save(id);
+    $scope.save = function(id) {  // Shouldn't need to do any of this.
+      if (id == $scope.deckId) {
+        deck.$save();
+      } else {
+        deck.$children.$save(id);
+      }
     }
 
     $scope.addDeck = function(_deck) {
