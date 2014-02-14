@@ -1,0 +1,65 @@
+<div class="container" ng-non-bindable>
+<h1 id="dekkusu-">Dekkusu - デックス</h1>
+<p>Hierarchical study decks (flash cards)</p>
+<h1 id="goals">Goals</h1>
+<ol>
+<li>Simple plain text card syntax.</li>
+<li>Spaced repetition based on deck hierarchy.</li>
+<li>No backend.</li>
+</ol>
+<h1 id="card-syntax">Card syntax</h1>
+<p>Unlike other flash card systems, here there is front and back or question and answer side, per se.  Instead cards are said to in a clozed state or open state.  The clozed state can be considered the front (or question) side of the card.  While the open state can be considered the back (or answer).  The syntax of the card determines what is shown or not show in each state.  The syntax for the card is markdown (easy-to-read, easy-to-write plain text format) with some additional formatting syntax:</p>
+<h2 id="clozed-text">Clozed text</h2>
+<p>Text enclosed in mustache brackets is hidden or shown depending on the card state.  <code>{A}</code> is hidden in the clozed state (front or question side) but becomes <code>A</code> in the open state (back or answer side).  Double colon can be used to add open (front side) text.  <code>{A::Q}</code> is shown as <code>Q</code> in the closed state and <code>A</code> in the open state.  Both sides of the <code>::</code> are optional.  In other-words <code>{::Q}</code> is only shown on the &quot;front&quot; (clozed state).</p>
+<p>Text enclosed in double curly brackets is shown clozed in square brackets depending on the card state.  <code>{{A}}</code> becomes <code>[...]</code> in the clozed state and <code>[A]</code> in the open state.  An alternate clozed text can be added after double colons <code>::</code>.  <code>{{A::Q}}</code> becomes <code>[A]</code> in the open state and <code>[Q]</code> in the clozed state.</p>
+<h3 id="examples">Examples</h3>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Clozed Display</th>
+<th>Open Display                             </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The capital of Japan {Tokyo}</td>
+<td>The capital of Japan</td>
+<td>The capital of Japan Tokyo               </td>
+</tr>
+<tr>
+<td>The capital of Japan is {{Tokyo}}</td>
+<td>The capital of Japan is [...]</td>
+<td>The capital of Japan is [Tokyo]</td>
+</tr>
+<tr>
+<td>The capital of Japan is {{Tokyo::東京}}</td>
+<td>The capital of Japan is [東京]</td>
+<td>The capital of Japan is [Tokyo]</td>
+</tr>
+</tbody>
+</table>
+<h2 id="ruby-text-furigana">Ruby text/Furigana</h2>
+<p>A word (string of text preceded by white space or the beginning of the line) followed by square brackets is interpreted as ruby characters.  So <code>東京[とうきょう]</code> becomes <ruby>東京<rt>とうきょう</rt></ruby>.  Ruby text (like other text) can be switched using curly clozed bracket notation above.  For example:</p>
+<table>
+<thead>
+<tr>
+<th>Source</th>
+<th>Clozed Display</th>
+<th>Open Display                             </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>The capital of Japan is {{Tokyo::東京[とうきょう]}}</td>
+<td>The capital of Japan is [<ruby>東京<rt>とうきょう</rt></ruby>]</td>
+<td>The capital of Japan is [Tokyo]</td>
+</tr>
+</tbody>
+</table>
+<h1 id="license">License</h1>
+<p>Copyright (c) 2013 Jayson Harshbarger <a href="https://www.gittip.com/hypercubed/" title="Donate weekly to this project using Gittip"><img src="http://badgr.co/gittip/hypercubed.png" alt="Gittip donate button"></a>
+<a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=X7KYR6T9U2NHC" title="One time donation to this project using Paypal"><img src="http://badgr.co/paypal/donate.png?bg=%23feb13d" alt="Paypal donate button"></a></p>
+<p><a href="http://en.wikipedia.org/wiki/MIT_License">MIT License</a></p>
+
+</div>

@@ -1,6 +1,6 @@
 "use strict";
 
-angular.module('mainApp').factory('deckFactory', ['FBURL', '$firebase', function(FBURL, $firebase) {
+/* angular.module('mainApp').factory('deckFactory', ['FBURL', '$firebase', function(FBURL, $firebase) {
   var decksRef = new Firebase(FBURL).child('decks');
 
   function _getDeck(path,id) {
@@ -33,7 +33,7 @@ angular.module('mainApp').factory('deckFactory', ['FBURL', '$firebase', function
     return Deck;
   }
 
-}]);
+}]); */
 
 angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function(FBURL, $firebase) {  // TODO: create provider?
   var self = this;
@@ -66,6 +66,11 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
 
     return $firebase(ref);
   };
+
+  this.getGravatar = function(path) {
+    var ref = decksRef.child(path+'/gravatar_id');
+    return $firebase(ref);
+  }
 
     //this.getCardsByDeckId = function(id) {
     //  var cardRef = decksRef.child(id).child('cards');

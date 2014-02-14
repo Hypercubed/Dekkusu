@@ -72,6 +72,22 @@ module.exports = function (grunt) {
       }
     },
 
+    markdown: {
+      all: {
+        files: [
+          {
+            expand: true,
+            src: 'README.md',
+            dest: 'src/components/home/',
+            ext: '.html'
+          }
+        ],
+        options: {
+          template: 'template.html'
+        }
+      }
+    },
+
     useminPrepare: {
       options: {
         dest: '<%= build.out %>'
@@ -201,6 +217,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean',
+    'markdown',
     //'assemble',
     'copy',
     //'imagemin',
@@ -221,7 +238,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('server', ['connect:devserver','watch']);
-  grunt.registerTask('run', ['clean','server']);
+  grunt.registerTask('run', ['clean','markdown','server']);
   grunt.registerTask('run:build', ['build','server']);
 
   //grunt.registerTask('deploy:rsync', ['build','rsync']);

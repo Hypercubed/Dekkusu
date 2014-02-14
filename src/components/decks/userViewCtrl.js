@@ -1,13 +1,19 @@
 angular.module('mainApp')
-  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','storage',
-                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, storage) {
 
-    console.log('$stateParams',$stateParams);
+  // This should be a set controller
+  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','storage','FBURL','$firebase',
+                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, storage,FBURL,$firebase) {
+
+    //console.log('$stateParams',$stateParams);
 
     $scope.username = $stateParams.username || 'guest';
     //$scope.deckId = $state.params.deck || 'root';
 
     $scope.decks = rootIds;
+
+    // TTODO: Should be included in deck object
+    deckManager.getGravatar($scope.username).$bind($scope,'gravatar_id');
+
     //$scope.listView = false;
 
     //console.log(rootIds);
@@ -35,8 +41,10 @@ angular.module('mainApp')
 }]);
 
 angular.module('mainApp')
-  .controller('userDeckListCtrl', ['$scope','$rootScope','$stateParams','deckManager','deck','$firebase','deckFactory',
-                          function ($scope, $rootScope, $stateParams,deckManager,deck,$firebase,deckFactory) {
+
+  // This should be setDeckListCtrl
+  .controller('userDeckListCtrl', ['$scope','$rootScope','$stateParams','deckManager','deck','$firebase',
+                          function ($scope,  $rootScope,  $stateParams,  deckManager,  deck,  $firebase) {
 
     $scope.deckId = $stateParams.deck || '';
     //console.log($scope.deckId);
@@ -48,7 +56,7 @@ angular.module('mainApp')
     //console.log($scope.deckId);
 
 
-    $scope.children = deck.$children;
+    $scope.children = deck.$children;  // TODO: get from resolve
     //deck.$children.$bind($scope,'children');
 
     $scope.newdeck = { name: '' };
@@ -82,6 +90,7 @@ angular.module('mainApp')
 
 }]);
 
+// Move to directive?
 angular.module('mainApp')
   .controller('deckCardCtrl', ['$scope',
                           function ($scope) {
@@ -89,7 +98,7 @@ angular.module('mainApp')
     $scope.editCard = false;
     $scope.clozed = true;
 
-    console.log($scope);
+    //console.log($scope);
 
     $scope.isClozed = function(text) {
       if (!text || text.length == 0) return false;

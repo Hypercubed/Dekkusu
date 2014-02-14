@@ -3,7 +3,7 @@
   <div class="container">
     <div class="row">
       <h2>
-        <i class="glyphicon glyphicon-user"></i>
+        <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{gravatar_id}}?s=50">
         <a href="#/{{username}}" ng-cloak>{{username}}</a>
 
         <span class="dropdown" ng-cloak>
@@ -29,6 +29,8 @@
     </div>
   </div>
 </div>
+
+{{gravatar.$value}}
 
 <div class="container">
   <div ui-view></div>

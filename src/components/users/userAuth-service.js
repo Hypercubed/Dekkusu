@@ -3,23 +3,53 @@
 angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin',
                                        function($location,$log,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin) {  // TODO: create provider
 
-  var ref = new Firebase(FBURL);
-  var auth = $firebaseSimpleLogin(ref);
+  var baseRef = new Firebase(FBURL);
+  var userDataRef = baseRef.child('userData');
+  var decksRef = baseRef.child('decks');
+
+  var auth = $firebaseSimpleLogin(baseRef);
+
+  $rootScope.userData = {};
 
   $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
-    //console.log('user',user);
+    //console.log(user);
 
-    //var userRef = ref.child('userData/' + user.username);
+    var deckName = user.username || user.id;
 
-    //var _ = $firebase(userRef);
-    //_.$bind($rootScope, 'userData', function() {
-    //  return {listView: false};  // Change to localStorage
-    //});
+    var ref = userDataRef.child(user.uid);
+    $rootScope.userData = $firebase(ref);
+
+    $rootScope.userData.$on('loaded', function(data) {
+
+      $rootScope.userData = $rootScope.userData || {};
+
+      $rootScope.userData.username = user.username || user.id;
+      $rootScope.userData.gravatar_id = user.gravatar_id || "000";
+      
+
+      if (!$rootScope.userData.deck) {  // New deck, TODO: Check if deck exists
+        $rootScope.userData.deck = $rootScope.userData.username;
+
+        var fb = decksRef  // Should use deckManager
+          .child($rootScope.userData.deck);
+
+
+        fb.child('gravatar_id')
+          .set($rootScope.userData.gravatar_id);
+
+        fb.child('owner')
+          .set(user.uid);
+
+      }
+
+      $rootScope.userData.$save();
+
+    });
 
   });
 
   $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
-    //$rootScope.userData = null;
+    $rootScope.userData = {};
     $location.path('/');
   });
 

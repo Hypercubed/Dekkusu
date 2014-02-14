@@ -41,6 +41,10 @@
       url: "/",
       templateUrl: 'components/home/homeView.html',
     })
+    .state('authroot.readme', {
+      url: "/readme",
+      templateUrl: 'components/home/README.html',
+    })
     .state('authroot.user', {  // Rename to set?
       abstract: true,
       url: "/:username",  // TODO: username -> path?
