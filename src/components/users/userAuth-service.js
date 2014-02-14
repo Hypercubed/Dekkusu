@@ -54,6 +54,8 @@ angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope',
   });
 
   $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
+    // TODO: remove guest decks on logout
+    
     $rootScope.userData = {};
     $location.path('/');
   });
