@@ -42,12 +42,12 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
   var decksRef = baseRef.child('decks');
 
   this.getDeckIds = function(path,id) {
-    var id = id || '';
+    var id = id || 'root';
     return $firebase(decksRef.child(path+'/'+id+'/children'));
   }
 
   this.getDeck = function(path,id) {
-    var id = id || '';
+    var id = id || 'root';
     var ref = decksRef.child(path+'/'+id);
     var fb = $firebase(ref);
     fb.$children = self.getChildren(path,id);
@@ -55,7 +55,7 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
   }
 
   this.getChildren = function(path,id) {
-    var id = id || '';
+    var id = id || 'root';
 
     var ref2 = decksRef.child(path);
     var ref1 = ref2.child(id+'/children');

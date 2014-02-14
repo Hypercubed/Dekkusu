@@ -1,7 +1,7 @@
 
-<div class="jumbotron">
+<div class="jumbotron userView">
   <div class="container">
-    <div class="col-md-11 col-md-offset-1">
+    <div class="row">
       <h2>
         <i class="glyphicon glyphicon-user"></i>
         <a href="#/{{username}}" ng-cloak>{{username}}</a>
@@ -20,8 +20,8 @@
             <a href="#/{{username}}/{{deckId}}/study" class="btn btn-primary">Study now</a>
           </div>
           <div class="btn-group">
-            <button type="button" class="btn btn-primary btn-sm" ng-click="listView = !listView" ><i class="glyphicon" ng-class="{true: 'glyphicon-th-list', false: 'glyphicon-th'}[listView]"></i> </button>
-            <button type="button" class="btn btn-primary btn-sm" ng-click="editView = !editView" ><i class="glyphicon glyphicon-edit"></i> </button>
+            <button type="button" class="btn btn-link btn-sm" ng-click="listView = !listView" ><i class="glyphicon" ng-class="{true: 'glyphicon-th-list', false: 'glyphicon-th'}[listView]"></i> </button>
+            <button type="button" class="btn btn-link btn-sm" ng-click="editView = !editView" ng-show="isOwner"><i class="glyphicon glyphicon-edit"></i> </button>
           </div>
         </div>
 
