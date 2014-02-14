@@ -22,8 +22,8 @@
 
   </div>
 
-  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children">
-    <div class="deckCard clozed" ng-controller='deckCardCtrl' ng-class="{true: 'clozed', false: 'unclozed'}[clozed]">
+  <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children" data-drop="true" jqyoui-droppable="{index: {{$index}}, onDrop:'drop(child,id)'}" ng-model="children">
+    <div class="deckCard clozed" ng-controller='deckCardCtrl' ng-class="{true: 'clozed', false: 'unclozed'}[clozed]" data-drag="true" jqyoui-draggable="{index: {{$index}},animate:true}" data-jqyoui-options="{revert: 'invalid'}" ng-model="children">
       <div class="btn-toolbar pHover pull-right" ng-if="isOwner" ng-class="{pHover: !editView}">
         <div class="btn-group">
           <a href="" class="btn btn-link btn-sm" ng-click="removeDeck(id)"><i class="glyphicon glyphicon-trash"></i> </a>

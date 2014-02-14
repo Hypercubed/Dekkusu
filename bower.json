@@ -11,12 +11,13 @@
     "angular-sanitize": "~1.0.8",
     "firebase": "~1.0.1",
     "firebase-simple-login": "*",
-    "angular-ui-router": "0.2.8",
+    "angular-ui-router": "0.2.7",
     "angular": "~1.2.6",
     "angularfire": "~0.6.0",
     "angularLocalStorage": "~0.1.7",
     "firebase-util": "https://github.com/firebase/firebase-util.git#~0.1.0",
-    "angular-animate": "~1.2.12"
+    "angular-animate": "~1.2.12",
+    "angular-dragdrop": "~1.0.6"
   },
   "devDependencies": {},
   "resolutions": {

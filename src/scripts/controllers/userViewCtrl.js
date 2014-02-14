@@ -73,6 +73,12 @@ angular.module('mainApp')
       deck.$children.$remove(id);
     }
 
+    $scope.drop = function(e, ui, item, id) {
+      console.log('drop', item, id, $scope.children);
+    }
+
+    $scope.dropped = [];
+
 }]);
 
 angular.module('mainApp')
@@ -81,6 +87,8 @@ angular.module('mainApp')
 
     $scope.editCard = false;
     $scope.clozed = true;
+
+    console.log($scope);
 
     $scope.isClozed = function(text) {
       if (!text || text.length == 0) return false;
