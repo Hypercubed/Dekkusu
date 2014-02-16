@@ -3,7 +3,7 @@
     <h1 class="heading">Build study decks better, together.</h1>
     <div ng-if="!auth.user">
       <button class="btn btn-primary button-block" ng-click="auth.$login('github')">Sign in using GitHub</button>
-      <button class="btn btn-primary button-block" ng-click="auth.$login('anonymous');">Sign in as a guest</button>
+      <button class="btn btn-primary button-block" ng-click="auth.$login('anonymous',{rememberMe: true});">Sign in as a guest</button>
       <a class="btn btn-default button-block" href="#/guest">Browse as guest</a>
     </div>
     <div ng-if="auth.user" ng-cloak>

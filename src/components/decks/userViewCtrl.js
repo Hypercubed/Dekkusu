@@ -1,18 +1,21 @@
 angular.module('mainApp')
 
   // This should be a set controller
-  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootIds','storage','FBURL','$firebase',
-                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootIds, storage,FBURL,$firebase) {
+  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootDeck','storage','FBURL','$firebase',
+                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootDeck,  storage,FBURL,$firebase) {
 
     //console.log('$stateParams',$stateParams);
 
     $scope.username = $stateParams.username || 'guest';
     //$scope.deckId = $state.params.deck || 'root';
 
-    $scope.decks = rootIds;
+    $scope.rootDeck = rootDeck;
+    $scope.decks = rootDeck.$children;
+    //console.log(rootDeck);
 
     // TTODO: Should be included in deck object
-    deckManager.getGravatar($scope.username).$bind($scope,'gravatar_id');
+    //$scope.image_url = deckManager.getImageUrl($scope.username).$value;
+    //deckManager.getImageUrl($scope.username).$bind($scope,'image_url');
 
     //$scope.listView = false;
 

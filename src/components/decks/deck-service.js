@@ -41,10 +41,10 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
 	var baseRef = new Firebase(FBURL);
   var decksRef = baseRef.child('decks');
 
-  this.getDeckIds = function(path,id) {
-    var id = id || 'root';
-    return $firebase(decksRef.child(path+'/'+id+'/children'));
-  }
+  //this.getDeckIds = function(path,id) {
+  //  var id = id || 'root';
+  //  return $firebase(decksRef.child(path+'/'+id+'/children'));
+  //}
 
   this.getDeck = function(path,id) {
     var id = id || 'root';
@@ -67,10 +67,10 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function
     return $firebase(ref);
   };
 
-  this.getGravatar = function(path) {
-    var ref = decksRef.child(path+'/gravatar_id');
-    return $firebase(ref);
-  }
+  //this.getImageUrl = function(path) {
+  //  var ref = decksRef.child(path+'/image_url');
+  //  return $firebase(ref);
+  //}
 
     //this.getCardsByDeckId = function(id) {
     //  var cardRef = decksRef.child(id).child('cards');

@@ -50,16 +50,17 @@
       url: "/:username",  // TODO: username -> path?
       templateUrl: 'components/decks/userView.html',
       controller: 'userViewCtrl',
-      resolve: { rootIds: ['$stateParams','deckManager', function($stateParams, deckManager) {
-        return deckManager.getChildren($stateParams.username);
-      }] }
+      resolve: { rootDeck: ['$stateParams','deckManager', function($stateParams, deckManager) {
+                    return deckManager.getDeck($stateParams.username);
+                  }]
+      }
     })
     .state('authroot.user.deckList', {
       url: '',
       templateUrl: 'components/decks/user.deckList.html',
       controller: 'userDeckListCtrl',
-      resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
-        return deckManager.getDeck($stateParams.username);
+      resolve: { deck: ['rootDeck', function(rootDeck) {
+        return rootDeck;
       }] }
     })
     .state('authroot.user.deck', {
