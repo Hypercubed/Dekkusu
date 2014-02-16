@@ -1,7 +1,7 @@
 "use strict";
 
-angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','deckManager','md5',
-                                       function($location,   $log,  $rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,deckManager,md5) {  // TODO: create provider
+angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','md5',
+                                       function($location,   $log,  $rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,md5) {  // TODO: create provider
 
   var baseRef = new Firebase(FBURL);
   var userDataRef = baseRef.child('users');
@@ -11,27 +11,22 @@ angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope',
   $rootScope.userData = {};
 
   $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
-    //console.log(user);
-
-    var deckName = user.username || user.id;
+    //console.log('$firebaseSimpleLogin:login', 'userAuth');
 
     var ref = userDataRef.child(user.uid);
     var userData = $rootScope.userData = $firebase(ref);
 
     userData.$on('loaded', function(data) {
+      //console.log('data',data);
 
       userData = userData || {};
 
-      userData.username = user.username || user.id;
+      userData.username = user.username || user.id;  // Only do this on new user??
       userData.gravatar_id = user.gravatar_id || md5.createHash(user.id);
       userData.deck = userData.deck || userData.username;
       userData.$save();
 
-      var rootDeck = deckManager.getDeck(userData.deck);   // Todo: check if deck name is unique
-      rootDeck.image_url = 'http://www.gravatar.com/avatar/'+$rootScope.userData.gravatar_id+'?s=50&d=retro';
-      rootDeck.owner = user.uid;
-      rootDeck.name = rootDeck.name || $rootScope.userData.username;
-      rootDeck.$save();
+      $rootScope.$broadcast('userAuth:data_loaded', userData);
 
     });
 

@@ -35,18 +35,30 @@
 
 }]); */
 
-angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', function(FBURL, $firebase) {  // TODO: create provider?
+angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootScope',function(FBURL, $firebase,$rootScope) {  // TODO: create provider?
   var self = this;
 
 	var baseRef = new Firebase(FBURL);
-  var decksRef = baseRef.child('decks');
+  var decksRef = baseRef.child('decks');  // Change this to deck sets?
+
+  $rootScope.$on("userAuth:data_loaded", function(evt, userData) {
+    console.log('userAuth:data_loaded', 'deckManager', userData);
+
+    var rootDeck = self.getDeck(userData.deck);   // Todo: check if deck name is unique
+    rootDeck.image_url = 'http://www.gravatar.com/avatar/'+userData.gravatar_id+'?s=50&d=retro';
+    //rootDeck.owner = user.uid;
+    rootDeck.name = rootDeck.name || userData.username;
+    rootDeck.$save();
+
+  });
+
 
   //this.getDeckIds = function(path,id) {
   //  var id = id || 'root';
   //  return $firebase(decksRef.child(path+'/'+id+'/children'));
   //}
 
-  this.getDeck = function(path,id) {
+  this.getDeck = function(path,id) {  // Todo: don't resolve until children are loaded
     var id = id || 'root';
     var ref = decksRef.child(path+'/'+id);
     var fb = $firebase(ref);
