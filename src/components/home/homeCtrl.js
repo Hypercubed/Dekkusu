@@ -1,11 +1,14 @@
-angular.module('mainApp')
-  .controller('HomeCtrl', ['$rootScope','$log','userAuth','SITE',
-                  function ($rootScope,$log,userAuth,SITE) {
 
-  $rootScope.auth = userAuth;
-  $rootScope.site = SITE;
-  $rootScope.log = $log;
+(function() {
 
-  //console.log(SITE);
+  "use strict";
 
-}]);
+  angular.module('mainApp')
+    .controller('HomeCtrl', ['$rootScope','userAuth',
+                    function ($rootScope,userAuth) {
+
+    $rootScope.auth = userAuth;
+
+  }]);
+
+})();

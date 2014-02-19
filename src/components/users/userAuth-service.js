@@ -1,48 +1,68 @@
-"use strict";
+(function() {
 
-angular.module('mainApp').service('userAuth', ['$location', '$log','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','md5',
-                                       function($location,   $log,  $rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,md5) {  // TODO: create provider
+  "use strict";
 
-  var baseRef = new Firebase(FBURL);
-  var userDataRef = baseRef.child('users');
+  angular.module('mainApp').
+    factory('gravatarImageService', function (md5) {
+        return {
+            getImageSrc : function(value, size, rating, defaultUrl, secure) {
+                // convert the value to lower case and then to a md5 hash
+                var hash = md5.createHash(value.toLowerCase());
+                var src = (secure ? 'https://secure' : 'http://www' ) + '.gravatar.com/avatar/' + hash;
+                if (size) src += '?s=' + size;
+                if (rating) src += '&r=' + rating;
+                if (defaultUrl) src += '&d=' + defaultUrl;
+                return src;
+            }
+        };
+    });
 
-  var auth = $firebaseSimpleLogin(baseRef);
+  angular.module('mainApp').service('userManager', ['$log','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5',
+                                         function($log,$location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5) {
 
-  $rootScope.userData = {};
+    var self = this;
+    var baseRef = new Firebase(FBURL);
+    var userDataRef = baseRef.child('users');
 
-  $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
-    //console.log('$firebaseSimpleLogin:login', 'userAuth');
+    this.auth = $firebaseSimpleLogin(baseRef);
 
-    var ref = userDataRef.child(user.uid);
-    var userData = $rootScope.userData = $firebase(ref);
+    this.getUserData = function(uid) {
+      var ref = userDataRef.child(uid);
+      return $firebase(ref);
+    }
 
-    userData.$on('loaded', function(data) {
-      //console.log('data',data);
+    $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
 
-      userData = userData || {};
+      var userData = self.getUserData(user.uid);
 
-      userData.username = user.username || user.id;  // Only do this on new user??
-      userData.gravatar_id = user.gravatar_id || md5.createHash(user.id);
-      userData.deck = userData.deck || userData.username;
-      userData.$save();
+      userData.$on('loaded', function(data) {
 
-      $rootScope.$broadcast('userAuth:data_loaded', userData);
+        userData = userData || {};
+
+        userData.username = user.username || user.id;  // Only do this on new user??
+        userData.gravatar_id = md5.createHash( (user.email || user.uid).toLowerCase());
+        //userData.image_url = 'http://www.gravatar.com/avatar/' + userData.gravatar_id + '&d=retro';
+        userData.image_url = gravatarImageService.getImageSrc(user.email || user.uid, null, null, 'retro');
+        userData.deck = userData.deck || userData.username;
+        userData.$save();
+
+        $rootScope.$broadcast('userAuth:data_loaded', userData);
+
+      });
+
+      $rootScope.userData = userData;
 
     });
 
-  });
+    $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
+      $rootScope.userData = {};
+      $location.path('/');
+    });
 
-  $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
-    // TODO: remove guest decks on logout
+    $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {
+      $log.error(err);
+    });
 
-    $rootScope.userData = {};
-    $location.path('/');
-  });
+  }]);
 
-  $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {
-    $log.error(err);
-  });
-
-  return auth;
-
-}]);
+})();

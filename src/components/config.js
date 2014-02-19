@@ -1,7 +1,7 @@
 
 (function() {
   var app = angular.module('mainApp',
-      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage','ngDragDrop','md5']);
+      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage','ngDragDrop','md5','fireUser','ui-gravatar']);
 
   if (window.location.hostname == "127.0.0.1") {
     app
@@ -28,5 +28,10 @@
   app.config(['$logProvider', 'DEBUG',function($logProvider, DEBUG) {
     $logProvider.debugEnabled(DEBUG);
   }]);
+
+  angular.module('fireUser').value('FireUserConfig',{
+      url:"https://dekkusu.firebaseio.com/",
+      datalocation:'users'
+  });
 
 })();

@@ -6,7 +6,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand" href="/">{{site.title}}</a>
+      <a class="navbar-brand" href="/"><img src="/images/paper-stack.png" height="20"> {{site.title}}</a>
     </div>
     <div class="navbar-collapse collapse" ng-class="{collapse:collapseNav}">
 
@@ -22,9 +22,9 @@
 
       <ul class="nav navbar-nav navbar-right" ng-cloak>
         <li ng-if="auth.user" ng-cloak>
-          <a href="#/{{auth.user.username || auth.user.id}}/" >
-            <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{userData.gravatar_id}}?s=20&d=retro">
-            {{auth.user.username  || 'Guest'}}
+          <a href="#/{{deck.$id}}/" >
+            <img class="user_gravatar" ng-src="{{userData.image_url}}" width="20">
+            {{auth.user.username}}
           </a>
         </li>
         <li ng-if="auth.user" ng-cloak><a href ng-click="auth.$logout()">Logout</a></li>

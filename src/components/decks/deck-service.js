@@ -1,52 +1,18 @@
 "use strict";
 
-/* angular.module('mainApp').factory('deckFactory', ['FBURL', '$firebase', function(FBURL, $firebase) {
-  var decksRef = new Firebase(FBURL).child('decks');
-
-  function _getDeck(path,id) {
-    var id = id || 'root';
-    var ref = decksRef.child(path+'/'+id);
-    return $firebase(ref);
-  }
-
-  function _getChildren(path,id) {
-    var id = id || 'root';
-
-    var ref2 = decksRef.child(path);
-    var ref1 = ref2.child(id+'/children');
-
-    var ref = Firebase.util.intersection(
-      {ref: ref1, keyMap: {'.value': 'name2'} } ,
-      ref2 );
-
-    return $firebase(ref);
-  };
-
-  return function(path,id) {
-    var Deck = _getDeck(path,id);
-
-    Deck.$getChildren = function() {
-      Deck.$children = _getChildren(path,id);
-      return Deck.$children;
-    }
-
-    return Deck;
-  }
-
-}]); */
-
 angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootScope',function(FBURL, $firebase,$rootScope) {  // TODO: create provider?
   var self = this;
 
 	var baseRef = new Firebase(FBURL);
   var decksRef = baseRef.child('decks');  // Change this to deck sets?
+  var setRef = baseRef.child('sets');  // Change this to deck sets?
 
   $rootScope.$on("userAuth:data_loaded", function(evt, userData) {
-    console.log('userAuth:data_loaded', 'deckManager', userData);
+    //console.log('userAuth:data_loaded', 'deckManager', userData);
 
     var rootDeck = self.getDeck(userData.deck);   // Todo: check if deck name is unique
     rootDeck.image_url = 'http://www.gravatar.com/avatar/'+userData.gravatar_id+'?s=50&d=retro';
-    //rootDeck.owner = user.uid;
+    rootDeck.owner = userData.$id;
     rootDeck.name = rootDeck.name || userData.username;
     rootDeck.$save();
 
@@ -58,9 +24,16 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
   //  return $firebase(decksRef.child(path+'/'+id+'/children'));
   //}
 
+  function _getRef(path,id) {
+    if (!id || id == 'root') {
+      return setRef.child(path);
+    } else {
+      return decksRef.child(path+'/'+id);
+    }
+  }
+
   this.getDeck = function(path,id) {  // Todo: don't resolve until children are loaded
-    var id = id || 'root';
-    var ref = decksRef.child(path+'/'+id);
+    var ref = _getRef(path,id);
     var fb = $firebase(ref);
     fb.$children = self.getChildren(path,id);
     return fb;

@@ -30,78 +30,59 @@
     });
 
     $stateProvider
-    .state("authroot", {
-      abstract: true,
-      url: "",
-      controller: 'HomeCtrl',
-      resolve: {  currentUser: ['userAuth',function(userAuth) { return userAuth.$getCurrentUser(); } ] },
-      templateUrl: 'components/home/rootView.html'
-    })
-    .state('authroot.home', {
-      url: "/",
-      templateUrl: 'components/home/homeView.html',
-    })
-    .state('authroot.readme', {
-      url: "/readme",
-      templateUrl: 'components/home/README.html',
-    })
-    .state('authroot.user', {  // Rename to set?
-      abstract: true,
-      url: "/:username",  // TODO: username -> path?
-      templateUrl: 'components/decks/userView.html',
-      controller: 'userViewCtrl',
-      resolve: { rootDeck: ['$stateParams','deckManager', function($stateParams, deckManager) {
-                    return deckManager.getDeck($stateParams.username);
-                  }]
-      }
-    })
-    .state('authroot.user.deckList', {
-      url: '',
-      templateUrl: 'components/decks/user.deckList.html',
-      controller: 'userDeckListCtrl',
-      resolve: { deck: ['rootDeck', function(rootDeck) {
-        return rootDeck;
-      }] }
-    })
-    .state('authroot.user.deck', {
-      url: "/:deck",
-      templateUrl: 'components/decks/user.deckList.html',
-      controller: 'userDeckListCtrl',
-      resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
-        return deckManager.getDeck($stateParams.username, $stateParams.deck);
-      }] }
-    }); /*
-    .state('user.deck.cardList', {
-       url: "",
-       templateUrl: 'partials/user.deck.cardList.html',
-       controller: 'DeckCtrl'
-    })
-    .state('user.deck.card', {
-      url: "/:id",
-      templateUrl: 'partials/user.deck.cardView.html',
-      controller: 'cardViewCtrl'
-    })
-    ; */
-
-    // TODO: user.deck.study
-
-      /* $routeProvider.
-        when('/', {
-          templateUrl: 'partials/homeView.html',
-          controller: 'HomeCtrl'
-        }).
-        when('/:username', {
-          templateUrl: 'partials/deckListView.html',
-          controller: 'DeckListCtrl'
-        }).
-        when('/:username/:deck', {
-          templateUrl: 'partials/deckView.html',
-          controller: 'DeckCtrl'
-        }).
-        otherwise({
-          redirectTo: '/'
-        }); */
+      .state("authroot", {
+        abstract: true,
+        controller: 'HomeCtrl',
+        resolve: {  userAuth: ['userManager', function(userManager) {
+          return userManager.auth;
+        } ] },
+        templateUrl: 'components/home/rootView.html'
+      })
+      .state('authroot.home', {
+        url: "/",
+        templateUrl: 'components/home/homeView.html',
+      })
+      .state('authroot.readme', {
+        url: "/readme",
+        templateUrl: 'components/home/README.html',
+      })
+      .state('authroot.list', {
+        url: "/list",
+        controller: 'ListCtrl',
+        templateUrl: 'components/list/listView.html'
+      })
+      .state('authroot.user', {  // Rename to set?
+        abstract: true,
+        url: "/:username",  // TODO: username -> path?
+        templateUrl: 'components/decks/userView.html',
+        controller: 'userViewCtrl',
+        resolve: { rootDeck: ['$stateParams','deckManager', function($stateParams, deckManager) {
+                      return deckManager.getDeck($stateParams.username);
+                    }]
+        }
+      })
+      .state('authroot.user.deckList', {
+        url: '',
+        templateUrl: 'components/decks/user.deckList.html',
+        controller: 'userDeckListCtrl',
+        resolve: { deck: ['rootDeck', function(rootDeck) {
+          return rootDeck;
+        }] }
+      })
+      .state('authroot.user.deck', {
+        url: "/:deck",
+        templateUrl: 'components/decks/user.deckList.html',
+        controller: 'userDeckListCtrl',
+        resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
+          return deckManager.getDeck($stateParams.username, $stateParams.deck);
+        }] }
+      });
 
     }]);
+
+  angular.module('mainApp').run(['$rootScope', 'SITE',function($rootScope, SITE) {
+    $rootScope.site = SITE;
+  }]);
+
 
 })();

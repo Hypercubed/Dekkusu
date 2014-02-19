@@ -18,7 +18,8 @@
     "firebase-util": "https://github.com/firebase/firebase-util.git#~0.1.0",
     "angular-animate": "~1.2.12",
     "angular-dragdrop": "~1.0.6",
-    "angularjs-gravatardirective": "lavinjj/angularjs-gravatardirective"
+    "angularjs-gravatardirective": "lavinjj/angularjs-gravatardirective",
+    "fireuser": "~0.3.0"
   },
   "devDependencies": {},
   "resolutions": {
