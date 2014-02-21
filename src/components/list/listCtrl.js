@@ -3,14 +3,12 @@
   "use strict";
 
   angular.module('mainApp')
-    .controller('ListCtrl', ['$scope','$firebase','FBURL',
-                    function ($scope,$firebase,FBURL) {
+    .controller('ListCtrl', ['$scope','users',
+                    function ($scope,users) {
 
-    var usersRef = new Firebase(FBURL).child('users');
-    var setsRef = new Firebase(FBURL).child('sets');
+                      console.log(users);
 
-    $scope.users = $firebase(usersRef);
-    $scope.sets = $firebase(setsRef);
+    $scope.users = users;
 
   }]);
 

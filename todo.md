@@ -8,31 +8,35 @@ Key -
 
 _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
+# Limitations (for now)
+- One user - one deck
+
+# Current
+- [ ] Remove sets (use users)
+- [ ] Use only gravatars (md5 on email on login)
+
 # Next
 - [x] Firebase v2
-- [*] Data services
-- [ ] Reorganize controllers/view files
-- [ ] Copy & move decks
+- [x] Data services
+- [x] Reorganize controllers/view files
+- [ ] Copy & move decks!!
 - [ ] Fix progressing algo (Again!)
 - [x] app constants ('FBURL')
-- [ ] Unique deck names: http://weblogs.asp.net/dwahlin/archive/2013/09/24/building-a-custom-angularjs-unique-value-directive.aspx
-- [ ] Deck factory: https://github.com/vojtajina/WebApp-CodeLab/blob/angularjs/FinalProject/js/services.js
-
 - [ ] Fix editing
-- [ ] Tab while editing saves
+- [ ] Tab while editing saves?
 - [ ] Re-implement double click to edit
-- [ ] Firebase uilt?
-- [ ] Security (Authorized list)
-- [ ] Redirect on logout
+- [x] Firebase util?
+- [-] Security (Authorized list)
+- [x] Redirect on logout
 - [ ] Better services
 
 # Soon
-- [ ] Sidebar showing login info and deck list
+- [ ] Sidebar showing login info and root list
 - [ ] Drag and drop
-- [ ] De-normalize data?
+- [x] De-normalize data?
 - [ ] user object
 - [ ] $user.admin
-- [ ] private decks?
+- [ ] private (read-only) decks?
 - [ ] localStorage backup for guests?
 - [ ] Guest account reset
 - [ ] Cards -> angularFirebaseCollection

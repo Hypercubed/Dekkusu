@@ -1,24 +1,25 @@
 
-<div class="jumbotron userView">
-  <div class="container">
-    <div class="row">
+<div class="jumbotron userView container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
       <h2>
-        <img class="user_gravatar" ng-src="{{rootDeck.image_url}}" width="50">
-        <a href="#/{{username}}" ng-cloak>{{username}}</a>
+        <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{user.gravatar_id}}?s=50&d=retro" width="50">
+        <a href="#/{{user.$id}}" ng-cloak>{{user.$id}}</a>
 
         <span class="dropdown" ng-cloak>
           <a href="" class="dropdown-toggle" data-toggle="dropdown">
             <b class="caret"></b>
           </a>
           <ul class="dropdown-menu">
-            <li ng-repeat="(id, d) in decks"><a href="#/{{username}}/{{id}}/">{{d.name}}</a></li>
+            <li ng-repeat="(id, d) in decks"><a href="#/{{user.$id}}/{{id}}/">{{d.name}}</a></li>
           </ul>
         </span>
 
         <div class="btn-toolbar pull-right" >
-          <div ng-if="state.current.name == 'user.deck.cardList'" ng-cloak class="btn-group">
-            <a href="#/{{username}}/{{deckId}}/study" class="btn btn-primary">Study now</a>
-          </div>
+          <!-- div ng-if="state.current.name == 'user.deck.cardList'" ng-cloak class="btn-group">
+            <a href="#/{{user.$id}}/{{deck.$id}}/study" class="btn btn-primary">Study now</a>
+          </div -->
           <div class="btn-group">
             <button type="button" class="btn btn-link btn-sm" ng-click="listView = !listView" ><i class="glyphicon" ng-class="{true: 'glyphicon-th-list', false: 'glyphicon-th'}[listView]"></i> </button>
             <button type="button" class="btn btn-link btn-sm" ng-click="editView = !editView" ng-show="isOwner"><i class="glyphicon glyphicon-edit"></i> </button>
@@ -26,12 +27,11 @@
         </div>
 
       </h2>
+
     </div>
   </div>
 </div>
 
-{{gravatar.$value}}
-
-<div class="container">
+<div class="container-fluid">
   <div ui-view></div>
 </div>

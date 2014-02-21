@@ -1,5 +1,5 @@
 <div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapseNav=true">
-  <div class="container">
+  <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" ng-click="collapseNav=!collapseNav">
         <span class="icon-bar"></span>
@@ -22,9 +22,9 @@
 
       <ul class="nav navbar-nav navbar-right" ng-cloak>
         <li ng-if="auth.user" ng-cloak>
-          <a href="#/{{deck.$id}}/" >
-            <img class="user_gravatar" ng-src="{{userData.image_url}}" width="20">
-            {{auth.user.username}}
+          <a href="#/{{userData.$id}}/" >
+            <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{userData.gravatar_id}}?s=20&d=retro" width="20">
+            {{userData.$id}}
           </a>
         </li>
         <li ng-if="auth.user" ng-cloak><a href ng-click="auth.$logout()">Logout</a></li>

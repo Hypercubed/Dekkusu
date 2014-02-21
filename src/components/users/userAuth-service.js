@@ -26,24 +26,29 @@
 
     this.auth = $firebaseSimpleLogin(baseRef);
 
-    this.getUserData = function(uid) {
-      var ref = userDataRef.child(uid);
+    this.getUsers = function() {
+      var ref = baseRef.child('users');
+      return $firebase(ref);
+    }
+
+    this.getUserData = function(id) {
+      var ref = userDataRef.child(id);
       return $firebase(ref);
     }
 
     $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
 
-      var userData = self.getUserData(user.uid);
+      var userData = self.getUserData(user.username || user.id);
 
       userData.$on('loaded', function(data) {
 
         userData = userData || {};
 
-        userData.username = user.username || user.id;  // Only do this on new user??
-        userData.gravatar_id = md5.createHash( (user.email || user.uid).toLowerCase());
+        //userData.username = user.username || user.id;
+        userData.gravatar_id = md5.createHash( (user.email || user.uid).toLowerCase() );
         //userData.image_url = 'http://www.gravatar.com/avatar/' + userData.gravatar_id + '&d=retro';
-        userData.image_url = gravatarImageService.getImageSrc(user.email || user.uid, null, null, 'retro');
-        userData.deck = userData.deck || userData.username;
+        //userData.image_url = gravatarImageService.getImageSrc(user.email || user.uid, null, null, 'retro');
+        //userData.deck = userData.deck || userData.username;
         userData.$save();
 
         $rootScope.$broadcast('userAuth:data_loaded', userData);
