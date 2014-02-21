@@ -31,7 +31,7 @@
 
     // Resolves
     var userAuth = ['userManager', function(userManager) {
-          return userManager.auth;
+          return userManager.auth();
         } ];
 
     var users = ['userManager', function(userManager) {
@@ -68,25 +68,25 @@
       .state('authroot.list', {
         url: "/users",
         controller: 'ListCtrl',
-        templateUrl: 'components/list/listView.html',
+        templateUrl: 'components/users/listView.html',
         resolve: {  users: users }
       })
       .state('authroot.user', {
         abstract: true,
         url: "/:username",
-        templateUrl: 'components/decks/userView.html',
+        templateUrl: 'components/users/userView.html',
         controller: 'userViewCtrl',
         resolve: { rootDeck: rootDeck, user: user }
       })
       .state('authroot.user.deckList', {
         url: '',
-        templateUrl: 'components/decks/user.deckList.html',
+        templateUrl: 'components/decks/deckList.html',
         controller: 'userDeckListCtrl',
         resolve: { deck: rootDeck }
       })
       .state('authroot.user.deck', {
         url: "/:deck",
-        templateUrl: 'components/decks/user.deckList.html',
+        templateUrl: 'components/decks/deckList.html',
         controller: 'userDeckListCtrl',
         resolve: { deck: deck }
       });

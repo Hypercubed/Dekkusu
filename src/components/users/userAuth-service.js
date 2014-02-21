@@ -17,14 +17,27 @@
         };
     });
 
-  angular.module('mainApp').service('userManager', ['$log','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5',
-                                         function($log,$location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5) {
+  angular.module('mainApp').service('userManager', ['$log','$q','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5',
+                                            function($log,  $q,  $location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5) {
 
     var self = this;
     var baseRef = new Firebase(FBURL);
     var userDataRef = baseRef.child('users');
 
-    this.auth = $firebaseSimpleLogin(baseRef);
+    this.auth = function() {
+      var def = $q.defer();
+      var auth = $firebaseSimpleLogin(baseRef);
+
+      $rootScope.$on('$firebaseSimpleLogin:login', fn);
+      $rootScope.$on('$firebaseSimpleLogin:logout', fn);
+      $rootScope.$on('$firebaseSimpleLogin:error', fn);
+
+      function fn(evt, user) {
+        def.resolve(auth);
+      }
+
+      return def.promise;
+    }
 
     this.getUsers = function() {
       var ref = baseRef.child('users');
