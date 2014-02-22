@@ -93,7 +93,7 @@
 
     }]);
 
-  angular.module('mainApp').run(['$rootScope', 'SITE','growl', function($rootScope, SITE,growl) {
+  angular.module('mainApp').run(['$rootScope', 'SITE','growl', '$log', function($rootScope, SITE,growl) {
     $rootScope.site = SITE;
 
     $rootScope.$on('$stateChangeError',
@@ -104,6 +104,7 @@
     $rootScope.$on('$stateNotFound',
       function(event, unfoundState, fromState, fromParams){
         growl.addSuccessMessage('State not found error');
+        $log.error(unfoundState, fromState, fromParams);
       });
 
   }]);

@@ -3,7 +3,7 @@
   "use strict";
 
   angular.module('mainApp').
-    factory('gravatarImageService', function (md5) {
+    factory('gravatarImageService', ['md5', function (md5) {
         return {
             getImageSrc : function(value, size, rating, defaultUrl, secure) {
                 // convert the value to lower case and then to a md5 hash
@@ -15,7 +15,7 @@
                 return src;
             }
         };
-    });
+    }]);
 
   angular.module('mainApp').service('userManager', ['$log','$q','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5','growl',
                                             function($log,  $q,  $location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5,growl) {

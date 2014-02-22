@@ -1,7 +1,7 @@
 
 (function() {
   var app = angular.module('mainApp',
-      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage','ngDragDrop','md5','fireUser','ui-gravatar','angular-growl']);
+      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage','md5','ui-gravatar','angular-growl']);
 
   if (window.location.hostname == "127.0.0.1") {
     app
@@ -11,28 +11,23 @@
       .constant('SITE', {
         title: 'Dekkusu - Dev',
         company: 'J. Harshbarger',
-        year: '2013'
+        year: '2014'
       });
   } else {
     app
       .constant("ENV", "production")
       .constant('FBURL','https://dekkusu-prod.firebaseio.com/')
-      .constant('DEBUG', false)
+      .constant('DEBUG', true)
       .constant('SITE', {
         title: 'Dekkusu',
         company: 'J. Harshbarger',
-        year: '2013'
+        year: '2014'
       });
   };
 
   app.config(['$logProvider', 'DEBUG',function($logProvider, DEBUG) {
     $logProvider.debugEnabled(DEBUG);
   }]);
-
-  angular.module('fireUser').value('FireUserConfig',{
-      url:"https://dekkusu.firebaseio.com/",
-      datalocation:'users'
-  });
 
   app.config(['growlProvider', function(growlProvider) {
     growlProvider.globalTimeToLive(5000);
