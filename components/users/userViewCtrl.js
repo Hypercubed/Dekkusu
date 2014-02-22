@@ -1,53 +1,34 @@
+
 angular.module('mainApp')
 
   // This should be a set controller
-  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','deckManager','rootDeck','storage','FBURL','$firebase',
-                      function ($scope,  $rootScope,   $state,  $stateParams,  deckManager,  rootDeck,  storage,FBURL,$firebase) {
+  .controller('userViewCtrl', ['$scope','$rootScope', '$state','$stateParams','rootDeck','user', 'storage',
+                      function ($scope,  $rootScope,   $state,  $stateParams,  rootDeck,  user,   storage) {
 
-    //console.log('$stateParams',$stateParams);
-
-    $scope.username = $stateParams.username || 'guest';
-    //$scope.deckId = $state.params.deck || 'root';
+    $scope.user = user;
+    $scope.username = $stateParams.username || 'guest';  // Do I still need this?
 
     $scope.rootDeck = rootDeck;
     $scope.decks = rootDeck.$children;
     //console.log(rootDeck);
 
-    // TTODO: Should be included in deck object
-    //$scope.image_url = deckManager.getImageUrl($scope.username).$value;
-    //deckManager.getImageUrl($scope.username).$bind($scope,'image_url');
-
-    //$scope.listView = false;
-
-    //console.log(rootIds);
-
-    /* $scope.decks.$set('_temp', function(error) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log('success');
-      }
-    }); */
-
     storage.bind($scope,'listView',{defaultValue: false});
     storage.bind($scope,'editView',{defaultValue: false});
 
-    $rootScope.state = $state;
-    //console.log($rootScope.auth.user.username);
+    $rootScope.state = $state;  // TODO: do I need this?
 
-    if (!$rootScope.auth.user) {  // Need a better way
-      $scope.isOwner = false;
-    } else {
-      $scope.isOwner = ($rootScope.auth.user.username == $stateParams.username || $rootScope.auth.user.id == $stateParams.username);
-    }
+    $scope.$watch('auth.user', function(authUser) {  // Do this better
+      if (!authUser) return $scope.isOwner = false;
+      $scope.isOwner = (authUser.username == user.$id || authUser.id == user.$id);
+    });
 
 }]);
 
 angular.module('mainApp')
 
   // This should be setDeckListCtrl
-  .controller('userDeckListCtrl', ['$scope','$rootScope','$stateParams','deckManager','deck','$firebase',
-                          function ($scope,  $rootScope,  $stateParams,  deckManager,  deck,  $firebase) {
+  .controller('userDeckListCtrl', ['$scope','$stateParams','deck',
+                          function ($scope,  $stateParams,  deck) {
 
     $scope.deckId = $stateParams.deck || '';
     //console.log($scope.deckId);

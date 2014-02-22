@@ -29,13 +29,32 @@
       return path + '?' + params.join('&');
     });
 
+    // Resolves
+    var userAuth = ['userManager', function(userManager) {
+          return userManager.auth();
+        } ];
+
+    var users = ['userManager', function(userManager) {
+          return userManager.getUsers();
+        } ];
+
+    var user = ['$stateParams','userManager', function($stateParams, userManager) {
+                    return userManager.getUserData($stateParams.username);
+                   } ];
+
+    var rootDeck = ['$stateParams','deckManager', function($stateParams, deckManager) {
+                      return deckManager.getDeck($stateParams.username);
+                    }];
+
+    var deck = ['$stateParams','deckManager', function($stateParams, deckManager) {
+          return deckManager.getDeck($stateParams.username, $stateParams.deck);
+        }];
+
     $stateProvider
       .state("authroot", {
         abstract: true,
         controller: 'HomeCtrl',
-        resolve: {  userAuth: ['userManager', function(userManager) {
-          return userManager.auth;
-        } ] },
+        resolve: {  userAuth: userAuth },
         templateUrl: 'components/home/rootView.html'
       })
       .state('authroot.home', {
@@ -47,41 +66,46 @@
         templateUrl: 'components/home/README.html',
       })
       .state('authroot.list', {
-        url: "/list",
+        url: "/users",
         controller: 'ListCtrl',
-        templateUrl: 'components/list/listView.html'
+        templateUrl: 'components/users/listView.html',
+        resolve: {  users: users }
       })
-      .state('authroot.user', {  // Rename to set?
+      .state('authroot.user', {
         abstract: true,
-        url: "/:username",  // TODO: username -> path?
-        templateUrl: 'components/decks/userView.html',
+        url: "/:username",
+        templateUrl: 'components/users/userView.html',
         controller: 'userViewCtrl',
-        resolve: { rootDeck: ['$stateParams','deckManager', function($stateParams, deckManager) {
-                      return deckManager.getDeck($stateParams.username);
-                    }]
-        }
+        resolve: { rootDeck: rootDeck, user: user }
       })
       .state('authroot.user.deckList', {
         url: '',
-        templateUrl: 'components/decks/user.deckList.html',
+        templateUrl: 'components/decks/deckList.html',
         controller: 'userDeckListCtrl',
-        resolve: { deck: ['rootDeck', function(rootDeck) {
-          return rootDeck;
-        }] }
+        resolve: { deck: rootDeck }
       })
       .state('authroot.user.deck', {
         url: "/:deck",
-        templateUrl: 'components/decks/user.deckList.html',
+        templateUrl: 'components/decks/deckList.html',
         controller: 'userDeckListCtrl',
-        resolve: { deck: ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getDeck($stateParams.username, $stateParams.deck);
-        }] }
+        resolve: { deck: deck }
       });
 
     }]);
 
-  angular.module('mainApp').run(['$rootScope', 'SITE',function($rootScope, SITE) {
+  angular.module('mainApp').run(['$rootScope', 'SITE','growl', function($rootScope, SITE,growl) {
     $rootScope.site = SITE;
+
+    $rootScope.$on('$stateChangeError',
+      function() {
+        growl.addErrorMessage('State change error');
+      });
+
+    $rootScope.$on('$stateNotFound',
+      function(event, unfoundState, fromState, fromParams){
+        growl.addSuccessMessage('State not found error');
+      });
+
   }]);
 
 

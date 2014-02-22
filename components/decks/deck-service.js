@@ -5,37 +5,13 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
 
 	var baseRef = new Firebase(FBURL);
   var decksRef = baseRef.child('decks');  // Change this to deck sets?
-  var setRef = baseRef.child('sets');  // Change this to deck sets?
-
-  $rootScope.$on("userAuth:data_loaded", function(evt, userData) {
-    //console.log('userAuth:data_loaded', 'deckManager', userData);
-
-    var rootDeck = self.getDeck(userData.deck);   // Todo: check if deck name is unique
-    rootDeck.image_url = 'http://www.gravatar.com/avatar/'+userData.gravatar_id+'?s=50&d=retro';
-    rootDeck.owner = userData.$id;
-    rootDeck.name = rootDeck.name || userData.username;
-    rootDeck.$save();
-
-  });
-
-
-  //this.getDeckIds = function(path,id) {
-  //  var id = id || 'root';
-  //  return $firebase(decksRef.child(path+'/'+id+'/children'));
-  //}
-
-  function _getRef(path,id) {
-    if (!id || id == 'root') {
-      return setRef.child(path);
-    } else {
-      return decksRef.child(path+'/'+id);
-    }
-  }
 
   this.getDeck = function(path,id) {  // Todo: don't resolve until children are loaded
-    var ref = _getRef(path,id);
+    var id = id || 'root';
+
+    var ref = decksRef.child(path+'/'+id);
     var fb = $firebase(ref);
-    fb.$children = self.getChildren(path,id);
+    fb.$children = self.getChildren(path,id);  // TODO: Remove this
     return fb;
   }
 
@@ -51,31 +27,6 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
 
     return $firebase(ref);
   };
-
-  //this.getImageUrl = function(path) {
-  //  var ref = decksRef.child(path+'/image_url');
-  //  return $firebase(ref);
-  //}
-
-    //this.getCardsByDeckId = function(id) {
-    //  var cardRef = decksRef.child(id).child('cards');
-    //  return $firebase(cardRef);
-    //}
-
-    /* this.addDeck = function(path, parent, deck) {
-      var parent = parent || 'root';
-      var deck = deck || { name: 'new' };
-
-      var id = decksRef.child(path).push(deck).name();
-      decksRef.child(path+'/'+parent+'/children/'+id).set(deck.name);
-    };
-
-    this.removeDeck = function(path, parent, id) {  // Need to delete all children
-      var parent = parent || 'root';
-
-      decksRef.child(path+'/'+id).remove();
-      decksRef.child(path+'/'+parent+'/children/'+id).remove();
-    }; */
 
 }]);
 
