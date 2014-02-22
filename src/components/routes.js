@@ -93,25 +93,6 @@
 
     }]);
 
-  angular.module('mainApp')
-    .controller('AppCtrl', ['$rootScope',
-                    function ($rootScope) {
-
-    $rootScope.$on('$stateChangeError',
-      function() {
-        console.log('$stateChangeError');
-      });
-
-    $rootScope.$on('$stateNotFound',
-      function(event, unfoundState, fromState, fromParams){
-        console.log('$stateNotFound');
-        console.log(unfoundState.to);
-        console.log(unfoundState.toParams);
-        console.log(unfoundState.options);
-      });
-
-  }]);
-
   angular.module('mainApp').run(['$rootScope', 'SITE',function($rootScope, SITE) {
     $rootScope.site = SITE;
   }]);
