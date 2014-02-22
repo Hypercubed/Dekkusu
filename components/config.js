@@ -11,17 +11,17 @@
       .constant('SITE', {
         title: 'Dekkusu - Dev',
         company: 'J. Harshbarger',
-        year: '2013'
+        year: '2014'
       });
   } else {
     app
       .constant("ENV", "production")
       .constant('FBURL','https://dekkusu-prod.firebaseio.com/')
-      .constant('DEBUG', false)
+      .constant('DEBUG', true)
       .constant('SITE', {
         title: 'Dekkusu',
         company: 'J. Harshbarger',
-        year: '2013'
+        year: '2014'
       });
   };
 
