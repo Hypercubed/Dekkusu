@@ -93,8 +93,19 @@
 
     }]);
 
-  angular.module('mainApp').run(['$rootScope', 'SITE',function($rootScope, SITE) {
+  angular.module('mainApp').run(['$rootScope', 'SITE','growl', function($rootScope, SITE,growl) {
     $rootScope.site = SITE;
+
+    $rootScope.$on('$stateChangeError',
+      function() {
+        growl.addErrorMessage('State change error');
+      });
+
+    $rootScope.$on('$stateNotFound',
+      function(event, unfoundState, fromState, fromParams){
+        growl.addSuccessMessage('State not found error');
+      });
+
   }]);
 
 

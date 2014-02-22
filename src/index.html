@@ -14,11 +14,11 @@
 
 		<!-- build:css(src) styles/vendor.css -->
 		<link rel="stylesheet" href="_bower_components/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="_bower_components/angular-growl/build/angular-growl.min.css">
 		<!-- endbuild -->
 		<!-- build:css(src) styles/main.css -->
 		<link rel="stylesheet" href="components/main.css">
     <link rel="stylesheet" href="components/decks/decks.css">
-    <link rel="stylesheet" href="components/alerts/alerts.css">
 		<!-- endbuild -->
 		<!-- build:js(src) scripts/vendor/modernizr.js -->
 		<script src="_bower_components/modernizr/modernizr.js"></script>
@@ -37,8 +37,7 @@
 	</head>
 	<body ng-app="mainApp">
 
-    <div id="alerts" class="ng-cloak" ng-include="'components/alerts/alerts.html'" ng-controller="AlertsCtrl">
-    </div>
+    <div growl></div>
 
 		<!--[if lt IE 10]>
 			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
@@ -69,6 +68,7 @@
     <script src="_bower_components/angularjs-gravatardirective/src/md5-service.js"></script>
     <script src="_bower_components/angularjs-gravatardirective/src/gravatar-directive.js"></script>
     <script src="_bower_components/fireuser/FireUser.js"></script>
+    <script src="_bower_components/angular-growl/build/angular-growl.js"></script>
 		<!-- endbuild -->
 
 		<!-- Google Analytics -->
@@ -88,7 +88,6 @@
 
     <script src="components/users/userAuth-service.js"></script>
     <script src="components/decks/deck-service.js"></script>
-    <script src="components/alerts/alerts-controller.js"></script>
 
     <script src="components/home/homeCtrl.js"></script>
     <script src="components/users/userViewCtrl.js"></script>

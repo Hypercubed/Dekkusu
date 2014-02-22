@@ -1,6 +1,6 @@
   angular.module('mainApp')
-    .controller('AlertsCtrl', ['$rootScope','$scope','$timeout',
-                    function ($rootScope,$scope,$timeout) {
+    .controller('AlertsCtrl', ['$rootScope','$scope','$timeout','growl',
+                    function ($rootScope,$scope,$timeout,growl) {
 
     $scope.alerts = [];
 
@@ -20,7 +20,7 @@
       if (index > -1) $scope.alerts.splice(index, 1);
     };
 
-    $rootScope.$on('$stateChangeError',
+    /*$rootScope.$on('$stateChangeError',
       function() {
         $scope.addAlert('$stateChangeError');
       });
@@ -40,12 +40,13 @@
 
     $rootScope.$on('$firebaseSimpleLogin:login',
       function(evt,user) {
-        $scope.addAlert('Logged in as '+(user.username || user.id),'success');
+        //$scope.addAlert('Logged in as '+(user.username || user.id),'success');
+        growl.addSuccessMessage('Logged in as '+(user.username || user.id));
       });
 
     $rootScope.$on('$firebaseSimpleLogin:logout',
       function(evt,user) {
         $scope.addAlert('Logged out','warning');
-      });
+      });*/
 
   }]);

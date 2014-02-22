@@ -17,8 +17,8 @@
         };
     });
 
-  angular.module('mainApp').service('userManager', ['$log','$q','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5',
-                                            function($log,  $q,  $location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5) {
+  angular.module('mainApp').service('userManager', ['$log','$q','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5','growl',
+                                            function($log,  $q,  $location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5,growl) {
 
     var self = this;
     var baseRef = new Firebase(FBURL);
@@ -50,6 +50,7 @@
     }
 
     $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
+      growl.addSuccessMessage('Logged in as '+(user.username || user.id));
 
       var userData = self.getUserData(user.username || user.id);
 
@@ -73,13 +74,15 @@
     });
 
     $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
+      growl.addWarnMessage('Logged out','warning');
       $rootScope.userData = {};
       $location.path('/');
     });
 
     $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {
-      $log.error(err);
-    });
+        $log.error(err);
+        growl.addErrorMessage('Error logging in');
+      });
 
   }]);
 
