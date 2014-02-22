@@ -1,7 +1,19 @@
 
 (function() {
   var app = angular.module('mainApp',
-      ['ui.router','ui.bootstrap', 'ui.keypress', 'ui.event', 'ngSanitize', 'firebase','ngAnimate','angularLocalStorage','md5','ui-gravatar','angular-growl']);
+      [
+        'ui.router'
+        ,'ui.bootstrap'
+        , 'ui.keypress'
+        , 'ui.event'
+        , 'ngSanitize'
+        , 'firebase'
+        ,'ngAnimate'
+        ,'angularLocalStorage'
+        ,'md5'
+        ,'ui-gravatar'
+        ,'angular-growl'
+      ]);
 
   if (window.location.hostname == "127.0.0.1") {
     app
