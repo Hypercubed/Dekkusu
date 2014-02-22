@@ -29,11 +29,6 @@
     $logProvider.debugEnabled(DEBUG);
   }]);
 
-  angular.module('fireUser').value('FireUserConfig',{
-      url:"https://dekkusu.firebaseio.com/",
-      datalocation:'users'
-  });
-
   app.config(['growlProvider', function(growlProvider) {
     growlProvider.globalTimeToLive(5000);
   }]);
