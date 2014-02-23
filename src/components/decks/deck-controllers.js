@@ -1,46 +1,40 @@
 
 angular.module('mainApp')
-  .controller('DecksCtrl', ['$scope','$stateParams','deck',
-                          function ($scope,  $stateParams,  deck) {
+  .controller('DecksCtrl', ['$scope','$stateParams','deck','children',
+                          function ($scope,  $stateParams,  deck, children) {
 
     $scope.deckId = $stateParams.deck || '';
     //console.log($scope.deckId);
 
     $scope.deck = deck;
-    //console.log(deck);
 
     deck.$bind($scope,'deck');
-    //console.log($scope.deckId);
 
-
-    $scope.children = deck.$children;  // TODO: get from resolve
-    //deck.$children.$bind($scope,'children');
+    $scope.children = children;
 
     $scope.newdeck = { name: '' };
-
-    //console.log($scope.children);
 
     $scope.save = function(id) {  // Shouldn't need to do any of this.
       if (id == $scope.deckId) {
         deck.$save();
       } else {
-        deck.$children.$save(id);
+        children.$save(id);
       }
     }
 
     $scope.addDeck = function(_deck) {
       _deck.name2 = _deck.name;  // Shouldn't need to do this.
 
-      deck.$children.$add(_deck);
+      children.$add(_deck);
       _deck.name = '';
     }
 
     $scope.removeDeck = function(id) {
-      deck.$children.$remove(id);
+      children.$remove(id);
     }
 
     $scope.drop = function(e, ui, item, id) {
-      console.log('drop', item, id, $scope.children);
+      console.log('drop', item, id, children);
     }
 
     $scope.dropped = [];
@@ -58,7 +52,7 @@ angular.module('mainApp')
     //console.log($scope);
 
     $scope.fontSize = function(text) {
-      var c = text.length;  // For now just using length, should consider characters, new lines, and parent size
+      var c = (text) ? text.length : 0;
       if (c<5) return '60px';
       if (c>80) return '14px';
       return Math.floor(-45/75*text.length+57)+'px';

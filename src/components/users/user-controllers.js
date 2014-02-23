@@ -11,14 +11,14 @@
 angular.module('mainApp')
 
   // This should be a set controller
-  .controller('UserCtrl', ['$scope','$rootScope', '$state','$stateParams','rootDeck','user', 'storage',
-                      function ($scope,  $rootScope,   $state,  $stateParams,  rootDeck,  user,   storage) {
+  .controller('UserCtrl', ['$scope','$rootScope', '$state','$stateParams','rootDeck','user', 'children','storage',
+                      function ($scope,  $rootScope,   $state,  $stateParams,  rootDeck,  user, children,  storage) {
 
     $scope.user = user;
     $scope.username = $stateParams.username || 'guest';  // Do I still need this?
 
     $scope.rootDeck = rootDeck;
-    $scope.decks = rootDeck.$children;
+    $scope.decks = children;
     //console.log(rootDeck);
 
     storage.bind($scope,'listView',{defaultValue: false});

@@ -39,22 +39,55 @@
       return def.promise;
     }
 
-    this.getUsers = function() {
-      var ref = baseRef.child('users');
-      return $firebase(ref);
+    //this.getUsers = function() {
+    //  var ref = baseRef.child('users');
+    //  return $firebase(ref);
+    //}
+
+    function $firebasePromise(ref) {  // A services?
+      var def = $q.defer();
+      var fb = $firebase(ref);
+      ref.on('value', function() {
+        def.resolve(fb);
+      });
+      return def.promise;
     }
 
-    this.getUserData = function(id) {
-      var ref = userDataRef.child(id);
-      return $firebase(ref);
+    this.getUsers = function() {
+      var ref = baseRef.child('users');
+      return $firebasePromise(ref);
     }
+
+    this.getUser = function(id) {
+      var ref = userDataRef.child(id);
+      return $firebasePromise(ref);
+    }
+
+    //this.getUserData = function(id) {
+    //  var ref = userDataRef.child(id);
+    //  return $firebase(ref);
+    //}
 
     $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
       $rootScope.$apply(function() {
         growl.addSuccessMessage('Logged in as '+(user.username || user.id));
       });
 
-      var userData = self.getUserData(user.username || user.id);
+      $rootScope.userData = {};
+
+      var userPromise = self.getUser(user.username || user.id);
+      userPromise.then(function(data) {
+
+        data = data || {};
+        data.gravatar_id = md5.createHash( (user.email || user.uid).toLowerCase() );
+        data.$save();
+
+        $rootScope.$broadcast('userAuth:data_loaded', data);
+        $rootScope.userData = data;
+
+      });
+
+      /*var userData = self.getUserData(user.username || user.id);
 
       userData.$on('loaded', function(data) {
 
@@ -69,9 +102,9 @@
 
         $rootScope.$broadcast('userAuth:data_loaded', userData);
 
-      });
+      });*/
 
-      $rootScope.userData = userData;
+      //$rootScope.userData = userData;
 
     });
 

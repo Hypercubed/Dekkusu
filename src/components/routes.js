@@ -39,7 +39,7 @@
         } ];
 
     var user = ['$stateParams','userManager', function($stateParams, userManager) {
-                    return userManager.getUserData($stateParams.username);
+                    return userManager.getUser($stateParams.username);
                    } ];
 
     var rootDeck = ['$stateParams','deckManager', function($stateParams, deckManager) {
@@ -48,6 +48,14 @@
 
     var deck = ['$stateParams','deckManager', function($stateParams, deckManager) {
           return deckManager.getDeck($stateParams.username, $stateParams.deck);
+        }];
+
+    var rootChildren = ['$stateParams','deckManager', function($stateParams, deckManager) {
+          return deckManager.getChildren($stateParams.username);
+        }];
+
+    var children = ['$stateParams','deckManager', function($stateParams, deckManager) {
+          return deckManager.getChildren($stateParams.username, $stateParams.deck);
         }];
 
     $stateProvider
@@ -76,35 +84,36 @@
         url: "/:username",
         templateUrl: 'components/users/user.html',
         controller: 'UserCtrl',
-        resolve: { rootDeck: rootDeck, user: user }
+        resolve: { rootDeck: rootDeck, user: user, children: rootChildren }
       })
       .state('authroot.username.root', {
         url: '',
         templateUrl: 'components/decks/decks.html',
         controller: 'DecksCtrl',
-        resolve: { deck: rootDeck }
+        resolve: { deck: rootDeck, children: rootChildren }
       })
       .state('authroot.username.deck', {  // TODO: Handle deck not found
         url: "/:deck",
         templateUrl: 'components/decks/decks.html',
         controller: 'DecksCtrl',
-        resolve: { deck: deck }
+        resolve: { deck: deck, children: children }
       });
 
     }]);
 
-  angular.module('mainApp').run(['$rootScope', 'SITE','growl', '$log', function($rootScope, SITE,growl) {
+  angular.module('mainApp').run(['$rootScope', 'SITE','growl', '$log', function($rootScope, SITE,growl,$log) {
     $rootScope.site = SITE;
 
     $rootScope.$on('$stateChangeError',
       function() {
         growl.addErrorMessage('State change error');
+        $log.error(arguments);
       });
 
     $rootScope.$on('$stateNotFound',
       function(event, unfoundState, fromState, fromParams){
         growl.addSuccessMessage('State not found error');
-        $log.error(unfoundState, fromState, fromParams);
+        $log.error(arguments);
       });
 
   }]);

@@ -43,7 +43,9 @@
   font-size: 0;
   line-height: 0;
   overflow: hidden;
+  display: none;
   transition:all 0.5s linear;
+  transition-delay: 0.5s;
 }
 
 .card.clozed span.uncloze, .deck.clozed span.uncloze {
