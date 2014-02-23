@@ -13,6 +13,7 @@
         ,'md5'
         ,'ui-gravatar'
         ,'angular-growl'
+        ,'ngFitText'
       ]);
 
   if (window.location.hostname == "127.0.0.1") {
@@ -29,7 +30,7 @@
     app
       .constant("ENV", "production")
       .constant('FBURL','https://dekkusu-prod.firebaseio.com/')
-      .constant('DEBUG', true)
+      .constant('DEBUG', flase)
       .constant('SITE', {
         title: 'Dekkusu',
         company: 'J. Harshbarger',

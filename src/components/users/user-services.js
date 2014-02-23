@@ -50,7 +50,9 @@
     }
 
     $rootScope.$on("$firebaseSimpleLogin:login", function(evt, user) {
-      growl.addSuccessMessage('Logged in as '+(user.username || user.id));
+      $rootScope.$apply(function() {
+        growl.addSuccessMessage('Logged in as '+(user.username || user.id));
+      });
 
       var userData = self.getUserData(user.username || user.id);
 
@@ -74,15 +76,24 @@
     });
 
     $rootScope.$on("$firebaseSimpleLogin:logout", function(evt) {
-      growl.addWarnMessage('Logged out','warning');
-      $rootScope.userData = {};
+
+      $rootScope.$apply(function() {
+        growl.addWarnMessage('Logged out','warning');
+        $rootScope.userData = {};
+      });
+
       $location.path('/');
     });
 
     $rootScope.$on("$firebaseSimpleLogin:error", function(evt, err) {
-        $log.error(err);
+      $log.error(err);
+
+      $rootScope.$apply(function() {
         growl.addErrorMessage('Error logging in');
+        $rootScope.userData = {};
       });
+
+    });
 
   }]);
 

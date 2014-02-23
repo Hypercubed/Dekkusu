@@ -55,39 +55,39 @@
         abstract: true,
         controller: 'HomeCtrl',
         resolve: {  userAuth: userAuth },
-        templateUrl: 'components/home/rootView.html'
+        templateUrl: 'components/home/root.html'
       })
       .state('authroot.home', {
         url: "/",
-        templateUrl: 'components/home/homeView.html',
+        templateUrl: 'components/home/home.html',
       })
       .state('authroot.readme', {
         url: "/readme",
         templateUrl: 'components/home/README.html',
       })
-      .state('authroot.list', {
+      .state('authroot.users', {
         url: "/users",
-        controller: 'ListCtrl',
-        templateUrl: 'components/users/listView.html',
+        controller: 'UsersCtrl',
+        templateUrl: 'components/users/users.html',
         resolve: {  users: users }
       })
-      .state('authroot.user', {
+      .state('authroot.username', {  // TODO: Handle user not found
         abstract: true,
         url: "/:username",
-        templateUrl: 'components/users/userView.html',
-        controller: 'userViewCtrl',
+        templateUrl: 'components/users/user.html',
+        controller: 'UserCtrl',
         resolve: { rootDeck: rootDeck, user: user }
       })
-      .state('authroot.user.deckList', {
+      .state('authroot.username.root', {
         url: '',
-        templateUrl: 'components/decks/deckList.html',
-        controller: 'userDeckListCtrl',
+        templateUrl: 'components/decks/decks.html',
+        controller: 'DecksCtrl',
         resolve: { deck: rootDeck }
       })
-      .state('authroot.user.deck', {
+      .state('authroot.username.deck', {  // TODO: Handle deck not found
         url: "/:deck",
-        templateUrl: 'components/decks/deckList.html',
-        controller: 'userDeckListCtrl',
+        templateUrl: 'components/decks/decks.html',
+        controller: 'DecksCtrl',
         resolve: { deck: deck }
       });
 
