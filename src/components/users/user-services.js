@@ -82,6 +82,8 @@
         data.gravatar_id = md5.createHash( (user.email || user.uid).toLowerCase() );
         data.$save();
 
+        console.log(data);
+
         $rootScope.$broadcast('userAuth:data_loaded', data);
         $rootScope.userData = data;
 

@@ -10,10 +10,10 @@
         , 'firebase'
         ,'ngAnimate'
         ,'angularLocalStorage'
-        ,'md5'
-        ,'ui-gravatar'
+        ,'angularjs-gravatardirective.services'
         ,'angular-growl'
         ,'ngFitText'
+        ,'ngDragDrop'
       ]);
 
   if (window.location.hostname == "127.0.0.1") {
