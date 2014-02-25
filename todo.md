@@ -12,8 +12,18 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - One user - one deck
 
 # Current
-- [ ] Remove sets (use users)
-- [ ] Use only gravatars (md5 on email on login)
+- [x] Remove sets (use users)
+- [x] Use only gravatars (md5 on email on login)
+- [ ] Drag and drop (move/copy)
+- [ ] Sidebar
+- [ ] Markdown editor
+- [ ] Fix card view/scroll
+- [ ] Nested view in list mode
+- [ ] Fix/improve fit-text
+- [ ] Double click on card
+- [ ] Textarea lose focus
+- [ ] Key bindings
+- [ ] Study mode!!!!
 
 # Next
 - [x] Firebase v2

@@ -79,7 +79,7 @@
 
 .deckCard {  /* "back" side */
   box-shadow: -2px -2px 0 rgba(0,0,0,0.3);
-
+  clear: left;
 }
 
 .deckCard.clozed {  /* "front" side */
@@ -106,8 +106,8 @@
   -webkit-box-shadow: none;
   box-shadow: none;
   border: 1px solid #d2d4e0;
-  color: #e7e8ef;
-  background: #f2f3f7;
+  /* color: #e7e8ef;
+  background: #f2f3f7; */
   cursor: pointer;
   font-size: 30px;
   width: 100%;
@@ -151,4 +151,38 @@ select.deck {
 *:hover > .pHover {
   opacity: 1;
   display: block;
+}
+
+
+
+.btn-bottom {
+  height: 30px;
+}
+
+.deckGrid .deckBox {
+  width: 33.33333333333333%;
+  float: left;
+  position: relative;
+  min-height: 1px;
+  padding-right: 15px;
+  padding-left: 15px;
+}
+
+.deckGrid.listview .deckBox {
+  width: 100%;
+  margin-left: 20px;
+}
+
+.card, .deckCard textarea {
+  height: 150px;
+  min-height: 150px;
+  max-height: 450px;
+}
+
+.deckGrid.listview .card, .deckGrid.gridview .card:hover, .deckCard textarea:focus {
+  height: auto;
+}
+
+.deckBox.clear {
+  clear: both;
 }

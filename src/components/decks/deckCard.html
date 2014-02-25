@@ -10,7 +10,7 @@
     <div ng-bind-html="child.name | formatCard"></div>
   </div>
   <textarea placeholder="" ng-model="child.name" ng-if="editCard"></textarea>
-  <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed" ng-show="isClozed(child.name)"><i class="flip glyphicon glyphicon-eye-close" ng-class="{true: 'glyphicon-eye-close', false: 'glyphicon-eye-open'}[clozed]"></i> </button></div>
+  <div class="row btn-bottom"><button class="btn btn-link" ng-click="clozed = !clozed" ng-show="isClozed(child.name)"><i class="flip glyphicon glyphicon-eye-close" ng-class="{true: 'glyphicon-eye-close', false: 'glyphicon-eye-open'}[clozed]"></i> </button></div>
 
 
   <div class="progress" tooltip="Due {{child.due | dateDays }}" tooltip-placement="bottom">

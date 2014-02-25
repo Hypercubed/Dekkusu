@@ -2,38 +2,27 @@
   <div class="col-md-10 col-md-offset-1">
 
     <div class="deckBox col-md-12" ng-controller='DeckCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deckId">
-      <!-- div class="deckCard" ng-class="{true: 'clozed', false: 'unclozed'}[clozed]">
-        <div>
-          <div class="btn-toolbar pHover pull-right" ng-show="isOwner" ng-class="{pHover: !editView}">
-            <div class="btn-group">
-              <a href="" class="btn btn-link btn-sm" ng-click="editCard = !editCard;deck.$save()"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
-            </div>
-          </div>
-          <h2 ng-if="!editCard" class="card clozed" ng-class="{true: 'clozed', false: 'unclozed'}[clozed]" >
-            <span ng-bind-html="deck.name | formatCard">
-          </h2>
-          <textarea placeholder="" ng-model="deck.name" ng-if="editCard"></textarea>
-          <div class="row"><button class="btn btn-link" ng-click="clozed = !clozed" ng-show="isClozed(deck.name)"><i class="flip glyphicon glyphicon-refresh"></i> </button></div>
-        </div>
-        <div class="progress" tooltip="Due {{deck.due | dateDays }}" tooltip-placement="bottom">
-          <div class="progress-bar" role="progressbar" style="width: 100%;" ng-class="{ 0: 'progress-bar-danger', 1: 'progress-bar-warning', 2: 'progress-bar-success' }[status]">
-            <span class="sr-only">Due {{deck.due | dateDays }}</span>
-          </div>
-        </div>
-      </div -->
     </div>
 
-    <div class="deckBox" ng-class="{true: 'col-md-12', false: 'col-md-4'}[listView]" ng-repeat="(id,child) in children" ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
-    </div>
+    <div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
 
-    <div ng-class="{true: 'col-md-12 listview', false: 'col-md-4 listview'}[listView]" ng-if="editView && isOwner">
-      <div class="deckCard newCard clozed" >
-        <textarea placeholder="" ng-model="newdeck.name"></textarea>
-        <br /><button class="btn btn-link" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">
-          <i class="glyphicon glyphicon-plus"></i>
-        </button>
+      <div class="deckBox" ng-class="{clear: !(($index)%3) && !$first }" ng-repeat="(id,child) in children" ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
       </div>
+
+      <div  class="deckBox" ng-if="editView && isOwner">
+        <div class="deckCard newCard clozed" >
+          <textarea placeholder="" ng-model="newdeck.name"></textarea>
+          <br /><button class="btn btn-link" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">
+            <i class="glyphicon glyphicon-plus"></i>
+          </button>
+        </div>
+      </div>
+
     </div>
+
+
+
+
   </div>
 </div>
 
