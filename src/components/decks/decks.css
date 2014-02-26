@@ -1,11 +1,12 @@
 .userView {
-
+  padding: 0;
 }
 
 .card, .cardEditor {
   background-color: #fff;
   color: #333;
   font-size: xx-large;
+  line-height: 1.2;
   margin: 10px 0;
   padding: 5px;
   text-align: center;
@@ -19,9 +20,8 @@
   overflow-y: auto;
 }
 
-.gridview .card, .gridview .cardEditor {
-  font-size: large;
-  height: 120px;
+.card p {
+  margin: 0;
 }
 
 .cardEditor {
@@ -101,6 +101,7 @@
 }
 
 .deckCard textarea, .newCard textarea {
+  margin-top: 10px;
   margin-bottom: 10px;
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -168,20 +169,43 @@ select.deck {
   padding-left: 15px;
 }
 
+@media (min-width: 60px)
+.deckGrid .deckBox {
+margin-left: 25%;
+}
+
 .deckGrid.listview .deckBox {
   width: 100%;
-  margin-left: 20px;
 }
 
 .card, .deckCard textarea {
-  height: 150px;
-  min-height: 150px;
-  max-height: 450px;
+  height: auto;
+  min-height: 100px;
+  max-height: 600px;
 }
 
-.deckGrid.listview .card, .deckGrid.gridview .card:hover, .deckCard textarea:focus {
+.deckGrid.gridview .card, .deckGrid.gridview textarea {
+  font-size: 16px;
+  line-height: 1;
+  min-height: 70px;
+}
+
+.deckGrid.gridview .card {
+  height: 70px;
+}
+
+.deckGrid.gridview textarea {
   height: auto;
 }
+
+.card p {
+  margin: 0;
+}
+.deckGrid.listview .card, .deckGrid.gridview .deckCard:hover .card, .deckCard textarea:focus {
+  height: auto;
+}
+
+
 
 .deckBox.clear {
   clear: both;

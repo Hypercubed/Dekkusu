@@ -29,15 +29,25 @@ angular.module('mainApp')
       _deck.name = '';
     }
 
+    $scope.testEvent = function($event) {
+      alert('Good!');
+      $event.preventDefault();
+    };
+
+    $scope.newcardEnter = function($event) {
+        $scope.addDeck($scope.newdeck);
+        $event.preventDefault();
+    };
+
     $scope.removeDeck = function(id) {
       children.$remove(id);
     }
 
-    $scope.drop = function(e, ui, item, id) {
-      console.log('drop', item, id, children);
-    }
+    //$scope.drop = function(e, ui, item, id) {
+    //  console.log('drop', item, id, children);
+    //}
 
-    $scope.dropped = [];
+    //$scope.dropped = [];
 
 }]);
 

@@ -1,21 +1,19 @@
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
 
-    <div class="deckBox col-md-12" ng-controller='DeckCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deckId">
+    <div class="deckBox col-md-12" ng-controller='DeckCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deckId" ui-keydown="{'alt-space':'testEvent($event)'}">
     </div>
+
+    <div class="" ng-if="isOwner">
+      <div class="newCard" ng-if="editView">
+        <textarea placeholder="" ng-model="newdeck.name" ui-keypress="{13:'newcardEnter($event)'}"></textarea>
+      </div>  
+    </div>    
 
     <div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
 
-      <div class="deckBox" ng-class="{clear: !(($index)%3) && !$first }" ng-repeat="(id,child) in children" ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
-      </div>
-
-      <div  class="deckBox" ng-if="editView && isOwner">
-        <div class="deckCard newCard clozed" >
-          <textarea placeholder="" ng-model="newdeck.name"></textarea>
-          <br /><button class="btn btn-link" ng-click="addDeck(newdeck)" tooltip="Add" ng-disabled="!newdeck.name">
-            <i class="glyphicon glyphicon-plus"></i>
-          </button>
-        </div>
+      <div class="deckBox" ng-class="{clear: !(($index)%3) && !$first }" ng-repeat="(id,child) in children | orderByPriority" ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
+      {{child.$id}}
       </div>
 
     </div>
