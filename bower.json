@@ -12,16 +12,14 @@
     "firebase": "~1.0.1",
     "firebase-simple-login": "*",
     "angular-ui-router": "0.2.7",
-    "angularfire": "~0.6.0",
+    "angularfire": "~0.7.0",
     "angularLocalStorage": "~0.1.7",
     "firebase-util": "https://github.com/firebase/firebase-util.git#~0.1.0",
     "angular-animate": "~1.2.12",
     "angular-dragdrop": "~1.0.6",
     "angularjs-gravatardirective": "lavinjj/angularjs-gravatardirective",
-    "fireuser": "~0.3.0",
     "angular-growl": "~0.4.0",
-    "angular": "~1.2.13",
-    "ng-FitText.js": "*"
+    "angular": "~1.2.13"
   },
   "devDependencies": {},
   "resolutions": {

@@ -8,23 +8,23 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
 	var baseRef = new Firebase(FBURL);
   var decksRef = baseRef.child('decks');  // Change this to deck sets?
 
-  this.getDeck = function(path,id) {  // Todo: don't resolve until children are loaded
+  function $firebasePromise(ref) {  // A services?
     var def = $q.defer();
-    var id = id || 'root';
-
-    var ref = decksRef.child(path+'/'+id);
     var fb = $firebase(ref);
-    //fb.$children = self.getChildren(path,id);  // TODO: Remove thi
-
     ref.on('value', function() {
       def.resolve(fb);
     });
-
-    //return fb;
     return def.promise;
   }
 
+  this.getDeck = function(path,id) {  // Todo: don't resolve until children are loaded
+    var id = id || 'root';
+    var ref = decksRef.child(path+'/'+id);
+    return $firebasePromise(ref);
+  }
+
   this.getChildren = function(path,id) {  // TODO: make a promise
+
     var id = id || 'root';
 
     var ref2 = decksRef.child(path);
@@ -34,7 +34,7 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
       { ref: ref1, keyMap: {'.value': 'name2'} } ,
       { ref: ref2, keyMap: ['name'] } );
 
-    return $firebase(ref);
+    return $firebasePromise(ref);
   };
 
 }]);

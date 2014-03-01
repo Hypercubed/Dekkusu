@@ -15,7 +15,7 @@ angular.module('mainApp')
     $scope.newdeck = { name: '' };
 
     $scope.save = function(id) {  // Shouldn't need to do any of this.
-      if (id == $scope.deckId) {
+      if (id == deck.$id) {
         deck.$save();
       } else {
         children.$save(id);
@@ -43,11 +43,16 @@ angular.module('mainApp')
       children.$remove(id);
     }
 
-    //$scope.drop = function(e, ui, item, id) {
-    //  console.log('drop', item, id, children);
-    //}
+    $scope.list = {
+      'A1': { 'title': 'Item 1', 'drag': true, children: {} },
+      'A2': { 'title': 'Item 2', 'drag': true, children: {} },
+      'A3': { 'title': 'Item 3', 'drag': true, children: {} },
+      'A4': { 'title': 'Item 4', 'drag': true, children: {} }
+    };
 
-    //$scope.dropped = [];
+    $scope.drop = function() {
+      console.log(arguments);
+    }
 
 }]);
 
@@ -79,6 +84,7 @@ angular.module('mainApp')
         $scope.save(id);
       }
     }
+
 
 }]);
 

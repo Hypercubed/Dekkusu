@@ -12,7 +12,7 @@
         ,'angularLocalStorage'
         ,'angularjs-gravatardirective.services'
         ,'angular-growl'
-        ,'ngFitText'
+        //,'ngFitText'
         ,'ngDragDrop'
       ]);
 
@@ -30,7 +30,7 @@
     app
       .constant("ENV", "production")
       .constant('FBURL','https://dekkusu-prod.firebaseio.com/')
-      .constant('DEBUG', flase)
+      .constant('DEBUG', false)
       .constant('SITE', {
         title: 'Dekkusu',
         company: 'J. Harshbarger',

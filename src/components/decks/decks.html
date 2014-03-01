@@ -4,22 +4,33 @@
     <div class="deckBox col-md-12" ng-controller='DeckCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deckId" ui-keydown="{'alt-space':'testEvent($event)'}">
     </div>
 
-    <div class="" ng-if="isOwner">
-      <div class="newCard" ng-if="editView">
-        <textarea placeholder="" ng-model="newdeck.name" ui-keypress="{13:'newcardEnter($event)'}"></textarea>
-      </div>  
-    </div>    
-
-    <div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
-
-      <div class="deckBox" ng-class="{clear: !(($index)%3) && !$first }" ng-repeat="(id,child) in children | orderByPriority" ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
-      {{child.$id}}
+    <div class="deckBox col-md-12" ng-if="isOwner">
+      <div class="deckCard clozed newCard" ng-if="editView">
+        <textarea placeholder="New Child" ng-model="newdeck.name" ui-keypress="{13:'newcardEnter($event)'}"></textarea>
       </div>
-
     </div>
 
+    <!-- div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
 
+      <div class="deckBox" ng-class="{clear: !(($index)%3) && !$first }" ng-repeat="(id,child) in children | orderByPriority" ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
+      </div>
 
+    </div -->
+
+        <div ng-repeat="(id, item) in children" ng-model="A" class="well span3 drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(item, id)'}" data-jqyoui-options="{accept:'.item', hoverClass: 'highlight', greedy: true}">
+          <div class="btn btn-info item" data-drag="true" ng-model="A" data-jqyoui-options="{revert: 'invalid'}" data-id="{{id}}" jqyoui-draggable="{index: {{id}},animate:false}">
+            {{item.name}} - {{id}}
+          </div>
+        </div>
+
+        <div class="row">
+          <pre class='span10'>
+            {{list}}
+          </pre>
+         <pre class='span10'>
+            {{A}}
+          </pre>
+        </div>
 
   </div>
 </div>
