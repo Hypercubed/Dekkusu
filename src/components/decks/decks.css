@@ -124,8 +124,9 @@
 
 .deckBox .btn-toolbar {
   position: absolute;
-  right: 20px;
-  top: 10px;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 
 #cardControl .btn-group {

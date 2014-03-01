@@ -17,13 +17,13 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
     return def.promise;
   }
 
-  this.getDeck = function(path,id) {  // Todo: don't resolve until children are loaded
+  this.getDeck = function(path,id) {
     var id = id || 'root';
     var ref = decksRef.child(path+'/'+id);
     return $firebasePromise(ref);
   }
 
-  this.getChildren = function(path,id) {  // TODO: make a promise
+  this.getChildren = function(path,id) {
 
     var id = id || 'root';
 
@@ -32,7 +32,7 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
 
     var ref = Firebase.util.intersection(
       { ref: ref1, keyMap: {'.value': 'name2'} } ,
-      { ref: ref2, keyMap: ['name'] } );
+      { ref: ref2, keyMap: ['name','children'] } );
 
     return $firebasePromise(ref);
   };

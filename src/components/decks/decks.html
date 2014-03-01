@@ -1,12 +1,12 @@
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
 
-    <div class="deckBox col-md-12" ng-controller='DeckCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deckId" ui-keydown="{'alt-space':'testEvent($event)'}">
+    <div class="deckBox col-md-12" ng-controller='DeckCtrl' ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deck.$id" ui-keydown="{'alt-space':'testEvent($event)'}">
     </div>
 
     <div class="deckBox col-md-12" ng-if="isOwner">
       <div class="deckCard clozed newCard" ng-if="editView">
-        <textarea placeholder="New Child" ng-model="newdeck.name" ui-keypress="{13:'newcardEnter($event)'}"></textarea>
+        <textarea placeholder="New Child" ng-model="newdeck.name" ui-keydown="{'tab':'newcardEnter($event)'}"></textarea>
       </div>
     </div>
 
@@ -17,20 +17,14 @@
 
     </div -->
 
-        <div ng-repeat="(id, item) in children" ng-model="A" class="well span3 drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(item, id)'}" data-jqyoui-options="{accept:'.item', hoverClass: 'highlight', greedy: true}">
-          <div class="btn btn-info item" data-drag="true" ng-model="A" data-jqyoui-options="{revert: 'invalid'}" data-id="{{id}}" jqyoui-draggable="{index: {{id}},animate:false}">
-            {{item.name}} - {{id}}
+    <div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
+      <div ng-repeat="(id, child) in children" ng-model="A" class="deckBox drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(id)'}" data-jqyoui-options="{accept:'.drop-item:not([data-id={{id}}])', hoverClass: 'highlight', greedy: true}">
+        <div class="drop-item" data-drag="true" ng-model="A" data-jqyoui-options="{revert: 'invalid', handle: '.progress, .btn-toolbar'}" data-id="{{id}}" jqyoui-draggable="{animate:false}">
+          <div ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>
           </div>
         </div>
-
-        <div class="row">
-          <pre class='span10'>
-            {{list}}
-          </pre>
-         <pre class='span10'>
-            {{A}}
-          </pre>
-        </div>
+      </div>
+    </div>
 
   </div>
 </div>

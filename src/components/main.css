@@ -76,8 +76,10 @@ footer {
 }
 
 .growl {
-  top: 60px;
+  top: auto;
+  bottom: 10px;
   width: 400px;
+  max-width: 80%;
   z-index: 1000;
 }
 

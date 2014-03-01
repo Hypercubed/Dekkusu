@@ -15,15 +15,11 @@
     "angularfire": "~0.7.0",
     "angularLocalStorage": "~0.1.7",
     "firebase-util": "https://github.com/firebase/firebase-util.git#~0.1.0",
-    "angular-animate": "~1.2.12",
+    "angular-animate": "~1.2.14",
     "angular-dragdrop": "~1.0.6",
     "angularjs-gravatardirective": "lavinjj/angularjs-gravatardirective",
     "angular-growl": "~0.4.0",
-    "angular": "~1.2.13"
+    "angular": "~1.2.14"
   },
-  "devDependencies": {},
-  "resolutions": {
-    "angular": "~1.2.13",
-    "angularfire": "master"
-  }
+  "devDependencies": {}
 }

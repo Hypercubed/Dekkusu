@@ -15,8 +15,9 @@ angular.module('mainApp')
     $scope.newdeck = { name: '' };
 
     $scope.save = function(id) {  // Shouldn't need to do any of this.
+      //console.log(id);
       if (id == deck.$id) {
-        deck.$save();
+        deck.$save('name');
       } else {
         children.$save(id);
       }
@@ -43,15 +44,19 @@ angular.module('mainApp')
       children.$remove(id);
     }
 
-    $scope.list = {
-      'A1': { 'title': 'Item 1', 'drag': true, children: {} },
-      'A2': { 'title': 'Item 2', 'drag': true, children: {} },
-      'A3': { 'title': 'Item 3', 'drag': true, children: {} },
-      'A4': { 'title': 'Item 4', 'drag': true, children: {} }
-    };
+    $scope.drop = function(evt,obj,dropId) {
+      var dragId = obj.draggable.scope().$eval('id');
+      //console.log('drag', dragId);
+      //console.log('drop', dropId);
 
-    $scope.drop = function() {
-      console.log(arguments);
+      var srcObj = deck.children[dragId];
+      //console.log(srcObj);
+
+      children.$child(dropId+'/children/'+dragId).$set(srcObj);
+      delete deck.children[dragId];
+
+      deck.$remove('children/'+dragId);
+
     }
 
 }]);
@@ -79,6 +84,7 @@ angular.module('mainApp')
     }
 
     $scope.edit = function(id) {
+      console.log('$scope.edit',id);
       $scope.editCard = !$scope.editCard;
       if (!$scope.editCard) {
         $scope.save(id);

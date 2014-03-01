@@ -1,13 +1,15 @@
-<div class="deckCard" ng-class="{true: 'clozed', false: 'unclozed'}[clozed]">
-  <div class="btn-toolbar pHover pull-right" ng-if="isOwner" ng-class="{'pHover': !(editView || editCard)}">
-    <div class="btn-group">
-      <a href="" class="btn btn-link btn-sm" ng-click="removeDeck(child.$id)"><i class="glyphicon glyphicon-trash"></i> </a>
-      <a href="" class="btn btn-link btn-sm" ng-click="edit(child.$id)"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
-      <a ng-if="deck.$id !== child.$id" href="#/{{username}}/{{child.$id}}" class="btn btn-link btn-sm"> <i class="glyphicon glyphicon-new-window"></i></a>
-    </div>
-  </div>
+<div class="deckCard" ng-class="{true: 'clozed', false: 'unclozed'}[clozed == true]">
+
+    <div class="col-md-12 btn-toolbar" ng-if="isOwner" style="border: 1px solid red;">
+      <div class="btn-group pull-right">
+        <a href="" class="btn btn-link btn-sm" ng-click="removeDeck(id)"><i class="glyphicon glyphicon-trash"></i> </a>
+        <a href="" class="btn btn-link btn-sm" ng-click="edit(id)"><i class="glyphicon" ng-class="{ false: 'glyphicon-pencil', true: 'glyphicon-save'}[editCard]"></i> </a>
+        <a ng-if="deck.$id !== id" href="#/{{username}}/{{id}}" class="btn btn-link btn-sm"> <i class="glyphicon glyphicon-new-window"></i></a>
+      </div>
+    </div>  
+
   <div ng-if="!editCard" class="card" ng-class="{true: 'clozed', false: 'unclozed'}[clozed]">
-    <div ng-bind-html="child.name | formatCard" ng-dblclick="edit(child.$id)" ></div>
+    <div ng-bind-html="child.name | formatCard" ng-dblclick="edit(id)" ></div>
   </div>
   <textarea placeholder="" ng-model="child.name" ng-if="editCard"></textarea>
   <div class="row btn-bottom"><button class="btn btn-link" ng-click="clozed = !clozed" ng-show="isClozed(child.name)"><i class="flip glyphicon glyphicon-eye-close" ng-class="{true: 'glyphicon-eye-close', false: 'glyphicon-eye-open'}[clozed]"></i> </button></div>
