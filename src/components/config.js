@@ -13,6 +13,7 @@
         ,'angularjs-gravatardirective.services'
         ,'angular-growl'
         //,'ngFitText'
+        ,'ui.jq'
         ,'ngDragDrop'
       ]);
 

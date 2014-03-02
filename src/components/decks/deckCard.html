@@ -11,7 +11,7 @@
   <div ng-if="!editCard" class="card" ng-class="{true: 'clozed', false: 'unclozed'}[clozed]">
     <div ng-bind-html="child.name | formatCard" ng-dblclick="edit(id)" ></div>
   </div>
-  <textarea placeholder="" ng-model="child.name" ng-if="editCard"></textarea>
+  <textarea placeholder="" ng-model="child.name" ng-if="editCard" ui-event="{ blur : 'edit(id)' }"></textarea>
   <div class="row btn-bottom"><button class="btn btn-link" ng-click="clozed = !clozed" ng-show="isClozed(child.name)"><i class="flip glyphicon glyphicon-eye-close" ng-class="{true: 'glyphicon-eye-close', false: 'glyphicon-eye-open'}[clozed]"></i> </button></div>
 
 

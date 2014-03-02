@@ -1,8 +1,46 @@
+
+
+<div class="jumbotron userView container-fluid">
+  <div class="row">
+    <div class="col-md-10 col-md-offset-1">
+
+      <h2>
+        <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{user.gravatar_id}}?s=50&d=retro" width="50">
+
+        <a href="#/{{user.$id}}" ng-cloak>{{user.$id}}</a>
+        <span class="dropdown" ng-cloak>
+          <span ng-if="deck.$id != 'root'">| {{deck.name}}</span>
+          <a href="" class="dropdown-toggle" data-toggle="dropdown">
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="(id, d) in decks"><a href="#/{{user.$id}}/{{id}}/">{{d.name}}</a></li>
+          </ul>
+        </span>
+
+        <div class="btn-toolbar pull-right" >
+          <!-- div ng-if="state.current.name == 'user.deck.cardList'" ng-cloak class="btn-group">
+            <a href="#/{{user.$id}}/{{deck.$id}}/study" class="btn btn-primary">Study now</a>
+          </div -->
+          <div class="btn-group">
+            <button type="button" class="btn btn-link btn-sm" ng-click="listView = !listView" ><i class="glyphicon glyphicon-th" ng-class="{'glyphicon-th-list': listView}"></i> </button>
+            <button type="button" class="btn btn-link btn-sm" ng-click="editView = !editView" ng-show="isOwner"><i class="glyphicon glyphicon-edit"></i> </button>
+          </div>
+        </div>
+
+      </h2>
+
+      <!-- a href ng-click="addDeck({name: ''});">TEST</a -->
+
+    </div>
+  </div>
+</div>
+
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
 
     <div class="deckGrid listview">
-      <div class="deckBox">
+      <div class="deckBox" ng-if="deck.$id != 'root'">
         <div ng-controller='DeckCtrl' style="position: relative" ng-include="'components/decks/deckCard.html'" ng-init="child = deck; id = deck.$id" ui-keydown="{'alt-space':'testEvent($event)'}">
         </div>      
       </div>
@@ -28,7 +66,7 @@
     <div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
       <div ng-repeat="(id, child) in children" ng-model="A" class="deckBox drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(id)'}" data-jqyoui-options="{accept:'.drop-item:not([data-id={{id}}])', hoverClass: 'highlight', greedy: true}">
         <div class="drop-item" data-drag="true" ng-model="A" data-jqyoui-options="{revert: 'invalid', handle: '.progress, .btn-toolbar'}" data-id="{{id}}" jqyoui-draggable="{animate:false}">
-          <div class="btn-group pull-left pHover">
+          <div class="btn-group pull-left" ng-class="{'pHover': !editCard}">
             <a href="" class="btn btn-link btn-sm" style="position: absolute; top: 0"><i class="glyphicon glyphicon-move"></i> </a>
           </div>
           <div ng-include="'components/decks/deckCard.html'" ng-controller='DeckCtrl'>

@@ -1,5 +1,15 @@
 
 angular.module('mainApp')
+       .directive('uiSelectable', [function () {
+        return {
+            restrict:'A',
+            link:function (scope, element, attrs) {
+              element.selectable({ filter: '.deckCard' });
+            }
+        };
+    }]);
+
+angular.module('mainApp')
   .controller('DecksCtrl', ['$scope','$stateParams','deck','children',
                           function ($scope,  $stateParams,  deck, children) {
 
@@ -23,8 +33,8 @@ angular.module('mainApp')
       }
     }
 
-    $scope.addDeck = function(_deck) {
-      _deck.name2 = _deck.name;  // Shouldn't need to do this.
+    $scope.addDeck = function(_deck) {  // Shouldn't need to do this.
+      _deck.name2 = _deck.name;
 
       children.$add(_deck);
       _deck.name = '';

@@ -14,14 +14,15 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 # Current
 - [x] Remove sets (use users)
 - [x] Use only gravatars (md5 on email on login)
-- [ ] Drag and drop (move/copy)
+- [x] Drag and drop (move)
+- [ ] Drag and drop (copy)
 - [ ] Sidebar
-- [ ] Markdown editor
+- [ ] Improved Markdown editor
 - [ ] Fix card view/scroll
-- [ ] Nested view in list mode
+- [ ] Nested view in list mode?
 - [ ] Fix/improve fit-text
-- [ ] Double click on card
-- [ ] Textarea lose focus
+- [x] Double click on card
+- [ ] Textarea lose focus?
 - [ ] Key bindings
 - [ ] Study mode!!!!
 
