@@ -212,3 +212,11 @@ margin-left: 25%;
 .deckBox.clear {
   clear: both;
 }
+
+.drop-item .btn-group .btn-sm {
+  padding: 0 5px;
+}
+
+.drop-zone.highlight .deckCard {
+    border: 1px dashed #505050;
+}
