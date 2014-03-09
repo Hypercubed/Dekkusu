@@ -43,19 +43,19 @@
                    } ];
 
     var rootDeck = ['$stateParams','deckManager', function($stateParams, deckManager) {
-                      return deckManager.getDeck($stateParams.username);
+                      return deckManager.getDeck($stateParams.username).$get();
                     }];
 
     var deck = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getDeck($stateParams.username, $stateParams.deck);
+          return deckManager.getDeck($stateParams.username, $stateParams.deck).$get();
         }];
 
     var rootChildren = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getChildren($stateParams.username);
+          return deckManager.getChildren($stateParams.username).$get();
         }];
 
     var children = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getChildren($stateParams.username, $stateParams.deck);
+          return deckManager.getChildren($stateParams.username, $stateParams.deck).$get();
         }];
 
     $stateProvider
@@ -66,7 +66,7 @@
         templateUrl: 'components/home/root.html'
       })
       .state('authroot.home', {
-        url: "/",
+        url: '/',
         templateUrl: 'components/home/home.html',
       })
       .state('authroot.readme', {
@@ -97,7 +97,14 @@
         templateUrl: 'components/decks/decks.html',
         controller: 'DecksCtrl',
         resolve: { deck: deck, children: children }
-      });
+      })
+      .state('authroot.username.export', {  // TODO: Handle deck not found
+        url: "/:deck/tree",
+        templateUrl: 'components/decks/deckTree.html',
+        controller: 'DecksCtrl',
+        resolve: { deck: deck, children: children }
+      })
+      ;
 
     }]);
 

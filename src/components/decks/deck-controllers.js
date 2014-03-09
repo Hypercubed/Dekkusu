@@ -10,17 +10,20 @@ angular.module('mainApp')
     }]);
 
 angular.module('mainApp')
-  .controller('DecksCtrl', ['$scope','$stateParams','deck','children',
-                          function ($scope,  $stateParams,  deck, children) {
-
+  .controller('DecksCtrl', ['$scope','$stateParams','deck','children','user','deckManager',
+                          function ($scope,  $stateParams,  deck, children, user, deckManager) {
     $scope.deckId = $stateParams.deck || '';
     //console.log($scope.deckId);
 
     $scope.deck = deck;
+    $scope.children = children;
 
     deck.$bind($scope,'deck');
 
-    $scope.children = children;
+    $scope.getChildren = function(id) {
+      console.log('getting children for', id);
+      return deckManager.getChildren(user.$id, id);
+    }
 
     $scope.newdeck = { name: '' };
 

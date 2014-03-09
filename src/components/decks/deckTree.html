@@ -1,0 +1,62 @@
+
+<div class="jumbotron userView container-fluid">
+  <div class="row">
+
+    <div class="col-md-10 col-md-offset-1">
+
+      <h2>
+        <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{user.gravatar_id}}?s=50&d=retro" width="50">
+
+        <a href="#/{{user.$id}}/root/tree" ng-cloak>{{user.$id}}</a>
+        <span class="dropdown" ng-cloak>
+          <span ng-if="deck.$id != 'root'">| {{deck.name}}</span>
+          <a href="" class="dropdown-toggle" data-toggle="dropdown">
+            <b class="caret"></b>
+          </a>
+          <ul class="dropdown-menu">
+            <li ng-repeat="(id, d) in decks"><a href="#/{{user.$id}}/{{id}}/tree">{{d.name}}</a></li>
+          </ul>
+        </span>
+
+      </h2>
+
+      <!-- a href ng-click="addDeck({name: ''});">TEST</a -->
+
+    </div>
+    
+  </div>
+</div>
+
+<script type="text/ng-template"  id="tree_item_renderer.html">
+
+    <div ng-init="_children = []">
+      {{child.name}}
+
+      <a href ng-show="(child.children | orderByPriority).length > 0 && _children.length == 0" ng-click="_children = getChildren(child.$id)">
+        show children ({{(child.children | orderByPriority).length}})
+      </a>
+
+      <ul>
+        <li ng-repeat="child in _children | orderByPriority">
+          <div ng-include="'tree_item_renderer.html'"></div>
+        </li>
+      </ul>
+
+    </div>
+
+</script>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    <ul class="list-unstyled">
+      <li ng-init="child=deck">
+        <div ng-include="'tree_item_renderer.html'"></div>
+      </li>   
+    </div>
+
+  </div>
+</div>
+
+
+
