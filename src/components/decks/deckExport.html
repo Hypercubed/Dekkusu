@@ -1,0 +1,30 @@
+
+<script type="text/ng-template"  id="tree_item_renderer.html">
+
+    <div ng-init="_children = []">
+      {{child.name}}
+
+      <a href ng-show="(child.children | orderByPriority).length > 0 && _children.length == 0" ng-click="_children = getChildren(child.$id)">
+        show children ({{(child.children | orderByPriority).length}})
+      </a>
+
+      <ul>
+        <li ng-repeat="child in _children | orderByPriority">
+          <div ng-include="'tree_item_renderer.html'"></div>
+        </li>
+      </ul>
+
+    </div>
+
+</script>
+
+<div class="row">
+  <div class="col-md-10 col-md-offset-1">
+
+    <div ng-include="'tree_item_renderer.html'" ng-init="child=deck"></div>
+
+  </div>
+</div>
+
+
+

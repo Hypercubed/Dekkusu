@@ -34,7 +34,7 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
       { ref: ref1, keyMap: {'.value': 'name2'} } ,
       { ref: ref2, keyMap: ['name','children'] } );
 
-    return $firebasePromise(ref);
+    return $firebase(ref);
   };
 
 }]);
