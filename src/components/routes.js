@@ -43,19 +43,19 @@
                    } ];
 
     var rootDeck = ['$stateParams','deckManager', function($stateParams, deckManager) {
-                      return deckManager.getDeck($stateParams.username).$get();
+                      return deckManager.getDeck($stateParams.username).promise;
                     }];
 
     var deck = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getDeck($stateParams.username, $stateParams.deck).$get();
+          return deckManager.getDeck($stateParams.username, $stateParams.deck).promise;
         }];
 
     var rootChildren = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getChildren($stateParams.username).$get();
+          return deckManager.getChildren($stateParams.username).promise;
         }];
 
     var children = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getChildren($stateParams.username, $stateParams.deck).$get();
+          return deckManager.getChildren($stateParams.username, $stateParams.deck).promise;
         }];
 
     $stateProvider

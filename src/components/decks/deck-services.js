@@ -5,19 +5,18 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
 
   var self = this;
 
-	var baseRef = new Firebase(FBURL);
+  var baseRef = new Firebase(FBURL);
   var decksRef = baseRef.child('decks');  // Change this to deck sets?
 
   function $firebasePromise(ref) {  // A services?
     var fb = $firebase(ref);
 
-    fb.$get = function get() {
-      var def = $q.defer();
-      ref.on('value', function() {
-        def.resolve(fb);
-      });
-      return  def.promise;    
-    }
+    var def = $q.defer();
+    fb.$on('loaded', function() {
+      def.resolve(fb);
+    });
+
+    fb.promise = def.promise;
 
     return fb;
   }

@@ -12,11 +12,18 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - One user - one deck
 
 # Current
+- [ ] Finish export
+  - [ ] Controller
+  - [ ] getText function
+  - [ ] load decendents
+- [ ] Finish tree
+  - [ ] Three views: grid, list, tree
 - [x] Remove sets (use users)
 - [x] Use only gravatars (md5 on email on login)
 - [x] Drag and drop (move)
 - [ ] Drag and drop (copy)
-- [ ] Sidebar
+- [ ] Left Sidebar
+- [ ] Deck view right sidebar
 - [ ] Improved Markdown editor
 - [ ] Fix card view/scroll
 - [ ] Nested view in list mode?
@@ -72,7 +79,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Better study -> editor -> study UI
 - [ ] Native file format i.e. Markdown with tags? (@due 1-1-2020) (@tags japanese phrase) (@interval 0)?
 - [ ] Separate deck from progress journal?
-- [ ] Separate cards from deck?
+- [-] Separate cards from deck?
 - [ ] Multiple selections?
 - [ ] After creating a new sub card, mark due, return to original
 - [ ] Add new sub-card without moving from original?
