@@ -9,12 +9,17 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
   var decksRef = baseRef.child('decks');  // Change this to deck sets?
 
   function $firebasePromise(ref) {  // A services?
-    var def = $q.defer();
     var fb = $firebase(ref);
-    ref.on('value', function() {
-      def.resolve(fb);
-    });
-    return def.promise;
+
+    fb.$get = function get() {
+      var def = $q.defer();
+      ref.on('value', function() {
+        def.resolve(fb);
+      });
+      return  def.promise;    
+    }
+
+    return fb;
   }
 
   this.getDeck = function(path,id) {
@@ -34,7 +39,7 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
       { ref: ref1, keyMap: {'.value': 'name2'} } ,
       { ref: ref2, keyMap: ['name','children'] } );
 
-    return $firebase(ref);
+    return $firebasePromise(ref);
   };
 
 }]);

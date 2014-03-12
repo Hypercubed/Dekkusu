@@ -220,3 +220,7 @@ margin-left: 25%;
 .drop-zone.highlight .deckCard {
     border: 1px dashed #505050;
 }
+
+.ui-selected.deckCard {
+  border: 2px solid #505050;
+}
