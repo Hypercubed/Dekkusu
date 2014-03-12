@@ -98,9 +98,15 @@
         controller: 'DecksCtrl',
         resolve: { deck: deck, children: children }
       })
-      .state('authroot.username.export', {  // TODO: Handle deck not found
+      .state('authroot.username.tree', {  // TODO: Handle deck not found
         url: "/:deck/tree",
         templateUrl: 'components/decks/deckTree.html',
+        controller: 'DecksCtrl',
+        resolve: { deck: deck, children: children }
+      })
+      .state('authroot.username.export', {  // TODO: Handle deck not found
+        url: "/:deck/export",
+        templateUrl: 'components/decks/deckExport.html',
         controller: 'DecksCtrl',
         resolve: { deck: deck, children: children }
       })

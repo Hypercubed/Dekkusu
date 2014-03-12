@@ -1,27 +1,44 @@
 
-<script type="text/ng-template"  id="tree_item_renderer.html">
-
-    <div ng-init="_children = []">
-      {{child.name}}
-
-      <a href ng-show="(child.children | orderByPriority).length > 0 && _children.length == 0" ng-click="_children = getChildren(child.$id)">
-        show children ({{(child.children | orderByPriority).length}})
-      </a>
-
-      <ul>
-        <li ng-repeat="child in _children | orderByPriority">
-          <div ng-include="'tree_item_renderer.html'"></div>
-        </li>
-      </ul>
-
-    </div>
-
-</script>
 
 <div class="row">
   <div class="col-md-10 col-md-offset-1">
 
-    <div ng-include="'tree_item_renderer.html'" ng-init="child=deck"></div>
+    <div class="row">
+      <div class="col-md-3" ng-init="showSource = true">
+        <label>Export</label>
+        <input type="checkbox" value="3" ng-model="showSource">Source</input>
+        <input type="checkbox" value="1" ng-model="showClozed">Clozed</input>
+        <input type="checkbox" value="2" ng-model="showOpen">Open</input>
+      </div>
+      <div class="col-md-3" ng-init="sideDelim =','">
+        <label>Side delimitor</label>
+        <input type="radio" name="sideDelim" ng-model="sideDelim" value="\t">Tab</input>
+        <input type="radio" name="sideDelim" ng-model="sideDelim" value=",">Comma</input>
+      </div>
+      <div class="col-md-3" ng-init="deckDelim =';'">
+        <label>Deck delimitor</label>
+        <input type="radio" name="deckDelim" ng-model="deckDelim" value="\n">Newline</input>
+        <input type="radio" name="deckDelim" ng-model="deckDelim" value=";">Semicolon</input>
+      </div>
+    </div>
+
+    <div class="well">
+      <span ng-repeat="child in children">
+        <span ng-if="showSource">
+          {{child.name}}<span ng-if="showClozed || showOpen">{{sideDelim}}</span>
+        </span>
+        <span ng-if="showClozed" class="clozed">
+          {{child.name | formatCard}}<span ng-if="showOpen">{{sideDelim}}</span>
+        </span>
+        <span ng-if="showOpen">
+          {{child.name | formatCard}}
+        </span>
+
+        {{deckDelim}}
+      </span>
+    </div>
+
+    {{sides}}
 
   </div>
 </div>
