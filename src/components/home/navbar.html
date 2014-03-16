@@ -38,7 +38,7 @@
         <i class="glyphicon glyphicon-chevron-right" ng-class="{true: 'glyphicon-chevron-right', false: 'glyphicon-chevron-down'}[isCollapsed]"></i>
         Your decks
       </a>
-      <ul id="userDecks" class="list-unstyled col-md-offset-1" ng-hide="isCollapsed">
+      <ul id="userDecks" class="list-unstyled col-md-offset-2" ng-hide="isCollapsed">
         <li ng-repeat="child in children | orderByPriority">
           <a href="#/{{userData.$id}}/{{child.$id}}">{{child.name}}</a>
         </li>

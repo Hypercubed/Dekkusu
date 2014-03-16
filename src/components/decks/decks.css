@@ -163,17 +163,11 @@ select.deck {
 }
 
 .deckGrid .deckBox {
-  width: 25%;
   float: left;
   position: relative;
   min-height: 1px;
   padding-right: 15px;
   padding-left: 15px;
-}
-
-@media (min-width: 60px)
-.deckGrid .deckBox {
-margin-left: 25%;
 }
 
 .deckGrid.listview .deckBox {
