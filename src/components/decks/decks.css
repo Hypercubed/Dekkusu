@@ -163,7 +163,7 @@ select.deck {
 }
 
 .deckGrid .deckBox {
-  width: 33.33333333333333%;
+  width: 25%;
   float: left;
   position: relative;
   min-height: 1px;

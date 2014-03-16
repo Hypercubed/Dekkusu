@@ -31,31 +31,33 @@
 
     // Resolves
     var userAuth = ['userManager', function(userManager) {
+
           return userManager.auth();
+
         } ];
 
     var users = ['userManager', function(userManager) {
-          return userManager.getUsers();
+          return userManager.getUsers().$promise;
         } ];
 
     var user = ['$stateParams','userManager', function($stateParams, userManager) {
-                    return userManager.getUser($stateParams.username);
+                    return userManager.getUser($stateParams.username).$promise;
                    } ];
 
     var rootDeck = ['$stateParams','deckManager', function($stateParams, deckManager) {
-                      return deckManager.getDeck($stateParams.username).promise;
+                      return deckManager.getDeck($stateParams.username).$promise;
                     }];
 
     var deck = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getDeck($stateParams.username, $stateParams.deck).promise;
+          return deckManager.getDeck($stateParams.username, $stateParams.deck).$promise;
         }];
 
     var rootChildren = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getChildren($stateParams.username).promise;
+          return deckManager.getChildren($stateParams.username).$promise;
         }];
 
     var children = ['$stateParams','deckManager', function($stateParams, deckManager) {
-          return deckManager.getChildren($stateParams.username, $stateParams.deck).promise;
+          return deckManager.getChildren($stateParams.username, $stateParams.deck).$promise;
         }];
 
     $stateProvider
@@ -65,51 +67,57 @@
         resolve: {  userAuth: userAuth },
         templateUrl: 'components/home/root.html'
       })
-      .state('authroot.home', {
-        url: '/',
-        templateUrl: 'components/home/home.html',
-      })
-      .state('authroot.readme', {
-        url: "/readme",
-        templateUrl: 'components/home/README.html',
-      })
-      .state('authroot.users', {
-        url: "/users",
-        controller: 'UsersCtrl',
-        templateUrl: 'components/users/users.html',
-        resolve: {  users: users }
-      })
-      .state('authroot.username', {  // TODO: Handle user not found
-        abstract: true,
-        url: "/:username",
-        templateUrl: 'components/users/user.html',
-        controller: 'UserCtrl',
-        resolve: { rootDeck: rootDeck, user: user, children: rootChildren }
-      })
-      .state('authroot.username.root', {
-        url: '',
-        templateUrl: 'components/decks/decks.html',
-        controller: 'DecksCtrl',
-        resolve: { deck: rootDeck, children: rootChildren }
-      })
-      .state('authroot.username.deck', {  // TODO: Handle deck not found
-        url: "/:deck",
-        templateUrl: 'components/decks/decks.html',
-        controller: 'DecksCtrl',
-        resolve: { deck: deck, children: children }
-      })
-      .state('authroot.username.tree', {  // TODO: Handle deck not found
-        url: "/:deck/tree",
-        templateUrl: 'components/decks/deckTree.html',
-        controller: 'DecksCtrl',
-        resolve: { deck: deck, children: children }
-      })
-      .state('authroot.username.export', {  // TODO: Handle deck not found
-        url: "/:deck/export",
-        templateUrl: 'components/decks/deckExport.html',
-        controller: 'DecksCtrl',
-        resolve: { deck: deck, children: children }
-      })
+        .state('authroot.home', {
+          url: '/',
+          templateUrl: 'components/home/home.html',
+        })
+        .state('authroot.readme', {
+          url: "/readme",
+          templateUrl: 'components/home/README.html',
+        })
+        .state('authroot.users', {
+          url: "/users",
+          controller: 'UsersCtrl',
+          templateUrl: 'components/users/users.html',
+          resolve: {  users: users }
+        })
+        .state('authroot.username', {  // TODO: Handle user not found
+          abstract: true,
+          url: "/:username",
+          templateUrl: 'components/users/user.html',
+          controller: 'UserCtrl',
+          resolve: { rootDeck: rootDeck, user: user, children: rootChildren }
+        })
+          .state('authroot.username.root', {
+            url: '',
+            templateUrl: 'components/decks/decks.html',
+            controller: 'DecksCtrl',
+            resolve: { deck: rootDeck, children: rootChildren }
+          })
+          .state('authroot.username.deck', {  // TODO: Handle deck not found
+            url: "/:deck",
+            templateUrl: 'components/decks/decks.html',
+            controller: 'DecksCtrl',
+            resolve: { deck: deck, children: children }
+          })
+          .state('authroot.username.tree', {  // TODO: Handle deck not found
+            url: "/:deck/tree",
+            templateUrl: 'components/decks/deckTree.html',
+            controller: 'DecksCtrl',
+            resolve: { deck: deck, children: children }
+          })
+          .state('authroot.username.export', {  // TODO: Handle deck not found
+            url: "/:deck/export",
+            templateUrl: 'components/decks/deckExport.html',
+            controller: 'DecksCtrl',
+            resolve: { deck: deck, children: children }
+          })
+          //.state('authroot.username.import', {  // TODO: Handle deck not found
+          //  url: "/:deck/import",
+          //  templateUrl: 'components/decks/deckImport.html',
+          //  controller: 'DecksCtrl',
+          //  resolve: { deck: deck, children: children }
+          //})
       ;
 
     }]);

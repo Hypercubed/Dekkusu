@@ -17,8 +17,8 @@
         };
     }]);
 
-  angular.module('mainApp').service('userManager', ['$log','$q','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','gravatarImageService','md5','growl',
-                                            function($log,  $q,  $location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  gravatarImageService,md5,growl) {
+  angular.module('mainApp').service('userManager', ['$log','$q','$location','$rootScope', 'FBURL', '$firebase', '$firebaseSimpleLogin','$firebasePromise','gravatarImageService','md5','growl',
+                                            function($log,  $q,  $location,$rootScope,   FBURL,   $firebase,   $firebaseSimpleLogin,  $firebasePromise, gravatarImageService,md5,growl) {
 
     var self = this;
     var baseRef = new Firebase(FBURL);
@@ -44,14 +44,14 @@
     //  return $firebase(ref);
     //}
 
-    function $firebasePromise(ref) {  // A services?
+    /* function $firebasePromise(ref) {  // A services?
       var def = $q.defer();
       var fb = $firebase(ref);
       ref.on('value', function() {
         def.resolve(fb);
       });
       return def.promise;
-    }
+    }*/
 
     this.getUsers = function() {
       var ref = baseRef.child('users');
@@ -75,7 +75,7 @@
 
       $rootScope.userData = {};
 
-      var userPromise = self.getUser(user.username || user.id);
+      var userPromise = self.getUser(user.username || user.id).$promise;
       userPromise.then(function(data) {
 
         data = data || {};

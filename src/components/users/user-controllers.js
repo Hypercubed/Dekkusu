@@ -9,8 +9,6 @@
   }]);
 
 angular.module('mainApp')
-
-  // This should be a set controller
   .controller('UserCtrl', ['$scope','$rootScope', '$state','$stateParams','rootDeck','user', 'children','storage',
                       function ($scope,  $rootScope,   $state,  $stateParams,  rootDeck,  user, children,  storage) {
 

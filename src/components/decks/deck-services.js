@@ -1,14 +1,14 @@
 "use strict";
 
-angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootScope','$q',
-                                          function(FBURL,   $firebase,   $rootScope,  $q) {  // TODO: create provider?
+angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootScope','$q','$firebasePromise',
+                                          function(FBURL,   $firebase,   $rootScope,  $q, $firebasePromise) {  // TODO: create provider?
 
   var self = this;
 
   var baseRef = new Firebase(FBURL);
   var decksRef = baseRef.child('decks');  // Change this to deck sets?
 
-  function $firebasePromise(ref) {  // A services?
+  /* function $firebasePromise(ref) {  // A services?
     var fb = $firebase(ref);
 
     var def = $q.defer();
@@ -16,10 +16,10 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
       def.resolve(fb);
     });
 
-    fb.promise = def.promise;
+    fb.$promise = def.promise;
 
     return fb;
-  }
+  } */
 
   this.getDeck = function(path,id) {
     var id = id || 'root';

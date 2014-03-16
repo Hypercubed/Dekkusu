@@ -10,13 +10,18 @@ angular.module('mainApp')
     }]);
 
 angular.module('mainApp')
-  .controller('DecksCtrl', ['$scope','$stateParams','deck','children','user','deckManager',
-                          function ($scope,  $stateParams,  deck, children, user, deckManager) {
+  .controller('DecksCtrl', ['$scope','$stateParams','$state', 'deck','children','user','deckManager','growl',
+                          function ($scope,  $stateParams,  $state, deck, children, user, deckManager,growl) {
     $scope.deckId = $stateParams.deck || '';
     //console.log($scope.deckId);
 
     $scope.deck = deck;
     $scope.children = children;
+
+    if(deck.name == undefined) {
+      growl.addErrorMessage('Deck not found');
+      $state.go('authroot.username.root');
+    }
 
     deck.$bind($scope,'deck');
 

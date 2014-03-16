@@ -1,38 +1,65 @@
-<div class="navbar navbar-inverse navbar-fixed-top" ng-init="collapseNav=true">
-  <div class="container-fluid">
-    <div class="navbar-header">
-      <button type="button" class="navbar-toggle" ng-click="collapseNav=!collapseNav">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-      <a class="navbar-brand" href="#/"><img src="images/paper-stack.png" height="20"> {{site.title}}</a>
-    </div>
-    <div class="navbar-collapse collapse" ng-class="{collapse:collapseNav}">
+<div class="col-xs-12 navbar navbar-inverse navbar-fixed-left">
 
-      <!-- ul class="nav navbar-nav">
-        {{#each tags}}{{#is tag 'page'}}
-            {{#each pages}}
-              <li typeof="sioc:Page" about="document.url" class="{{#is ../../../page.dest dest}}active{{/is}}" >
-                <a href="{{relative ../../../page.dest dest}}" property="dc:title">{{data.title}}</a>
-              </li>
-            {{/each}}
-        {{/is}}{{/each}}
-      </ul -->
+  <a class="navbar-brand" href="#/"><img src="images/paper-stack.png" height="20"> {{site.title}}</a>
 
-      <ul class="nav navbar-nav navbar-right" ng-cloak>
-        <li ng-if="auth.user" ng-cloak>
-          <a href="#/{{userData.$id}}/" >
-            <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{userData.gravatar_id}}?s=20&d=retro" width="20">
-            {{userData.$id}}
-          </a>
+  <ul class="nav navbar-nav" >
+
+    <!-- User menu -->
+    <li class="dropdown " ng-if="auth.user">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{userData.gravatar_id}}?s=20&d=retro" width="20">
+        <span>{{userData.$id}} <i class="caret"></i></span>
+      </a>
+      <ul class="dropdown-menu navbar-inverse">
+        <li class="user-footer text-center">
+          <a class="btn btn-primary" ng-click="auth.$logout()" href="#">Logout</a>
         </li>
-        <li ng-if="auth.user" ng-cloak><a href ng-click="auth.$logout()">Logout</a></li>
-        <li ng-if="!auth.user"><a href ng-click="auth.$login('github')">Login with GitHub</a></li>
       </ul>
+    </li>
 
-    </div>
-  </div>
+    <!-- No logged in menu -->
+    <li class="dropdown " ng-if="!auth.user">
+      <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        <i class="glyphicon glyphicon-user"></i>
+        <span>Login <i class="caret"></i></span>
+      </a>
+      <ul class="dropdown-menu nav navbar-nav navbar-inverse">
+        <li>
+          <a class="" href="" ng-click="auth.$login('github')">Login using GitHub</a>
+        </li>
+        <li>
+          <a class="" href="" ng-click="auth.$login('anonymous',{rememberMe: true});">Login as a guest</a>
+        </li>
+      </ul>
+    </li>
+
+    <li ng-if="auth.user">
+      <a href="" ng-click="toggleChildren()">
+        <i class="glyphicon glyphicon-chevron-right" ng-class="{true: 'glyphicon-chevron-right', false: 'glyphicon-chevron-down'}[isCollapsed]"></i>
+        Your decks
+      </a>
+      <ul id="userDecks" class="list-unstyled col-md-offset-1" ng-hide="isCollapsed">
+        <li ng-repeat="child in children | orderByPriority">
+          <a href="#/{{userData.$id}}/{{child.$id}}">{{child.name}}</a>
+        </li>
+      </ul>
+    </li>
+
+  </ul>
+
+
+
+        <!-- <ul class="nav navbar-nav navbar-right" ng-cloak>
+          <li ng-if="auth.user" ng-cloak>
+            <a href="#/{{userData.$id}}/" >
+              <img class="user_gravatar" ng-src="http://www.gravatar.com/avatar/{{userData.gravatar_id}}?s=20&d=retro" width="20">
+              {{userData.$id}}
+            </a>
+          </li>
+          <li ng-if="auth.user" ng-cloak><a href ng-click="auth.$logout()">Logout</a></li>
+          <li ng-if="!auth.user"><a href ng-click="auth.$login('github')">Login with GitHub</a></li>
+        </ul> -->
+
 </div>
 
 
