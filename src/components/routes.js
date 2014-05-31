@@ -112,6 +112,13 @@
             controller: 'DecksCtrl',
             resolve: { deck: deck, children: children }
           })
+          .state('subdeck', {  // TODO: Handle deck not found
+            url: "/:subdeck",
+            parent: 'subdeck',
+            templateUrl: 'components/decks/decks.html',
+            controller: 'DecksCtrl',
+            resolve: { deck: deck, children: children }
+          })
           //.state('authroot.username.import', {  // TODO: Handle deck not found
           //  url: "/:deck/import",
           //  templateUrl: 'components/decks/deckImport.html',

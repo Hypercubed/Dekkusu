@@ -65,8 +65,8 @@
     </div -->
 
     <div class="deckGrid" ng-class="{true: 'listview', false: 'gridview'}[listView]">
-      <div ng-repeat="(id, child) in children" ng-model="A" class="deckBox drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(id)'}" data-jqyoui-options="{accept:'.drop-item:not([data-id={{id}}])', hoverClass: 'highlight', greedy: true, tolerance: 'pointer'}">
-        <div class="drop-item" data-drag="true" ng-model="A" data-jqyoui-options="{revert: 'invalid', handle: '.progress, .btn-toolbar', cursorAt: { top: 0 }, refreshPositions: true}" data-id="{{id}}" jqyoui-draggable="{animate:false}">
+      <div class="deckBox drop-zone col-lg-2 col-xs-6 col-sm-4 col-md-3"  ng-repeat="(id, child) in children" ng-model="A" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(id)'}" data-jqyoui-options="{accept:'.drop-item:not([data-id={{id}}])', hoverClass: 'highlight', greedy: true}">
+        <div class="drop-item" data-drag="true" ng-model="A" data-jqyoui-options="{revert: 'invalid', handle: '.progress, .btn-toolbar'}" data-id="{{id}}" jqyoui-draggable="{animate:false}">
           <div class="btn-group pull-left" ng-class="{'pHover': !editCard}">
             <a href="" class="btn btn-link btn-sm" style="position: absolute; top: 0"><i class="glyphicon glyphicon-move"></i> </a>
           </div>

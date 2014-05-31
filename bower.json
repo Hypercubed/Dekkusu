@@ -21,5 +21,8 @@
     "angular-growl": "~0.4.0",
     "angular": "~1.2.14"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "resolutions": {
+    "angular": "~1.2.0"
+  }
 }
