@@ -15,7 +15,9 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [ ] Drag and drop
   - [ ] Drop on root
   - [ ] Make directive (dekksu-drop-card, dekkusu-drag-card)?
-  - [ ] Drag and drop (copy)
+  - [x] Drag and drop (move)
+  - [x] Drag and drop (copy)
+  - [ ] Drag and drop (duplicate)
 - [x] Left Sidebar
   - [ ] Nest
 - [ ] Finish export
@@ -26,7 +28,7 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
   - [ ] Three views: grid, list, tree
 - [x] Remove sets (use users)
 - [x] Use only gravatars (md5 on email on login)
-- [x] Drag and drop (move)
+
 
 
 - [x] Deck view right sidebar

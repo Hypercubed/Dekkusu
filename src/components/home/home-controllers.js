@@ -28,7 +28,9 @@
       }
     }
 
-    $scope.toggleChildren();
+    if (userAuth.user) {
+      $scope.toggleChildren();
+    }
 
     $scope.drop = function(evt,obj,dropId) {
 
