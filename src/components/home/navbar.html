@@ -38,16 +38,17 @@
         <i class="glyphicon glyphicon-chevron-right" ng-class="{true: 'glyphicon-chevron-right', false: 'glyphicon-chevron-down'}[isCollapsed]"></i>
         Your decks
       </a>
-      <ul id="userDecks" class="list-unstyled col-md-offset-1" ng-hide="isCollapsed">
-        <li ng-repeat="child in children | orderByPriority">
-          <a href="#/{{userData.$id}}/{{child.$id}}">{{child.name}}</a>
-        </li>
-      </ul>
+      <div>
+        <ul id="userDecks" class="list-unstyled col-md-offset-1" ng-hide="isCollapsed">
+          <li ng-repeat="(id, child) in children | orderBy:'$id'"  ng-model="A" class="drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(id)'}" data-jqyoui-options="{hoverClass: 'highlight', greedy: true, tolerance: 'pointer'}">
+            <a href="#/{{userData.$id}}/{{id}}">{{child.name}}</a>
+          </li>
+        </ul>
+      </div>
+
     </li>
 
   </ul>
-
-
 
         <!-- <ul class="nav navbar-nav navbar-right" ng-cloak>
           <li ng-if="auth.user" ng-cloak>

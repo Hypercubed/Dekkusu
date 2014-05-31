@@ -128,3 +128,7 @@ footer {
   z-index: 1000;
 }
 
+li.drop-zone.highlight {
+  border: 1px dashed white;
+}
+

@@ -12,6 +12,12 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - One user - one deck
 
 # Current
+- [ ] Drag and drop
+  - [ ] Drop on root
+  - [ ] Make directive (dekksu-drop-card, dekkusu-drag-card)?
+  - [ ] Drag and drop (copy)
+- [x] Left Sidebar
+  - [ ] Nest
 - [ ] Finish export
   - [ ] Controller
   - [ ] getText function
@@ -21,9 +27,9 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 - [x] Remove sets (use users)
 - [x] Use only gravatars (md5 on email on login)
 - [x] Drag and drop (move)
-- [ ] Drag and drop (copy)
-- [ ] Left Sidebar
-- [ ] Deck view right sidebar
+
+
+- [x] Deck view right sidebar
 - [ ] Improved Markdown editor
 - [ ] Fix card view/scroll
 - [ ] Nested view in list mode?

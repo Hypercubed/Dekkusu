@@ -4,8 +4,8 @@
   "use strict";
 
   angular.module('mainApp')
-    .controller('HomeCtrl', ['$scope', '$rootScope','userAuth','deckManager',
-                    function ($scope, $rootScope,userAuth,deckManager) {
+    .controller('HomeCtrl', ['$scope', '$rootScope','userAuth','deckManager','growl',
+                    function ($scope, $rootScope,userAuth,deckManager,growl) {
 
     $rootScope.auth = userAuth;
 
@@ -19,13 +19,35 @@
         $scope.children = deckManager
           .getChildren(userAuth.user.username || userAuth.user.id)
           .$on('loaded', function(data) {
-            console.log($scope.children);
+            //console.log($scope.children);
             $scope.isCollapsed = false;
           });
 
       } else {
         $scope.isCollapsed = !$scope.isCollapsed;
       }
+    }
+
+    $scope.toggleChildren();
+
+    $scope.drop = function(evt,obj,dropId) {
+
+      var dragId = obj.draggable.scope().$eval('id');
+      var deck = obj.draggable.scope().$eval('deck');
+
+      var srcObj = deck.children[dragId];
+
+      var r = $scope.children.$child(dropId+'/children/'+dragId).$set(srcObj).then(function() {
+        if (dropId === deck.$id) {return};
+
+        if (!evt.altKey) {
+          delete deck.children[dragId];
+          deck.$remove('children/'+dragId);
+          growl.addSuccessMessage('Deck moved');
+        } else {
+          growl.addSuccessMessage('Deck copied');
+        }
+      });
 
     }
 

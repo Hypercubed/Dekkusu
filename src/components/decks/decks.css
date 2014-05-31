@@ -187,13 +187,13 @@ margin-left: 25%;
 }
 
 .deckGrid.gridview .card, .deckGrid.gridview textarea {
-  font-size: 16px;
+  font-size: 18px;
   line-height: 1;
-  min-height: 70px;
+  min-height: 80px;
 }
 
 .deckGrid.gridview .card {
-  height: 70px;
+  height: 80px;
 }
 
 .deckGrid.gridview textarea {
@@ -203,6 +203,7 @@ margin-left: 25%;
 .card p {
   margin: 0;
 }
+
 .deckGrid.listview .card, .deckGrid.gridview .deckCard:hover .card, .deckCard textarea:focus {
   height: auto;
 }
