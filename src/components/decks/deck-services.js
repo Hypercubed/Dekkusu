@@ -41,6 +41,20 @@ angular.module('mainApp').service('deckManager', ['FBURL', '$firebase', '$rootSc
     return $firebasePromise(ref);
   };
 
+  this.move = function(srcpath, topath, id) {
+    var oldRef = decksRef.child(path).child(id);
+    var newRef = decksRef.child(topath);
+    oldRef.once('value', function(snap)  {
+      newRef.set( snap.value(), function(error) {
+        if( !error ) {  oldRef.remove(); }
+        else if( typeof(console) !== 'undefined' && console.error ) {  console.error(error); }
+      });
+    });
+
+  };
+
+  //this.move
+
 }]);
 
 // TODO: Create a decks api?

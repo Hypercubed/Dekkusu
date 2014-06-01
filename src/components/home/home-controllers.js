@@ -33,13 +33,17 @@
     }
 
     $scope.drop = function(evt,obj,dropId) {
+      dropId = dropId || 'root';
 
       var dragId = obj.draggable.scope().$eval('id');
       var deck = obj.draggable.scope().$eval('deck');
 
       var srcObj = deck.children[dragId];
 
-      var r = $scope.children.$child(dropId+'/children/'+dragId).$set(srcObj).then(function() {
+      console.log(deck);
+      return;
+
+      $scope.children.$child(dropId+'/children/'+dragId).$set(srcObj).then(function() {
         if (dropId === deck.$id) {return};
 
         if (!evt.altKey) {

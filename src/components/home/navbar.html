@@ -34,11 +34,11 @@
     </li>
 
     <li ng-if="auth.user">
-      <a href="" ng-click="toggleChildren()">
+      <a href="" ng-click="toggleChildren()" ng-model="A" class="drop-zone" data-drop="true" data-id="root" jqyoui-droppable="{multiple:true, onDrop: 'drop()'}" data-jqyoui-options="{hoverClass: 'highlight', greedy: true, tolerance: 'pointer'}">
         <i class="glyphicon glyphicon-chevron-right" ng-class="{true: 'glyphicon-chevron-right', false: 'glyphicon-chevron-down'}[isCollapsed]"></i>
         Your decks
       </a>
-      <div>
+      <div class="col-sm-12">
         <ul id="userDecks" class="list-unstyled col-md-offset-1" ng-hide="isCollapsed">
           <li ng-repeat="(id, child) in children | orderBy:'$id'"  ng-model="A" class="drop-zone" data-drop="true" data-id="{{id}}" jqyoui-droppable="{multiple:true, onDrop: 'drop(id)'}" data-jqyoui-options="{hoverClass: 'highlight', greedy: true, tolerance: 'pointer'}">
             <a href="#/{{userData.$id}}/{{id}}">{{child.name}}</a>

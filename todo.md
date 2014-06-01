@@ -13,11 +13,10 @@ _\( managed using [todo-md](https://github.com/Hypercubed/todo-md) \)_
 
 # Current
 - [ ] Drag and drop
-  - [ ] Drop on root
+  - [x] Drop on root
   - [ ] Make directive (dekksu-drop-card, dekkusu-drag-card)?
   - [x] Drag and drop (move)
-  - [x] Drag and drop (copy)
-  - [ ] Drag and drop (duplicate)
+  - [ ] Drag and drop (copy, not link, move between users)
 - [x] Left Sidebar
   - [ ] Nest
 - [ ] Finish export
