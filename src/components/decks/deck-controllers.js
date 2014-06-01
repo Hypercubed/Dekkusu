@@ -122,7 +122,8 @@ angular.module('mainApp')
 
 }]);
 
-angular.module('mainApp').directive('xxxfittext', function() {
+angular.module('mainApp')
+  .directive('xxxfittext', function() {
 
   return {
     scope: {
@@ -213,8 +214,9 @@ angular.module('mainApp')
 }]);
 
 
-angular.module('mainApp').controller('xxxDeckCtrl', ['$state','$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', '$firebase', 'FBURL', 'deckManager',
-                                         function ($state, $scope, $location,   $http,   $stateParams,   $rootScope,   statusFilter,         $firebase,   FBURL,  deckManager) {
+angular.module('mainApp')
+  .controller('xxxDeckCtrl', ['$state','$scope', '$location', '$http', '$stateParams', '$rootScope', 'statusFilterFilter', '$firebase', 'FBURL', 'deckManager',
+                     function ($state, $scope, $location,   $http,   $stateParams,   $rootScope,   statusFilter,         $firebase,   FBURL,  deckManager) {
 
   $scope.username = $stateParams.username || 'default';
   $rootScope.deckId = $scope.deckId = $stateParams.deck || 0;
@@ -450,7 +452,81 @@ angular.module('mainApp').controller('xxxDeckCtrl', ['$state','$scope', '$locati
 
 }]);
 
+angular.module('mainApp')
+  .controller('DeckExportCtrl', ['$scope','$stateParams','$state', 'deck','children','growl','storage','formatCardFilter','orderByPriorityFilter',
+                        function ($scope,  $stateParams,  $state,   deck,  children,  growl,  storage,  formatCardFilter,orderByPriorityFilter) {
 
+    $scope.deckId = $stateParams.deck || '';
+
+    $scope.deck = deck;
+    $scope.children = children;
+
+    console.log(deck,children);
+
+    if(deck.name == undefined) {
+      growl.addErrorMessage('Deck not found');
+      $state.go('authroot.username.root');
+    }
+
+    storage.bind($scope, 'exportSettings', {defaultValue: {
+      showSource: true,
+      showClozed: false,
+      showOpen: false,
+      sideDelim: ',',
+      deckDelim: '\n'
+    }});
+
+    $scope.export = getExport();
+
+
+    // move these to a filter
+    // apply trim
+    var cloze = [
+        { regex: /{{(.*?)::(.*?)}}/g, replace: '&#91;{$2}&#93;' },
+        { regex: /{(.*?)::(.*?)}/g, replace: '{$2}' },
+        { regex: /{{(.*?)}}/g, replace: '&#91;&#93;' },
+        { regex: /{(.*?)}/g, replace: '' }
+      ];
+
+    var uncloze = [
+        { regex: /{{(.*?)::(.*?)}}/g, replace: '&#91;{$1}&#93;' },
+        { regex: /{(.*?)::(.*?)}/g, replace: '{$1}' },
+        { regex: /{{(.*?)}}/g, replace: '&#91;{$1}&#93;' },
+        { regex: /{(.*?)}/g, replace: '{$1}' }
+      ];
+
+    var final = [
+      { regex: /\n/g, replace: '<br>' }
+    ]
+
+    function reApply(text, reArr) {
+      if (arguments.length > 1) {
+        reArr.forEach(function(r) {
+          text=text.replace(r.regex, r.replace);
+        });
+      }
+      return text.trim().replace(/\n/g,'<br>');
+    }
+
+    function getExport() {
+      var s = $scope.exportSettings;
+      var c = orderByPriorityFilter(children);
+
+      return c.map(function(d,i) {
+        var r = [];
+        var n = d.name;
+        if (s.showSource) r.push(reApply(n));
+        if (s.showClozed) r.push(reApply(n, cloze));
+        if (s.showOpen) r.push(reApply(n,uncloze));
+        return r.join(s.sideDelim);
+      }).join(s.deckDelim).replace(/\\n/g,'\n').replace(/\\t/g,'\t');
+    }
+
+    $scope.$watchCollection('exportSettings', function() {
+      $scope.export = getExport();
+    });
+
+}]);
 
 
 /*angular.module('mainApp').factory('cardStorage', ['$http', function ($http) {

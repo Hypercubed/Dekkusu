@@ -48,6 +48,7 @@ angular.module('mainApp').filter('formatCard', ['$sanitize', function ($sanitize
 
 }]);
 
+
 angular.module('mainApp').filter('firstDueIndex', function() {
 
   return function(input) {

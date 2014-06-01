@@ -31,41 +31,27 @@
   <div class="col-md-10 col-md-offset-1">
 
     <div class="row">
-      <div class="col-md-3" ng-init="showSource = true">
+      <div class="col-md-3">
         <label>Export</label>
-        <input type="checkbox" value="3" ng-model="showSource">Source</input>
-        <input type="checkbox" value="1" ng-model="showClozed">Clozed</input>
-        <input type="checkbox" value="2" ng-model="showOpen">Open</input>
+        <input type="checkbox" value="3" ng-model="exportSettings.showSource">Source</input>
+        <input type="checkbox" value="1" ng-model="exportSettings.showClozed">Clozed</input>
+        <input type="checkbox" value="2" ng-model="exportSettings.showOpen">Open</input>
       </div>
-      <div class="col-md-3" ng-init="sideDelim =','">
+      <div class="col-md-3">
         <label>Side delimitor</label>
-        <input type="radio" name="sideDelim" ng-model="sideDelim" value="\t">Tab</input>
-        <input type="radio" name="sideDelim" ng-model="sideDelim" value=",">Comma</input>
+        <input type="radio" name="sideDelim" ng-model="exportSettings.sideDelim" value="\t">Tab</input>
+        <input type="radio" name="sideDelim" ng-model="exportSettings.sideDelim" value=",">Comma</input>
       </div>
-      <div class="col-md-3" ng-init="deckDelim =';'">
+      <div class="col-md-3">
         <label>Deck delimitor</label>
-        <input type="radio" name="deckDelim" ng-model="deckDelim" value="\n">Newline</input>
-        <input type="radio" name="deckDelim" ng-model="deckDelim" value=";">Semicolon</input>
+        <input type="radio" name="deckDelim" ng-model="exportSettings.deckDelim" value="\n">Newline</input>
+        <input type="radio" name="deckDelim" ng-model="exportSettings.deckDelim" value=";">Semicolon</input>
       </div>
     </div>
 
-    <div class="well">
-      <span ng-repeat="child in children">
-        <span ng-if="showSource">
-          {{child.name}}<span ng-if="showClozed || showOpen">{{sideDelim}}</span>
-        </span>
-        <span ng-if="showClozed" class="clozed">
-          {{child.name | formatCard}}<span ng-if="showOpen">{{sideDelim}}</span>
-        </span>
-        <span ng-if="showOpen">
-          {{child.name | formatCard}}
-        </span>
-
-        {{deckDelim}}
-      </span>
-    </div>
-
-    {{sides}}
+    <pre class="well">
+{{export}}
+    </pre>
 
   </div>
 </div>
