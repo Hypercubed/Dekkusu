@@ -109,7 +109,7 @@
           .state('authroot.username.export', {  // TODO: Handle deck not found
             url: "/:deck/export",
             templateUrl: 'components/decks/deckExport.html',
-            controller: 'DecksCtrl',
+            controller: 'DeckExportCtrl',
             resolve: { deck: deck, children: children }
           })
           .state('subdeck', {  // TODO: Handle deck not found
